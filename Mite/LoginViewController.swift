@@ -1,0 +1,115 @@
+//
+//  Copyright (c) 2015 Parker Kirby. All rights reserved.
+//
+
+import UIKit
+
+class LoginViewController: UIViewController {
+    
+    @IBOutlet weak var returnButton: UIButton!
+    @IBOutlet weak var connectToRedditButton: CustomButton!
+    @IBOutlet weak var browseAnonButton: CustomButton!
+    
+    var randomString: NSString = ""
+    
+    ////////////////////MARK: Load
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        randomString = generateRandomString(20)
+        
+        connectToRedditButton.hidden = true
+        browseAnonButton.hidden = true
+        returnButton.alpha = 0
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        connectToRedditButton.hidden = false
+        browseAnonButton.hidden = false
+        
+        var offSet = view.frame.height * -1
+        var bottomOffset = view.frame.height
+        self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
+        self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
+        
+        UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.2, options: nil, animations: { () -> Void in
+           
+            self.connectToRedditButton.transform = CGAffineTransformIdentity
+            self.browseAnonButton.transform = CGAffineTransformIdentity
+            
+        }) { (finished) -> Void in
+         
+            UIView.animateWithDuration(0.4, animations: { () -> Void in
+                
+                self.returnButton.alpha = 1
+                
+            })
+            
+        }
+        
+    }
+    
+    ////////////////////MARK: Animate & Button Action
+    
+    @IBAction func browseAnon(sender: UIButton) {
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+ 
+            self.returnButton.alpha = 0
+            
+        })
+        
+        UIView.animateWithDuration(0.6, animations: { () -> Void in
+        
+            var offSet = self.view.frame.height * -1
+            var bottomOffset = self.view.frame.height
+
+            self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
+            self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
+            self.connectToRedditButton.alpha = 0
+            self.browseAnonButton.alpha = 0
+            
+            }) { (finished) -> Void in
+                
+                self.dismissViewControllerAnimated(false, completion: nil)
+                
+        }
+        
+    }
+    
+    @IBAction func connectButtonPressed(sender: UIButton) {
+        
+        if let authorizationURL = NSURL(string: "https://www.reddit.com/api/v1/authorize?client_id=QdMPAbTH5Dokdg&response_type=code&state=\(randomString)&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
+            
+            UIApplication.sharedApplication().openURL(authorizationURL)
+            
+        }
+        
+    }
+    
+    func generateRandomString(length: Int) -> NSString {
+        
+        let characters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        var randomString = NSMutableString(capacity: length)
+        
+        for (var i = 0; i <= 20; i++) {
+            
+            var len = UInt32 (characters.length)
+            var rand = arc4random_uniform(len)
+            randomString.appendFormat("%C", characters.characterAtIndex(Int(rand)))
+            
+        }
+        println(randomString)
+        return randomString
+    }
+    
+}
+
+
+
+
+

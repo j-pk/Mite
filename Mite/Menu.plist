@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>buttonOneDefault</key>
+	<string>pics</string>
+	<key>buttonTwoDefault</key>
+	<string>aww</string>
+	<key>buttonThreeDefault</key>
+	<string>funny</string>
+	<key>buttonFourDefault</key>
+	<string>itookapicture</string>
+	<key>buttonFiveDefault</key>
+	<string>art</string>
+</dict>
+</plist>
