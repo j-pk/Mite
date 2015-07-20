@@ -23,9 +23,9 @@ _______________________________________________________
 _______________________________________________________
 - Adding the ability to view and vote on comments
 - Display images according to ranks: Hot, New, and Rising (Currently, only supports Top) 
-- NSFW Filter 
 - Progress indicator when loading gifs
-- Reduce redundant code for better efficiency 
 - Introduce the ability to share pictures through Twitter and Facebook
+- Reduce redundant code for better efficiency 
+- NSFW Filter 
  
  
