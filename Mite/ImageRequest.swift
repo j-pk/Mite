@@ -47,6 +47,50 @@ class ImageRequest: NSObject {
                             
                             if let data = result["data"] as? [String:AnyObject] {
                                 
+                                println(data)
+                                
+                                if let preview = data["preview"] as? [String:AnyObject] {
+                                    
+                                    println("this is preview \(preview)")
+                                    
+                                    if let previewImages = preview["images"] as? NSArray {
+                                    
+                                        println("this is images \(previewImages)")
+                                        
+                                        for resolution in previewImages {
+                                            
+                                            if let lowResolution = resolution["resolutions"] as? [[String:AnyObject]] {
+                                                
+                                                println("This is low resolution \(lowResolution)")
+                                                
+                                                for width in lowResolution {
+                                                    
+                                                    println("What the hell is this stuff \(width)")
+                                                    
+                                                    if let lowResolutionWidth = width["width"] as? Int {
+                                                        
+                                                        if lowResolutionWidth == 320 {
+                                                            
+                                                            if let url = width["url"] as? String {
+                                                                
+                                                                println("This is the width url \(url)")
+                                                                
+                                                            }
+                                                         
+                                                        }
+                                                        
+                                                    }
+                                                
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                
                                 if let imageURL = data["url"] as? String, id = data["id"] as? String {
                                     
                                     self.images[id] = data
