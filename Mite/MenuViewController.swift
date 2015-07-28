@@ -119,6 +119,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                         attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
                     textField.backgroundColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
                     textField.tintColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
+                    textField.textColor = UIColor.whiteColor()
                     
                 }
             }
@@ -136,11 +137,25 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         let properSearchStringParts = improperSearchString.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
         let properSearchString = NSArray(array: properSearchStringParts).componentsJoinedByString("")
         
-        ImageRequest.session().searchRedditString = "r/" + "\(properSearchString)"
+        if properSearchString.isEmpty || count(properSearchString) <= 1 {
+            
+            var emptyAlert = UIAlertController(title: "mité", message: "Invalid seach parameters.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            
+            emptyAlert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                
+            }))
+            
+            self.presentViewController(emptyAlert, animated: true, completion: nil)
         
-        NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
+        } else {
         
-        performSegueWithIdentifier("dismissMenu", sender: self)
+            ImageRequest.session().searchRedditString = "r/" + "\(properSearchString)"
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
+            
+            performSegueWithIdentifier("dismissMenu", sender: self)
+        
+        }
         
     }
     
@@ -235,7 +250,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                 let properSearchStringParts = improperSearchString.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
                 let properSearchString = NSArray(array: properSearchStringParts).componentsJoinedByString("")
                 
-                if properSearchString.isEmpty {
+                if properSearchString.isEmpty || count(alertTextField.text) <= 1 {
                     
                     var emptyAlert = UIAlertController(title: "mité", message: "Please put in a valid subreddit.", preferredStyle: UIAlertControllerStyle.ActionSheet)
                     
@@ -263,19 +278,19 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                         
                         self.funnyButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.thirdButton = properSearchString
-                        menuDefaults.setValue(alertTextField.text, forKey: "buttonThreeDefault")
+                        menuDefaults.setValue(properSearchString, forKey: "buttonThreeDefault")
                         
                     } else if pressedButton.tag == 4 {
                         
-                        self.iTookAPictureButton.setTitle("\(alertTextField.text) ", forState: .Normal)
+                        self.iTookAPictureButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.fourthButton = properSearchString
-                        menuDefaults.setValue(alertTextField.text, forKey: "buttonFourDefault")
+                        menuDefaults.setValue(properSearchString, forKey: "buttonFourDefault")
                         
                     } else if pressedButton.tag == 5 {
                         
-                        self.artButton.setTitle("\(alertTextField.text) ", forState: .Normal)
+                        self.artButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.fifthButton = properSearchString
-                        menuDefaults.setValue(alertTextField.text, forKey: "buttonFiveDefault")
+                        menuDefaults.setValue(properSearchString, forKey: "buttonFiveDefault")
                     
                     }
                 

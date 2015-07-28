@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="927-dt-Fxx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="927-dt-Fxx">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--mite-->
+        <!--Main Collection View Controller-->
         <scene sceneID="ZNh-tG-dEY">
             <objects>
-                <collectionViewController hidesBottomBarWhenPushed="YES" id="WgJ-qe-MIh" customClass="MainCollectionViewController" customModule="mité" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController hidesBottomBarWhenPushed="YES" id="WgJ-qe-MIh" customClass="MainCollectionViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" tag="9000" contentMode="scaleToFill" dataMode="prototypes" id="McH-hH-wPv">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.29803921568627451" green="0.29411764705882354" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="l9B-eP-hUf" customClass="MasterFlowLayout" customModule="mité" customModuleProvider="target">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="l9B-eP-hUf" customClass="MasterFlowLayout" customModule="mite" customModuleProvider="target">
                             <size key="itemSize" width="165" height="150"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="mainCell" id="gre-Mp-oPP" customClass="MainCollectionViewCell" customModule="mité" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="mainCell" id="gre-Mp-oPP" customClass="MainCollectionViewCell" customModule="mite" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="165" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -99,7 +98,7 @@
                             <outlet property="delegate" destination="WgJ-qe-MIh" id="Bxb-Ec-KlV"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="mite" id="Tu1-Zy-5Gp">
+                    <navigationItem key="navigationItem" id="Tu1-Zy-5Gp">
                         <barButtonItem key="leftBarButtonItem" id="GT3-Re-4Mh">
                             <connections>
                                 <segue destination="tQ1-sC-9f0" kind="presentation" identifier="menuVC" modalPresentationStyle="overFullScreen" id="7dE-wC-0ia"/>
@@ -116,7 +115,7 @@
         <!--Image View Controller-->
         <scene sceneID="2RE-nx-btF">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="bQc-lb-KOw" customClass="ImageViewController" customModule="mité" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overCurrentContext" id="bQc-lb-KOw" customClass="ImageViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wyf-5q-Vsh"/>
                         <viewControllerLayoutGuide type="bottom" id="ayd-zG-B8n"/>
@@ -132,7 +131,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.70000000000000007" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNd-fq-DRp" customClass="GradientView" customModule="mité" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNd-fq-DRp" customClass="GradientView" customModule="mite" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="479" width="600" height="121"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -284,113 +283,188 @@
         <!--Menu View Controller-->
         <scene sceneID="YgC-Fs-cMd">
             <objects>
-                <viewController id="tQ1-sC-9f0" customClass="MenuViewController" customModule="mité" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tQ1-sC-9f0" customClass="MenuViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ji3-D0-NaY"/>
                         <viewControllerLayoutGuide type="bottom" id="UJE-KS-whp"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="uWO-bT-jL3">
+                    <view key="view" contentMode="scaleToFill" id="uWO-bT-jL3" customClass="GradientView" customModule="mite" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72u-o6-raV">
-                                <rect key="frame" x="0.0" y="485" width="400" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72u-o6-raV" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="485" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="bh0-T6-hIz"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Return">
                                     <color key="titleColor" red="0.60392156860000001" green="0.60784313729999995" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="uHh-nO-Xd2" kind="unwind" identifier="dismissMenu" unwindAction="unwindToSegue:" id="jpN-m1-xc6"/>
                                 </connections>
                             </button>
-                            <searchBar contentMode="redraw" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C1K-xL-1kU">
+                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="C1K-xL-1kU">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
-                                <color key="barTintColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OO9-Bh-nNb">
-                                <rect key="frame" x="0.0" y="441" width="400" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OO9-Bh-nNb" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="441" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Buo-o9-d1M"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Login">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="rMV-qc-Thb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LEY-mV-esT">
-                                <rect key="frame" x="0.0" y="309" width="400" height="40"/>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LEY-mV-esT" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="309" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="8gt-3L-3XD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="_">
-                                    <color key="titleColor" red="0.96078431369999995" green="0.4549019608" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="iTookAPictureButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="tg9-iu-pmy"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLJ-kf-oor">
-                                <rect key="frame" x="0.0" y="265" width="400" height="40"/>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLJ-kf-oor" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="265" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="SGE-Pq-65A"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="_">
-                                    <color key="titleColor" red="0.96078431369999995" green="0.4549019608" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="funnyButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="uXh-d3-CN9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iLm-1M-tPp">
-                                <rect key="frame" x="0.0" y="221" width="400" height="40"/>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iLm-1M-tPp" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="221" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="G5s-ot-gN4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="_">
-                                    <color key="titleColor" red="0.96078431369999995" green="0.4549019608" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="awwButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="D51-gu-QgD"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqv-Zv-Fog">
-                                <rect key="frame" x="0.0" y="177" width="400" height="40"/>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqv-Zv-Fog" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="177" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="LZz-T5-yDf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="_">
-                                    <color key="titleColor" red="0.96078431369999995" green="0.4549019608" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="picsButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="jpE-xp-JQQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aba-9B-b0j">
-                                <rect key="frame" x="0.0" y="353" width="400" height="40"/>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aba-9B-b0j" customClass="CustomButton" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="35" y="353" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Gae-jj-YVc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="_">
-                                    <color key="titleColor" red="0.96078431369999995" green="0.4549019608" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="artButtonPressed:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="D6f-jb-aQD"/>
                                 </connections>
@@ -417,7 +491,7 @@
                                     <constraint firstAttribute="height" constant="18" id="vIV-3n-DgJ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Subreddits" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9m-O2-CE0">
@@ -432,44 +506,58 @@
                         </subviews>
                         <color key="backgroundColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="vqv-Zv-Fog" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="0EN-Uy-W2i"/>
+                            <constraint firstItem="vqv-Zv-Fog" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="0EN-Uy-W2i"/>
                             <constraint firstItem="C1K-xL-1kU" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leadingMargin" constant="-16" id="3fG-xZ-YNp"/>
                             <constraint firstItem="iUD-HP-SYZ" firstAttribute="top" secondItem="aba-9B-b0j" secondAttribute="bottom" constant="4" id="41p-JU-GPu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="C1K-xL-1kU" secondAttribute="trailing" constant="-16" id="49A-nP-X1n"/>
                             <constraint firstItem="iLm-1M-tPp" firstAttribute="top" secondItem="vqv-Zv-Fog" secondAttribute="bottom" constant="4" id="9w1-S4-uac"/>
-                            <constraint firstItem="OO9-Bh-nNb" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Bmb-xY-XXG"/>
+                            <constraint firstItem="OO9-Bh-nNb" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="Bmb-xY-XXG"/>
                             <constraint firstItem="C1K-xL-1kU" firstAttribute="top" secondItem="ji3-D0-NaY" secondAttribute="bottom" id="BwE-Bg-Pab"/>
-                            <constraint firstItem="72u-o6-raV" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="COH-tw-gVr"/>
-                            <constraint firstItem="iLm-1M-tPp" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Eji-BY-kdL"/>
-                            <constraint firstItem="KLJ-kf-oor" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="HFU-Cx-a7v"/>
+                            <constraint firstItem="72u-o6-raV" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="COH-tw-gVr"/>
+                            <constraint firstItem="iLm-1M-tPp" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="Eji-BY-kdL"/>
+                            <constraint firstItem="KLJ-kf-oor" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="HFU-Cx-a7v"/>
                             <constraint firstItem="iUD-HP-SYZ" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Hq6-81-FEf"/>
                             <constraint firstItem="OO9-Bh-nNb" firstAttribute="top" secondItem="iUD-HP-SYZ" secondAttribute="bottom" constant="4" id="ILM-lE-T0r"/>
                             <constraint firstItem="x9m-O2-CE0" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Jbu-w1-p1y"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="iLm-1M-tPp" secondAttribute="trailing" id="K5l-fT-sqd"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="iLm-1M-tPp" secondAttribute="trailing" constant="30" id="K5l-fT-sqd"/>
                             <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="iUD-HP-SYZ" secondAttribute="trailing" id="Mh5-7q-A1R"/>
                             <constraint firstAttribute="trailing" secondItem="hBz-de-ni5" secondAttribute="trailing" id="NNe-Cp-MUM"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="aba-9B-b0j" secondAttribute="trailing" id="Nfq-m1-1m7"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="aba-9B-b0j" secondAttribute="trailing" constant="30" id="Nfq-m1-1m7"/>
                             <constraint firstItem="Ily-iF-uj2" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Nug-cu-Hkx"/>
-                            <constraint firstItem="aba-9B-b0j" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="OG4-ne-8vV"/>
+                            <constraint firstItem="aba-9B-b0j" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="OG4-ne-8vV"/>
                             <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="x9m-O2-CE0" secondAttribute="trailing" id="PNP-bc-lJP"/>
                             <constraint firstItem="KLJ-kf-oor" firstAttribute="top" secondItem="iLm-1M-tPp" secondAttribute="bottom" constant="4" id="PWd-lw-E2C"/>
-                            <constraint firstItem="LEY-mV-esT" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Qt6-Fm-Kjm"/>
+                            <constraint firstItem="LEY-mV-esT" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="Qt6-Fm-Kjm"/>
                             <constraint firstItem="Ily-iF-uj2" firstAttribute="top" secondItem="x9m-O2-CE0" secondAttribute="bottom" id="Qyc-S5-gRU"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="LEY-mV-esT" secondAttribute="trailing" id="SoL-Ac-GbU"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="LEY-mV-esT" secondAttribute="trailing" constant="30" id="SoL-Ac-GbU"/>
                             <constraint firstItem="hBz-de-ni5" firstAttribute="top" secondItem="C1K-xL-1kU" secondAttribute="bottom" id="TOH-VV-IEg"/>
                             <constraint firstItem="aba-9B-b0j" firstAttribute="top" secondItem="LEY-mV-esT" secondAttribute="bottom" constant="4" id="aey-QK-OCu"/>
                             <constraint firstItem="UJE-KS-whp" firstAttribute="top" secondItem="hBz-de-ni5" secondAttribute="bottom" id="f7t-X7-jIi"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="OO9-Bh-nNb" secondAttribute="trailing" id="fkY-Ia-4dr"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="72u-o6-raV" secondAttribute="trailing" id="jOq-dZ-jaY"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="OO9-Bh-nNb" secondAttribute="trailing" constant="30" id="fkY-Ia-4dr"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="72u-o6-raV" secondAttribute="trailing" constant="30" id="jOq-dZ-jaY"/>
                             <constraint firstAttribute="trailing" secondItem="C1K-xL-1kU" secondAttribute="trailing" id="lcX-ra-tlY"/>
                             <constraint firstItem="72u-o6-raV" firstAttribute="top" secondItem="OO9-Bh-nNb" secondAttribute="bottom" constant="4" id="nrP-AW-uNU"/>
                             <constraint firstAttribute="centerY" secondItem="LEY-mV-esT" secondAttribute="centerY" constant="-29" id="oFQ-q9-PiF"/>
                             <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="Ily-iF-uj2" secondAttribute="trailing" id="q0J-Ru-I63"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="KLJ-kf-oor" secondAttribute="trailing" id="u8d-Fl-c4d"/>
-                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="vqv-Zv-Fog" secondAttribute="trailing" id="uZg-rG-tb6"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="KLJ-kf-oor" secondAttribute="trailing" constant="30" id="u8d-Fl-c4d"/>
+                            <constraint firstItem="hBz-de-ni5" firstAttribute="leading" secondItem="vqv-Zv-Fog" secondAttribute="trailing" constant="30" id="uZg-rG-tb6"/>
                             <constraint firstItem="LEY-mV-esT" firstAttribute="top" secondItem="KLJ-kf-oor" secondAttribute="bottom" constant="4" id="x3v-Kt-tqu"/>
                             <constraint firstItem="vqv-Zv-Fog" firstAttribute="top" secondItem="Ily-iF-uj2" secondAttribute="bottom" constant="10" id="yEh-nO-cQh"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                <color key="value" red="1" green="0.1450980392" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="endPoint">
+                                <point key="value" x="0.0" y="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="startPoint">
+                                <point key="value" x="1" y="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="49A-nP-X1n"/>
@@ -499,7 +587,7 @@
         <!--Login View Controller-->
         <scene sceneID="WS6-4D-RTX">
             <objects>
-                <viewController storyboardIdentifier="loginVC" id="og0-mK-hM9" customClass="LoginViewController" customModule="mité" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginVC" id="og0-mK-hM9" customClass="LoginViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5xN-tj-s4u"/>
                         <viewControllerLayoutGuide type="bottom" id="jzA-lr-sM2"/>
@@ -522,7 +610,7 @@
                                     <action selector="browseAnon:" destination="og0-mK-hM9" eventType="touchUpInside" id="h03-e8-3H7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1b-cl-gas" customClass="CustomButton" customModule="mité" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1b-cl-gas" customClass="CustomButton" customModule="mite" customModuleProvider="target">
                                 <rect key="frame" x="16" y="254" width="568" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="eTy-A9-iOy"/>
@@ -549,7 +637,7 @@
                                     <action selector="connectButtonPressed:" destination="og0-mK-hM9" eventType="touchUpInside" id="fu6-Co-Wqg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZF-5p-HLj" customClass="CustomButton" customModule="mité" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZF-5p-HLj" customClass="CustomButton" customModule="mite" customModuleProvider="target">
                                 <rect key="frame" x="16" y="309" width="568" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="aC8-Nc-r3h"/>

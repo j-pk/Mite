@@ -25,12 +25,19 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     override func viewWillAppear(animated: Bool) {
         
-        navigationController?.navigationBar.barTintColor = UIColor.darkGrayColor()
-        navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
+        let titleBarImageView = UIImageView(frame: CGRectMake(0, 0, 54, 28))
+        titleBarImageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "logo")
+        titleBarImageView.image = image
+        navigationItem.titleView = titleBarImageView
         
         var sideMenuButton = UIButton()
-        sideMenuButton.setImage(UIImage(named: "sideMenuIcon"), forState: .Normal)
-        sideMenuButton.frame = CGRectMake(0, 0, 20, 20)
+        sideMenuButton.setImage(UIImage(named: "menu"), forState: .Normal)
+        sideMenuButton.frame = CGRectMake(0, 0, 20, 16)
+        sideMenuButton.contentMode = .ScaleAspectFit
         sideMenuButton.addTarget(self, action: "sideMenuButtonPressed:", forControlEvents: .TouchUpInside)
         
         var sideMenuBarItem = UIBarButtonItem()
