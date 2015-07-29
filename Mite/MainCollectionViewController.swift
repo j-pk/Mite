@@ -405,19 +405,20 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
-//                    let image = redditImages[indexPath.row]
-//                    let score = ImageRequest.session().redditScore[indexPath.row]
-//                    let id = ImageRequest.session().redditID[indexPath.row]
-//                    
-//                    imageVC.upvoteCount = String(score)
-//
-//                    imageVC.imageURLToShare = url
-//
-//                    imageVC.imageIDToVote = id
-//
-//                    imageVC.cell = sender as? MainCollectionViewCell
-//                    imageVC.detailImage = image
-//                    imageVC.cellYOffset = -collectionView!.contentOffset.y
+                    let image = redditImages[indexPath.row]
+                    let score = ImageRequest.session().redditScore[indexPath.row]
+                    let id = ImageRequest.session().redditID[indexPath.row]
+                    let title = ImageRequest.session().redditTitle[indexPath.row]
+                    let url = ImageRequest.session().redditURL[indexPath.row]
+                    
+                    imageVC.upvoteCount = String(score)
+                    imageVC.detailImage = image
+                    imageVC.detailTitle = title 
+                    imageVC.imageURLToShare = url
+                    imageVC.imageIDToVote = id
+
+                    imageVC.cell = sender as? MainCollectionViewCell
+                    imageVC.cellYOffset = -collectionView!.contentOffset.y
                     
                 }
                 
