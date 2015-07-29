@@ -13,7 +13,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     var transitionManager = MenuTransitionManager()
     
     var redditImagesDictionary = [String:UIImage]()
-    var redditImageIds = [String]()
+    var redditImages = [UIImage]()
     
     var searchRedditString = "r/art"
     
@@ -61,16 +61,16 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         println(HTTPRequest.session().token)
         HTTPRequest.session().getUserIdentity { () -> Void in
             
             println("Identity")
             
         }
-
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTheData:", name: "notifyToReload", object: nil)
-
+        
         transitionManager.mainCollectionViewController = self
         
         let size = CGRectGetWidth(collectionView!.bounds) / 2
@@ -89,7 +89,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         updateImages(false)
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -97,7 +97,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     ////////////////////MARK: CollectionView
     
     func reloadTheData(notification: NSNotification) {
-                
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
             self.updateImages(false)
@@ -111,7 +111,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return redditImageIds.count
+        return redditImages.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -121,18 +121,16 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         cell.upvoteButton.hidden = true
         cell.downvoteButton.hidden = true
         
-        let key = redditImageIds[indexPath.row]
+        let photo = redditImages[indexPath.row]
         
-        cell.mainImageView.image = redditImagesDictionary[key]
+        cell.mainImageView.image = photo
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat {
         
-        let key = redditImageIds[indexPath.row]
-        
-        let photo = redditImagesDictionary[key]!
+        let photo = redditImages[indexPath.row]
         
         let boundingRect = CGRect(x: 0, y: 0, width: width, height: CGFloat(MAXFLOAT))
         let rect = AVMakeRectWithAspectRatioInsideRect(photo.size, boundingRect)
@@ -219,13 +217,13 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                     
                     if distanceY > 20 {
                         
-                        let idName = redditImageIds[sourceIndexPath.row]
+                        let idName = redditImages[sourceIndexPath.row]
                         
                         // upvote
                         println("You're going up")
                         cell.pressingUp = true
                         cell.pressingDown = false
-
+                        
                     } else if distanceY < -20 {
                         
                         // downvote
@@ -244,7 +242,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 }
                 
             }
-        
+            
         case .Ended:
             
             let newPoint = gesture.locationInView(collectionView)
@@ -253,7 +251,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 
                 if let cell = collectionView?.cellForItemAtIndexPath(sourceIndexPath) as? MainCollectionViewCell {
                     
-                    let idName = redditImageIds[sourceIndexPath.row]
+                    let idName = redditImages[sourceIndexPath.row]
                     
                     if distanceY > 20 {
                         
@@ -262,11 +260,11 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         cell.pressingUp = true
                         cell.pressingDown = false
                         
-                        HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
-
-                            println("upvote")
-                            
-                        })
+                        //HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
+                        
+                        println("upvote")
+                        
+                        //})
                         
                     } else if distanceY < -20 {
                         
@@ -275,11 +273,11 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         cell.pressingDown = true
                         cell.pressingUp = false
                         
-                        HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
-                            
-                            println("downvote")
-                            
-                        })
+                        //HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
+                        
+                        println("downvote")
+                        
+                        //})
                         
                     } else {
                         
@@ -314,7 +312,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         }
                         
                     }
-                
+                    
                 }
                 
             }
@@ -353,8 +351,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
         } else {
             
-            redditImagesDictionary = [:]
-            redditImageIds = []
+            redditImages = []
             
             collectionView?.reloadData()
             collectionView?.contentOffset = CGPoint(x: 0, y: -70)
@@ -365,173 +362,30 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.hitBottom = false
             
-            for (id,child) in images {
+            for url in images {
                 
-                println(self.redditIds)
-                
-                if contains(self.redditIds, id) { continue }
-                
-                self.redditIds.append(id)
-                
-                if var imageURL = child["url"] as? String {
+                if let url = NSURL(string: url) {
                     
-                    var ext = ""
+                    println("This is the URL in Main \(url)")
                     
-                    var urlParts = imageURL.componentsSeparatedByString(".")
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                         
-                    if urlParts.count > 1 {
-                        
-                        ext = urlParts.last!
-                        
-                        if urlParts.last == "gifv" {
-                            
-                            urlParts.removeLast()
-                            urlParts.append("gif")
-                            
-                            imageURL = NSArray(array: urlParts).componentsJoinedByString(".")
-                            
-                            println(imageURL)
+                        if let imageData = NSData(contentsOfURL: url) {
+                                                        
+                            if let image = UIImage(data: imageData) {
+                                
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    
+                                    self.redditImages.append(image)
+                                    self.collectionView?.reloadData()
+                                    
+                                })
+                           
+                            }
                             
                         }
                         
-                    }
-                    
-                    if let url = NSURL(string: imageURL) {
-                        
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
-                            
-                            if let imageData = NSData(contentsOfURL: url) {
-                                
-                                println("---------------------------------------------")
-                                
-                                switch ext {
-                                    
-                                case "gif", "gifv" :
-                                    
-                                    println("gifv")
-                                    
-                                    println("gif : " + imageURL)
-                                    
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        
-                                        if let image = UIImage.animatedGIF(imageData) {
-                                    
-                                            self.redditImagesDictionary[id] = image
-                                            self.redditImageIds.append(id)
-                                            
-                                            self.collectionView?.reloadData()
-                                            
-                                        }
-                                        
-                                    })
-                                    
-                                    
-                                default :
-                                    
-                                    let subData = imageData.subdataWithRange(NSMakeRange(0, 4))
-                                    
-                                    //println(subData.description)
-                                    
-                                    switch subData.description {
-                                        
-                                    case "<3c21444f>" :
-                                        
-                                        println("website")
-                                        
-                                        //changing url to not have http:// so it can search for image url in html
-                                        let urlStripped = imageURL.stringByReplacingOccurrencesOfString("http://", withString: "", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
-                                        
-                                        let dataString = NSString(data: imageData, encoding: NSASCIIStringEncoding)
-                                        
-                                        //println(dataString)
-                                        
-                                        //spltting HTML at first occurence of the image url
-                                        if let s1 = dataString?.componentsSeparatedByString("i.\(urlStripped).") {
-                                            
-                                            // if image found
-                                            if s1.count > 1 {
-                                                
-                                                // finding extension
-                                                if let s2 = (s1[1] as? String)?.componentsSeparatedByString("\"") {
-                                                    
-                                                    //println(s2[0])
-                                                    
-                                                    // if it is a jpg
-                                                    if s2[0] == "jpg" {
-                                                        
-                                                        if let url = NSURL(string: "http://i.\(urlStripped).jpg") {
-                                                            
-                                                            if let imageData = NSData(contentsOfURL: url) {
-                                                                
-                                                                if let image = UIImage.animatedGIF(imageData) {
-                                                                    
-                                                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                                        
-                                                                        self.redditImagesDictionary[id] = image
-                                                                        self.redditImageIds.append(id)
-                                                                        
-                                                                        self.collectionView?.reloadData()
-                                                                        
-                                                                    })
-                                                                    
-                                                                }
-                                                                
-                                                            }
-                                                            
-                                                        }
-                                                        
-                                                    }
-                                                    
-                                                }
-                                                
-                                            }
-                                            
-                                        }
-                                        
-                                        
-                                    case "<89504e47>" :
-                                        
-                                        println("png")
-                                        
-                                        if let image = UIImage.animatedGIF(imageData) {
-                                            
-                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                
-                                                self.redditImagesDictionary[id] = image
-                                                self.redditImageIds.append(id)
-                                                
-                                                self.collectionView?.reloadData()
-                                                
-                                            })
-                                            
-                                        }
-                                        
-                                    default :
-                                        
-                                        println("jpg")
-                                        
-                                        if let image = UIImage.animatedGIF(imageData) {
-                                            
-                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                
-                                                self.redditImagesDictionary[id] = image
-                                                self.redditImageIds.append(id)
-                                                
-                                                self.collectionView?.reloadData()
-                                                
-                                            })
-                                            
-                                        }
-                                        
-                                    }
-                                    
-                                }
-                                
-                            }
-                            
-                        })
-                        
-                    }
+                    })
                     
                 }
                 
@@ -551,32 +405,20 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
-                    let key = redditImageIds[indexPath.row]
-
-                    let child = ImageRequest.session().images[key]
+//                    let image = redditImages[indexPath.row]
+//                    let score = ImageRequest.session().redditScore[indexPath.row]
+//                    let id = ImageRequest.session().redditID[indexPath.row]
+//                    
+//                    imageVC.upvoteCount = String(score)
+//
+//                    imageVC.imageURLToShare = url
+//
+//                    imageVC.imageIDToVote = id
+//
+//                    imageVC.cell = sender as? MainCollectionViewCell
+//                    imageVC.detailImage = image
+//                    imageVC.cellYOffset = -collectionView!.contentOffset.y
                     
-                    imageVC.detailTitle = child?["title"] as? String
-                    
-                    if let score = child?["score"] as? Int {
-                        
-                        imageVC.upvoteCount = String(score)
-                        
-                    }
-                    
-                    if let url = child?["url"] as? String {
-                        
-                        imageVC.imageURLToShare = url
-                        
-                    }
-                    
-                    if let id = child?["id"] as? String {
-                        
-                        imageVC.imageIDToVote = id
-                    }
-                    
-                    imageVC.cell = sender as? MainCollectionViewCell
-                    imageVC.detailImage = redditImagesDictionary[key]
-                    imageVC.cellYOffset = -collectionView!.contentOffset.y
                 }
                 
             }
@@ -644,20 +486,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
         }
         
-        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
-            
-            if hitBottom { return }
-            
-            println("You're at the bottom, request")
-            
-            hitBottom = true
-            
-            updateImages(true)
-            
-            // run request and in completion block ... hitBottom = false
-            
-        }
-        
         self.navigationController?.navigationBar.frame = frame!
         updateBarButtonItems(1 - framePercentageHidden)
         previousScrollViewYOffset = scrollOffset
@@ -675,6 +503,21 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         if (!decelerate) {
             
             stoppedScrolling()
+        }
+        
+        
+        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+            
+            if hitBottom { return }
+            
+            println("You're at the bottom, request")
+            
+            hitBottom = true
+            
+            updateImages(true)
+            
+            // run request and in completion block ... hitBottom = false
+            
         }
         
     }
@@ -713,7 +556,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         var nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [NSForegroundColorAttributeName: semi]
         navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.colorWithAlphaComponent(alpha)
-    
+        
     }
     
     func animateNavBarTo(y: CGFloat) {
