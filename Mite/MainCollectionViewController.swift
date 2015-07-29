@@ -101,6 +101,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
             self.updateImages(false)
+            ImageRequest.session().redditData = []
+            self.collectionView?.reloadData()
             
         })
     }
@@ -111,7 +113,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return redditImages.count
+        return ImageRequest.session().redditData.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -120,17 +122,22 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         cell.backgroundColor = UIColor.clearColor()
         cell.upvoteButton.hidden = true
         cell.downvoteButton.hidden = true
-        
-        let photo = redditImages[indexPath.row]
-        
-        cell.mainImageView.image = photo
+
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+            let data = ImageRequest.session().redditData[indexPath.row]
+            let photo = data.image
+            
+            cell.mainImageView.image = photo
+        })
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat {
         
-        let photo = redditImages[indexPath.row]
+        let data = ImageRequest.session().redditData[indexPath.row]
+        let photo = data.image
         
         let boundingRect = CGRect(x: 0, y: 0, width: width, height: CGFloat(MAXFLOAT))
         let rect = AVMakeRectWithAspectRatioInsideRect(photo.size, boundingRect)
@@ -340,7 +347,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     func updateImages(paginate: Bool) {
         
-        var requestCount = 20
+        var requestCount = 10
         var idArray: [String] = []
         
         searchRedditString = ImageRequest.session().searchRedditString
@@ -364,35 +371,15 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.hitBottom = false
             
-            for url in images {
+            for image in images {
                 
-                let imageURL = url.imageURL
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    let imageLoad = image.image
+                    self.collectionView?.reloadData()
                 
-                if let url = NSURL(string: imageURL) {
+                })
                     
-                    println("This is the URL in Main \(url)")
-                    
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                        
-                        if let imageData = NSData(contentsOfURL: url) {
-                                                        
-                            if let image = UIImage(data: imageData) {
-                                
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    
-                                    self.redditImages.append(image)
-                                    self.collectionView?.reloadData()
-                                    
-                                })
-                           
-                            }
-                            
-                        }
-                        
-                    })
-                    
-                }
-                
             }
             
         })
@@ -409,7 +396,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
-                    let image = redditImages[indexPath.row]
+                    let data = ImageRequest.session().redditData[indexPath.row]
+                    let image = data.image
                     let scoreToSend = ImageRequest.session().redditData[indexPath.row]
                     let score = scoreToSend.score
                     let idToSend = ImageRequest.session().redditData[indexPath.row]

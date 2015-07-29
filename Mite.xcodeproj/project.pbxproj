@@ -10,6 +10,7 @@
 		C01B46E01B67E45A0049C76C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C078E3E01B4CA5A900EB7176 /* Main.storyboard */; };
 		C02DC4FB1B56AC1C0067A4BA /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FA1B56AC1C0067A4BA /* Alert.swift */; };
 		C02DC4FD1B573E020067A4BA /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */; };
+		C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03971701B69815F00D7BB5C /* ImageExtension.swift */; };
 		C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */; };
 		C071F5001B5AEA3200C33947 /* Menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = C071F4FF1B5AEA3200C33947 /* Menu.plist */; };
 		C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074E5591B53F01600C7C282 /* GradientView.swift */; };
@@ -44,6 +45,7 @@
 /* Begin PBXFileReference section */
 		C02DC4FA1B56AC1C0067A4BA /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
+		C03971701B69815F00D7BB5C /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefaults.swift; sourceTree = "<group>"; };
 		C071F4FF1B5AEA3200C33947 /* Menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Menu.plist; sourceTree = "<group>"; };
 		C074E5591B53F01600C7C282 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			children = (
 				C0AA9A4D1B4DCEB40088B09D /* AnimatedGIF.swift */,
 				C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */,
+				C03971701B69815F00D7BB5C /* ImageExtension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0BECEB11B4EA9F1004E7A9C /* TransitionManager.swift in Sources */,
+				C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */,
 				C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */,
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,
 				C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */,

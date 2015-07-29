@@ -10,17 +10,17 @@ class ImageRequest: NSObject {
     
     class func session() -> ImageRequest { return _singleton }
     
-    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, imageURL:String)
+    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, image:UIImage)
     
     var images: [String] = []
-    var tempRedditData: (id:String, score:Int, title:String, url:String, imageURL:String) = (id:"", score:0 , title:"", url:"", imageURL: "")
+    var tempRedditData: (id:String, score:Int, title:String, url:String, image:UIImage) = (id:"", score:0 , title:"", url:"", image: UIImage.imageWithColor(UIColor.clearColor()))
     var redditData: [redditDataTuple] = []
     var pageRedditAfter = ""
     var searchRedditString = ""
     
     func jsonRequestForImages(url: String, completion: (images: [redditDataTuple]) -> ()) {
         
-        redditData = []
+        //redditData = []
         
         ///REDDIT JSON
         
@@ -94,12 +94,26 @@ class ImageRequest: NSObject {
                                                             if let url = width["url"] as? String {
                                                                 
                                                                var modifiedURL = url.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                
-                                                                self.tempRedditData.imageURL = modifiedURL
-                                                                self.redditData.append(self.tempRedditData)
                                                                 
+                                                                if let url = NSURL(string: modifiedURL) {
+                                                                    
+                                                                     if let imageData = NSData(contentsOfURL: url) {
+
+                                                                        if let image = UIImage(data: imageData) {
+                                                                            
+                                                                            self.tempRedditData.image = image
+                                                                            println(self.tempRedditData)
+                                                                            
+                                                                        }
+                                                                        
+                                                                    }
+                                                                
+                                                                }
+                                                            
                                                             }
                                                          
+                                                            self.redditData.append(self.tempRedditData)
+                                                            println(self.redditData)
                                                         }
                                                         
                                                     }
