@@ -217,7 +217,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                     
                     if distanceY > 20 {
                         
-                        let idName = redditImages[sourceIndexPath.row]
+                        let id = ImageRequest.session().redditData[sourceIndexPath.row]
+                        let idName = id.id
                         
                         // upvote
                         println("You're going up")
@@ -251,7 +252,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 
                 if let cell = collectionView?.cellForItemAtIndexPath(sourceIndexPath) as? MainCollectionViewCell {
                     
-                    let idName = redditImages[sourceIndexPath.row]
+                    let id = ImageRequest.session().redditData[sourceIndexPath.row]
+                    let idName = id.id
                     
                     if distanceY > 20 {
                         
@@ -260,11 +262,11 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         cell.pressingUp = true
                         cell.pressingDown = false
                         
-                        //HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
+                        HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
                         
                         println("upvote")
                         
-                        //})
+                        })
                         
                     } else if distanceY < -20 {
                         
@@ -273,11 +275,11 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         cell.pressingDown = true
                         cell.pressingUp = false
                         
-                        //HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
+                        HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
                         
                         println("downvote")
                         
-                        //})
+                        })
                         
                     } else {
                         
@@ -364,7 +366,9 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             for url in images {
                 
-                if let url = NSURL(string: url) {
+                let imageURL = url.imageURL
+                
+                if let url = NSURL(string: imageURL) {
                     
                     println("This is the URL in Main \(url)")
                     
@@ -406,10 +410,14 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
                     let image = redditImages[indexPath.row]
-                    let score = ImageRequest.session().redditScore[indexPath.row]
-                    let id = ImageRequest.session().redditID[indexPath.row]
-                    let title = ImageRequest.session().redditTitle[indexPath.row]
-                    let url = ImageRequest.session().redditURL[indexPath.row]
+                    let scoreToSend = ImageRequest.session().redditData[indexPath.row]
+                    let score = scoreToSend.score
+                    let idToSend = ImageRequest.session().redditData[indexPath.row]
+                    let id = idToSend.id
+                    let titleToSend = ImageRequest.session().redditData[indexPath.row]
+                    let title = titleToSend.title
+                    let urlToSend = ImageRequest.session().redditData[indexPath.row]
+                    let url = urlToSend.url
                     
                     imageVC.upvoteCount = String(score)
                     imageVC.detailImage = image

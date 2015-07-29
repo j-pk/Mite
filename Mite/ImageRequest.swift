@@ -10,23 +10,17 @@ class ImageRequest: NSObject {
     
     class func session() -> ImageRequest { return _singleton }
     
+    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, imageURL:String)
+    
     var images: [String] = []
-    var redditID: [String] = []
-    var redditScore: [Int] = []
-    var redditTitle: [String] = []
-    var redditURL: [String] = []
     var tempRedditData: (id:String, score:Int, title:String, url:String, imageURL:String) = (id:"", score:0 , title:"", url:"", imageURL: "")
-    var redditData: [(id:String, score:Int, title:String, url:String, imageURL: String)] = []
+    var redditData: [redditDataTuple] = []
     var pageRedditAfter = ""
     var searchRedditString = ""
     
-    func jsonRequestForImages(url: String, completion: (images: [String]) -> ()) {
+    func jsonRequestForImages(url: String, completion: (images: [redditDataTuple]) -> ()) {
         
-        images = []
-        redditURL = []
-        redditTitle = []
-        redditScore = []
-        redditID = []
+        redditData = []
         
         ///REDDIT JSON
         
@@ -62,36 +56,27 @@ class ImageRequest: NSObject {
                                 if let preview = data["preview"] as? [String:AnyObject] {
                                     
                                     if let id = data["id"] as? String {
-                                        
-                                        self.redditID.append(id)
-                                        println("THIS IS ID \(id)")
+
                                         self.tempRedditData.id = id
+                                    
                                     }
                                     
                                     if let score = data["score"] as? Int {
-                                        
-                                        self.redditScore.append(score)
-                                        println("THIS IS SCORE \(score)")
+   
                                         self.tempRedditData.score = score
                                         
                                     }
                                     
                                     if let title = data["title"] as? String {
                                         
-                                        self.redditTitle.append(title)
-                                        println("THIS IS TITLE \(title)")
                                         self.tempRedditData.title = title
 
-                                        
                                     }
                                     
                                     if let url = data["url"] as? String {
                                         
-                                        self.redditURL.append(url)
-                                        println("THIS IS URL \(url)")
                                         self.tempRedditData.url = url
 
-                                        
                                     }
                                     
                                     if let previewImages = preview["images"] as? NSArray {
@@ -110,10 +95,8 @@ class ImageRequest: NSObject {
                                                                 
                                                                var modifiedURL = url.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
-                                                                self.images.append(modifiedURL)
                                                                 self.tempRedditData.imageURL = modifiedURL
-                                                                println("THIS IS A TUPLE SUPPOSEDLY \(self.tempRedditData)")
-                                                                self.redditData += self.tempRedditData
+                                                                self.redditData.append(self.tempRedditData)
                                                                 
                                                             }
                                                          
@@ -137,7 +120,7 @@ class ImageRequest: NSObject {
 
                     }
                     
-                    completion(images: self.images)
+                    completion(images: self.redditData)
                     
                 }
                 
