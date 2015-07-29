@@ -12,15 +12,12 @@ class ImageRequest: NSObject {
     
     typealias redditDataTuple = (id:String, score:Int, title:String, url:String, image:UIImage)
     
-    var images: [String] = []
     var tempRedditData: (id:String, score:Int, title:String, url:String, image:UIImage) = (id:"", score:0 , title:"", url:"", image: UIImage.imageWithColor(UIColor.clearColor()))
     var redditData: [redditDataTuple] = []
     var pageRedditAfter = ""
     var searchRedditString = ""
     
     func jsonRequestForImages(url: String, completion: (images: [redditDataTuple]) -> ()) {
-        
-        //redditData = []
         
         ///REDDIT JSON
         
@@ -102,7 +99,6 @@ class ImageRequest: NSObject {
                                                                         if let image = UIImage(data: imageData) {
                                                                             
                                                                             self.tempRedditData.image = image
-                                                                            println(self.tempRedditData)
                                                                             
                                                                         }
                                                                         
@@ -111,9 +107,8 @@ class ImageRequest: NSObject {
                                                                 }
                                                             
                                                             }
-                                                         
+                                                            
                                                             self.redditData.append(self.tempRedditData)
-                                                            println(self.redditData)
                                                         }
                                                         
                                                     }
