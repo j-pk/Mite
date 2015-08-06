@@ -9,7 +9,6 @@
     
     var window: UIWindow?
     
-    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         if let defaultPreferencePlistPath = NSBundle.mainBundle().pathForResource("Menu", ofType: "plist") {
@@ -80,7 +79,7 @@
                         println("This is a token: " + "\(accessToken)")
                         
                         self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
-                    
+                        NSNotificationCenter.defaultCenter().postNotificationName("sendAlert", object: nil)
                     }
                     
                 })

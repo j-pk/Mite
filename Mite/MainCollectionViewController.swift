@@ -68,6 +68,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTheData:", name: "notifyToReload", object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sendLoginAlert:", name: "sendAlert", object: nil)
+        
         transitionManager.mainCollectionViewController = self
         
         let size = CGRectGetWidth(collectionView!.bounds) / 2
@@ -103,6 +105,12 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             self.collectionView?.reloadData()
             
         })
+    }
+    
+    func sendLoginAlert(notification: NSNotification) {
+        
+        Alert.session().successfulLoginAlert()
+    
     }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

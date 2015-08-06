@@ -12,6 +12,8 @@ class RedditViewController: UIViewController {
     
     @IBOutlet weak var redditWebView: UIWebView!
     
+    @IBOutlet weak var cancelWebViewButton: UIBarButtonItem!
+
     var url: NSURL?
 
     override func viewDidLoad() {
@@ -28,5 +30,11 @@ class RedditViewController: UIViewController {
         redditWebView.loadRequest(request)
         
     }
-
+    
+    @IBAction func cancelWebView(sender: AnyObject) {
+    
+        dismissViewControllerAnimated(true, completion: nil)
+        
+    }
+    
 }

@@ -15,14 +15,19 @@ class LoginViewController: UIViewController {
     
     ////////////////////MARK: Load
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        randomString = generateRandomString(20)
+    override func viewWillAppear(animated: Bool) {
         
         connectToRedditButton.hidden = true
         browseAnonButton.hidden = true
         returnButton.alpha = 0
+        
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        randomString = generateRandomString(20)
         
     }
     

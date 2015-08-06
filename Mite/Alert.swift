@@ -32,11 +32,16 @@ class Alert: UIAlertController {
     
     func successfulLoginAlert() {
         
-        let alert = UIAlertView()
-        alert.title = "mité"
-        alert.message = "Login successful."
-        alert.addButtonWithTitle("Dimiss")
-        alert.show()
+        var alert = UIAlertController(title: "mité", message: "Login successful.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Dimiss", style: UIAlertActionStyle.Default, handler: nil))
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0*Double(NSEC_PER_SEC)))
+        
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+            
+        }
         
     }
     
