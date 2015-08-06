@@ -79,6 +79,7 @@
                         HTTPRequest.session().token = accessToken
                         println("This is a token: " + "\(accessToken)")
                         
+                        self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
                     }
                     
                 })

@@ -83,9 +83,7 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
         super.prepareLayout()
         
         cache = []
-        
-        var touchLocation = self.collectionView?.panGestureRecognizer.locationInView(self.collectionView)
-    
+            
             let columnWidth = viewWidth / CGFloat(numberOfColumns)
             
             //creating array of the x & y of previous columns to generate the proper cell frame for new ones

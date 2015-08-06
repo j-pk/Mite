@@ -12,9 +12,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     var transitionManager = MenuTransitionManager()
     
-    var redditImagesDictionary = [String:UIImage]()
-    var redditImages = [UIImage]()
-    
     var searchRedditString = "r/art"
     
     var sourceIndexPath: NSIndexPath?
@@ -102,6 +99,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.updateImages(false)
             ImageRequest.session().redditData = []
+            ImageRequest.session().redditData.count == 0
             self.collectionView?.reloadData()
             
         })
@@ -127,8 +125,9 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
 
             let data = ImageRequest.session().redditData[indexPath.row]
             let photo = data.image
-            
+
             cell.mainImageView.image = photo
+            
         })
         
         return cell
@@ -147,7 +146,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     }
     
     func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat {
-        return 10
+        return 0
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -340,9 +339,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         
     }
     
-    // all ids including non images
-    var redditIds = [String]()
-    
     ////////////////////MARK: Update Images
     
     func updateImages(paginate: Bool) {
@@ -360,8 +356,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
         } else {
             
-            redditImages = []
-            
             collectionView?.reloadData()
             collectionView?.contentOffset = CGPoint(x: 0, y: -70)
             
@@ -371,16 +365,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.hitBottom = false
             
-            for image in images {
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    let imageLoad = image.image
-                    self.collectionView?.reloadData()
-                
-                })
-                    
-            }
+            self.collectionView?.reloadData()
             
         })
         

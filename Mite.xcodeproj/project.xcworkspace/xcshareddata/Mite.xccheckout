@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>D6D88F4E-DE68-4410-A070-6F67B1031419</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>Mite</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>1AF1353EBB5EA56277A2DAB55E0D935167045F53</key>
 		<string>https://github.com/j-pk/Mite.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Mite.xcodeproj/project.xcworkspace</string>
+	<string>Mite.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1AF1353EBB5EA56277A2DAB55E0D935167045F53</key>

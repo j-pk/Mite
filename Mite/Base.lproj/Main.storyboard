@@ -636,6 +636,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="connectButtonPressed:" destination="og0-mK-hM9" eventType="touchUpInside" id="fu6-Co-Wqg"/>
+                                    <segue destination="Zmh-0P-C9M" kind="presentation" identifier="redditWebView" id="sIb-kT-tke"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZF-5p-HLj" customClass="CustomButton" customModule="mite" customModuleProvider="target">
@@ -688,6 +689,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EB6-WQ-JbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1427" y="1926"/>
+        </scene>
+        <!--Reddit View Controller-->
+        <scene sceneID="e0k-Pg-dsm">
+            <objects>
+                <viewController id="Zmh-0P-C9M" customClass="RedditViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nVm-lU-C8a"/>
+                        <viewControllerLayoutGuide type="bottom" id="E09-WS-E7M"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gaO-rZ-TgG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView tag="70" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gMF-c3-Wlq">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gMF-c3-Wlq" firstAttribute="top" secondItem="nVm-lU-C8a" secondAttribute="bottom" id="cP9-Am-EJT"/>
+                            <constraint firstItem="gMF-c3-Wlq" firstAttribute="leading" secondItem="gaO-rZ-TgG" secondAttribute="leading" id="fpe-AK-j4n"/>
+                            <constraint firstItem="E09-WS-E7M" firstAttribute="top" secondItem="gMF-c3-Wlq" secondAttribute="bottom" id="lIF-cV-3de"/>
+                            <constraint firstAttribute="trailing" secondItem="gMF-c3-Wlq" secondAttribute="trailing" id="s8T-Ke-PtF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="redditWebView" destination="gMF-c3-Wlq" id="mnJ-yj-wrG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J2s-se-wvr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1427" y="2642"/>
         </scene>
     </scenes>
     <resources>
