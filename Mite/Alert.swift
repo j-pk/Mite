@@ -30,6 +30,16 @@ class Alert: UIAlertController {
         
     }
     
+    func successfulLoginAlert() {
+        
+        let alert = UIAlertView()
+        alert.title = "mité"
+        alert.message = "Login successful."
+        alert.addButtonWithTitle("Dimiss")
+        alert.show()
+        
+    }
+    
     func sendAlert() {
         
         var alert = UIAlertController(title: "mité", message: "Subreddit results returned empty.", preferredStyle: UIAlertControllerStyle.Alert)
