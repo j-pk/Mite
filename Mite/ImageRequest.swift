@@ -10,11 +10,14 @@ class ImageRequest: NSObject {
     
     class func session() -> ImageRequest { return _singleton }
     
-    var images: [String:[String:AnyObject]] = [:]
+    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, image:UIImage)
+    
+    var tempRedditData: (id:String, score:Int, title:String, url:String, image:UIImage) = (id:"", score:0 , title:"", url:"", image: UIImage.imageWithColor(UIColor.clearColor()))
+    var redditData: [redditDataTuple] = []
     var pageRedditAfter = ""
     var searchRedditString = ""
     
-    func jsonRequestForImages(url: String, completion: (images: [String:[String:AnyObject]]) -> ()) {
+    func jsonRequestForImages(url: String, completion: (images: [redditDataTuple]) -> ()) {
         
         ///REDDIT JSON
         
@@ -47,9 +50,76 @@ class ImageRequest: NSObject {
                             
                             if let data = result["data"] as? [String:AnyObject] {
                                 
-                                if let imageURL = data["url"] as? String, id = data["id"] as? String {
+                                if let preview = data["preview"] as? [String:AnyObject] {
                                     
-                                    self.images[id] = data
+                                    if let id = data["id"] as? String {
+
+                                        self.tempRedditData.id = id
+                                    
+                                    }
+                                    
+                                    if let score = data["score"] as? Int {
+   
+                                        self.tempRedditData.score = score
+                                        
+                                    }
+                                    
+                                    if let title = data["title"] as? String {
+                                        
+                                        self.tempRedditData.title = title
+
+                                    }
+                                    
+                                    if let url = data["url"] as? String {
+                                        
+                                        self.tempRedditData.url = url
+
+                                    }
+                                    
+                                    if let previewImages = preview["images"] as? NSArray {
+                                        
+                                        for resolution in previewImages {
+                                            
+                                            if let lowResolution = resolution["resolutions"] as? [[String:AnyObject]] {
+                                                
+                                                for width in lowResolution {
+
+                                                    if let lowResolutionWidth = width["width"] as? Int {
+                                                        
+                                                        if lowResolutionWidth == 320 {
+                                                            
+                                                            if let url = width["url"] as? String {
+                                                                
+                                                               var modifiedURL = url.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                                                                
+                                                                if let url = NSURL(string: modifiedURL) {
+                                                                    
+                                                                     if let imageData = NSData(contentsOfURL: url) {
+
+                                                                        if let image = UIImage(data: imageData) {
+                                                                            
+                                                                            self.tempRedditData.image = image
+                                                                            
+                                                                        }
+                                                                        
+                                                                    }
+                                                                
+                                                                }
+                                                            
+                                                            }
+                                                            
+                                                            self.redditData.append(self.tempRedditData)
+                                                        }
+                                                        
+                                                    }
+                                                
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                        
+                                    }
                                     
                                 }
                                 
@@ -59,7 +129,7 @@ class ImageRequest: NSObject {
 
                     }
                     
-                    completion(images: self.images)
+                    completion(images: self.redditData)
                     
                 }
                 

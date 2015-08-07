@@ -283,7 +283,7 @@
         <!--Menu View Controller-->
         <scene sceneID="YgC-Fs-cMd">
             <objects>
-                <viewController id="tQ1-sC-9f0" customClass="MenuViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="menuVC" id="tQ1-sC-9f0" customClass="MenuViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ji3-D0-NaY"/>
                         <viewControllerLayoutGuide type="bottom" id="UJE-KS-whp"/>
@@ -475,7 +475,7 @@
                                     <constraint firstAttribute="height" constant="40" id="PnT-Dc-1GJ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBz-de-ni5">
@@ -617,6 +617,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Connect to Reddit">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -630,11 +631,12 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="6"/>
+                                        <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="connectButtonPressed:" destination="og0-mK-hM9" eventType="touchUpInside" id="fu6-Co-Wqg"/>
+                                    <segue destination="Zmh-0P-C9M" kind="presentation" identifier="redditWebView" id="sIb-kT-tke"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZF-5p-HLj" customClass="CustomButton" customModule="mite" customModuleProvider="target">
@@ -644,6 +646,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Browse Anonymously">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -657,7 +660,7 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="6"/>
+                                        <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -686,6 +689,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EB6-WQ-JbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1427" y="1926"/>
+        </scene>
+        <!--Reddit View Controller-->
+        <scene sceneID="e0k-Pg-dsm">
+            <objects>
+                <viewController storyboardIdentifier="redditVC" id="Zmh-0P-C9M" customClass="RedditViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nVm-lU-C8a"/>
+                        <viewControllerLayoutGuide type="bottom" id="E09-WS-E7M"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gaO-rZ-TgG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView tag="70" contentMode="scaleAspectFit" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMF-c3-Wlq">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ht-el-8L3">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="w4Z-po-mSr"/>
+                                    <barButtonItem title="Login to Reddit" id="6P3-8L-N5X">
+                                        <color key="tintColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Nvo-fZ-ztJ"/>
+                                    <barButtonItem systemItem="stop" id="566-fa-HnC">
+                                        <color key="tintColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="cancelWebView:" destination="Zmh-0P-C9M" id="wg2-dj-Z23"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1ht-el-8L3" firstAttribute="top" secondItem="nVm-lU-C8a" secondAttribute="bottom" id="6nk-xY-rot"/>
+                            <constraint firstAttribute="trailing" secondItem="1ht-el-8L3" secondAttribute="trailing" id="A3q-vg-EvP"/>
+                            <constraint firstItem="gMF-c3-Wlq" firstAttribute="top" secondItem="1ht-el-8L3" secondAttribute="bottom" id="MnW-Wg-BHP"/>
+                            <constraint firstItem="1ht-el-8L3" firstAttribute="leading" secondItem="gaO-rZ-TgG" secondAttribute="leading" id="WFd-i0-rKl"/>
+                            <constraint firstItem="gMF-c3-Wlq" firstAttribute="top" secondItem="1ht-el-8L3" secondAttribute="bottom" id="fUf-z8-f37"/>
+                            <constraint firstItem="gMF-c3-Wlq" firstAttribute="leading" secondItem="gaO-rZ-TgG" secondAttribute="leading" id="fpe-AK-j4n"/>
+                            <constraint firstItem="E09-WS-E7M" firstAttribute="top" secondItem="gMF-c3-Wlq" secondAttribute="bottom" id="lIF-cV-3de"/>
+                            <constraint firstAttribute="trailing" secondItem="gMF-c3-Wlq" secondAttribute="trailing" id="s8T-Ke-PtF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelWebViewButton" destination="566-fa-HnC" id="cgq-5j-gOP"/>
+                        <outlet property="redditWebView" destination="gMF-c3-Wlq" id="mnJ-yj-wrG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J2s-se-wvr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1427" y="2642"/>
         </scene>
     </scenes>
     <resources>

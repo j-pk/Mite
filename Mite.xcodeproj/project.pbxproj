@@ -10,12 +10,15 @@
 		C01B46E01B67E45A0049C76C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C078E3E01B4CA5A900EB7176 /* Main.storyboard */; };
 		C02DC4FB1B56AC1C0067A4BA /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FA1B56AC1C0067A4BA /* Alert.swift */; };
 		C02DC4FD1B573E020067A4BA /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */; };
+		C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03971701B69815F00D7BB5C /* ImageExtension.swift */; };
+		C05BE02C1B6996DA00126C39 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C05BE02B1B6996DA00126C39 /* LaunchScreen.xib */; };
 		C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */; };
 		C071F5001B5AEA3200C33947 /* Menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = C071F4FF1B5AEA3200C33947 /* Menu.plist */; };
 		C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074E5591B53F01600C7C282 /* GradientView.swift */; };
 		C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078E3DC1B4CA5A900EB7176 /* AppDelegate.swift */; };
 		C078E3E41B4CA5A900EB7176 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C078E3E31B4CA5A900EB7176 /* Images.xcassets */; };
 		C078E3F31B4CA5A900EB7176 /* MiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078E3F21B4CA5A900EB7176 /* MiteTests.swift */; };
+		C08065071B7304F6008F802F /* RedditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08065061B7304F6008F802F /* RedditViewController.swift */; };
 		C083F2431B52DDC800C7384A /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2421B52DDC800C7384A /* CustomButton.swift */; };
 		C083F2451B52ECAE00C7384A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2441B52ECAE00C7384A /* LoginViewController.swift */; };
 		C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2461B52F55400C7384A /* CustomTextField.swift */; };
@@ -44,6 +47,8 @@
 /* Begin PBXFileReference section */
 		C02DC4FA1B56AC1C0067A4BA /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
+		C03971701B69815F00D7BB5C /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		C05BE02B1B6996DA00126C39 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefaults.swift; sourceTree = "<group>"; };
 		C071F4FF1B5AEA3200C33947 /* Menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Menu.plist; sourceTree = "<group>"; };
 		C074E5591B53F01600C7C282 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -52,10 +57,10 @@
 		C078E3DC1B4CA5A900EB7176 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C078E3E11B4CA5A900EB7176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C078E3E31B4CA5A900EB7176 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C078E3E61B4CA5A900EB7176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C078E3EC1B4CA5A900EB7176 /* MiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078E3F11B4CA5A900EB7176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C078E3F21B4CA5A900EB7176 /* MiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiteTests.swift; sourceTree = "<group>"; };
+		C08065061B7304F6008F802F /* RedditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditViewController.swift; sourceTree = "<group>"; };
 		C083F2421B52DDC800C7384A /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C083F2441B52ECAE00C7384A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C083F2461B52F55400C7384A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -129,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				C078E3DC1B4CA5A900EB7176 /* AppDelegate.swift */,
-				C078E3E51B4CA5A900EB7176 /* LaunchScreen.xib */,
+				C05BE02B1B6996DA00126C39 /* LaunchScreen.xib */,
 				C078E3DB1B4CA5A900EB7176 /* Info.plist */,
 				C071F4FF1B5AEA3200C33947 /* Menu.plist */,
 			);
@@ -176,6 +181,7 @@
 			children = (
 				C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */,
 				C083F2441B52ECAE00C7384A /* LoginViewController.swift */,
+				C08065061B7304F6008F802F /* RedditViewController.swift */,
 				C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */,
 			);
 			name = "Menu + Login";
@@ -197,6 +203,7 @@
 			children = (
 				C0AA9A4D1B4DCEB40088B09D /* AnimatedGIF.swift */,
 				C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */,
+				C03971701B69815F00D7BB5C /* ImageExtension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -276,6 +283,7 @@
 				TargetAttributes = {
 					C078E3D61B4CA5A900EB7176 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 5BJ626428V;
 					};
 					C078E3EB1B4CA5A900EB7176 = {
 						CreatedOnToolsVersion = 6.4;
@@ -307,6 +315,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05BE02C1B6996DA00126C39 /* LaunchScreen.xib in Resources */,
 				C01B46E01B67E45A0049C76C /* Main.storyboard in Resources */,
 				C071F5001B5AEA3200C33947 /* Menu.plist in Resources */,
 				C078E3E41B4CA5A900EB7176 /* Images.xcassets in Resources */,
@@ -327,7 +336,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08065071B7304F6008F802F /* RedditViewController.swift in Sources */,
 				C0BECEB11B4EA9F1004E7A9C /* TransitionManager.swift in Sources */,
+				C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */,
 				C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */,
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,
 				C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */,
@@ -373,14 +384,6 @@
 				C078E3E11B4CA5A900EB7176 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		C078E3E51B4CA5A900EB7176 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C078E3E61B4CA5A900EB7176 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -472,10 +475,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Mite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkerkirby.mite;
 				PRODUCT_NAME = mite;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -483,10 +489,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Mite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkerkirby.mite;
 				PRODUCT_NAME = mite;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
