@@ -11,7 +11,7 @@ let redditAPI = "https://www.reddit.com/"
 class MainCollectionViewController: UICollectionViewController, UIScrollViewDelegate, MainLayoutDelegate {
     
     var transitionManager = MenuTransitionManager()
-    
+        
     var searchRedditString = "r/art"
     
     var sourceIndexPath: NSIndexPath?

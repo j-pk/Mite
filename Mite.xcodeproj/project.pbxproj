@@ -32,6 +32,7 @@
 		C0BECEB71B4EB390004E7A9C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */; };
 		C0C4E5F51B5424120085CED3 /* HTTPRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C4E5F41B5424120085CED3 /* HTTPRequests.swift */; };
 		C0C4E5F81B546F910085CED3 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C4E5F71B546F910085CED3 /* ImageRequest.swift */; };
+		C0C70DEA1B7C33D500B74C40 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C70DE91B7C33D500B74C40 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		C0C4E5F41B5424120085CED3 /* HTTPRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HTTPRequests.swift; path = ../HTTPRequests.swift; sourceTree = "<group>"; };
 		C0C4E5F71B546F910085CED3 /* ImageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
+		C0C70DE91B7C33D500B74C40 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */,
 				C083F2441B52ECAE00C7384A /* LoginViewController.swift */,
 				C08065061B7304F6008F802F /* RedditViewController.swift */,
+				C0C70DE91B7C33D500B74C40 /* SettingsViewController.swift */,
 				C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */,
 			);
 			name = "Menu + Login";
@@ -338,6 +341,7 @@
 			files = (
 				C08065071B7304F6008F802F /* RedditViewController.swift in Sources */,
 				C0BECEB11B4EA9F1004E7A9C /* TransitionManager.swift in Sources */,
+				C0C70DEA1B7C33D500B74C40 /* SettingsViewController.swift in Sources */,
 				C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */,
 				C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */,
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,

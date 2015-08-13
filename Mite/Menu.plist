@@ -12,5 +12,7 @@
 	<string>itookapicture</string>
 	<key>buttonFiveDefault</key>
 	<string>art</string>
+	<key>nsfwFilterDefault</key>
+	<true/>
 </dict>
 </plist>

@@ -17,6 +17,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var customizeLabel: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
    
     var firstButton: String!
     var secondButton: String!

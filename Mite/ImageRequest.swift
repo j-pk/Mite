@@ -10,9 +10,9 @@ class ImageRequest: NSObject {
     
     class func session() -> ImageRequest { return _singleton }
     
-    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, image:UIImage)
+    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, nsfw:Bool, image:UIImage)
     
-    var tempRedditData: (id:String, score:Int, title:String, url:String, image:UIImage) = (id:"", score:0 , title:"", url:"", image: UIImage.imageWithColor(UIColor.clearColor()))
+    var tempRedditData: (id:String, score:Int, title:String, url:String, nsfw:Bool, image:UIImage) = (id:"", score:0 , title:"", url:"", nsfw:false, image: UIImage.imageWithColor(UIColor.clearColor()))
     var redditData: [redditDataTuple] = []
     var pageRedditAfter = ""
     var searchRedditString = ""
@@ -74,6 +74,14 @@ class ImageRequest: NSObject {
                                         
                                         self.tempRedditData.url = url
 
+                                    }
+                                    
+                                    if let url = data["over_18"] as? Bool {
+                                        
+                                        self.tempRedditData.nsfw = url
+                                        
+                                        if menuDefaults.boolForKey("nsfwFilterDefault") && url == true { return }
+                                        
                                     }
                                     
                                     if let previewImages = preview["images"] as? NSArray {

@@ -205,6 +205,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         menuViewController.cancelButton.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
         menuViewController.userNameLabel.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
         menuViewController.customizeLabel.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
+        //menuViewController.settingsButton.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
 
     }
     
@@ -223,6 +224,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         menuViewController.cancelButton.transform = CGAffineTransformIdentity
         menuViewController.userNameLabel.transform = CGAffineTransformIdentity
         menuViewController.customizeLabel.transform = CGAffineTransformIdentity
+        //menuViewController.settingsButton.transform = CGAffineTransformIdentity
         
     }
     

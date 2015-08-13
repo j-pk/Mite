@@ -14,7 +14,6 @@ private let buttonFiveKey = "FIVE"
 
 let menuDefaults = NSUserDefaults.standardUserDefaults()
 
-
 class MenuDefaults: NSObject {
     
     class func session() -> MenuDefaults { return _singleton }
