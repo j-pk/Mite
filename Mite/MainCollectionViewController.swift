@@ -88,7 +88,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         updateImages(false)
         
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -101,7 +101,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.updateImages(false)
             ImageRequest.session().redditData = []
-            ImageRequest.session().redditData.count == 0
+            self.collectionView?.setNeedsLayout()
             self.collectionView?.reloadData()
             
         })
@@ -135,6 +135,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             let photo = data.image
 
             cell.mainImageView.image = photo
+            
+            println("This is cell \(cell) | This is image \(photo) | This is image data count \(ImageRequest.session().redditData.count)")
             
         })
         

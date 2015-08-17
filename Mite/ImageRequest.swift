@@ -80,7 +80,7 @@ class ImageRequest: NSObject {
                                         
                                         self.tempRedditData.nsfw = url
                                         
-                                        if menuDefaults.boolForKey("nsfwFilterDefault") && url == true { return }
+                                        if menuDefaults.boolForKey("nsfwFilterDefault") && url == true { continue }
                                         
                                     }
                                     

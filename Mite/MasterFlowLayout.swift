@@ -40,9 +40,7 @@ class MainLayoutAttributes: UICollectionViewLayoutAttributes {
 
 class MasterFlowLayout: UICollectionViewFlowLayout {
     
-    private var dynamicAnimator: UIDynamicAnimator!
     private var visibleIndexPathSet: NSMutableSet!
-    private var latestDelta: CGFloat!
     
     var currentCellPath: NSIndexPath?
     var currentCellCenter: CGPoint?
