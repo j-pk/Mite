@@ -101,7 +101,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             
             self.updateImages(false)
             ImageRequest.session().redditData = []
-            self.collectionView?.setNeedsLayout()
             self.collectionView?.reloadData()
             
         })
@@ -135,8 +134,6 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
             let photo = data.image
 
             cell.mainImageView.image = photo
-            
-            println("This is cell \(cell) | This is image \(photo) | This is image data count \(ImageRequest.session().redditData.count)")
             
         })
         
@@ -463,18 +460,21 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         var scrollContentHeight = scrollView.contentSize.height
         var scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom
         
-        if scrollOffset <= -scrollView.contentInset.top {
+        if scrollOffset <= -scrollView.contentInset.top  {
             
             frame!.origin.y = 20
+            println("Something is happening \(scrollOffset) top \(-scrollView.contentInset.top)")
             
         } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
             
             frame!.origin.y = -size
+            println("Something else is happening \(scrollOffset)")
             
         } else {
             
             frame!.origin.y = min(20, max(-size, frame!.origin.y -
                 (frame!.size.height * (scrollDiff / scrollHeight))))
+            println("What is this? \(frame?.origin)")
             
         }
         
