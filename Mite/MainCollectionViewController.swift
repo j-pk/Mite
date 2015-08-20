@@ -128,11 +128,13 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         cell.backgroundColor = UIColor.clearColor()
         cell.upvoteButton.hidden = true
         cell.downvoteButton.hidden = true
-
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
-            let data = ImageRequest.session().redditData[indexPath.row]
-            let photo = data.image
+        let data = ImageRequest.session().redditData[indexPath.row]
+        
+        let photo = data.image
+
 
             cell.mainImageView.image = photo
             
