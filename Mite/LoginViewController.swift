@@ -41,7 +41,7 @@ class LoginViewController: UIViewController {
         self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
         self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
         
-        UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.2, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.2, options: [], animations: { () -> Void in
             
             self.connectToRedditButton.transform = CGAffineTransformIdentity
             self.browseAnonButton.transform = CGAffineTransformIdentity
@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
             randomString.appendFormat("%C", characters.characterAtIndex(Int(rand)))
             
         }
-        println(randomString)
+        print(randomString)
         return randomString
     }
     
@@ -121,7 +121,7 @@ class LoginViewController: UIViewController {
                 
                 redditVC.url = urlToSend
                 
-                println(urlToSend)
+                print(urlToSend)
                 
             }
             

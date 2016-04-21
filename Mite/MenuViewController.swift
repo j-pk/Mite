@@ -134,10 +134,10 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         
         var improperSearchString = subredditSearch.text
-        let properSearchStringParts = improperSearchString.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
-        let properSearchString = NSArray(array: properSearchStringParts).componentsJoinedByString("")
+        let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+        let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
         
-        if properSearchString.isEmpty || count(properSearchString) <= 1 {
+        if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
             
             var emptyAlert = UIAlertController(title: "mité", message: "Invalid seach parameters.", preferredStyle: UIAlertControllerStyle.ActionSheet)
             
@@ -215,7 +215,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         } else {
             
-            if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("loginVC") as? UIViewController {
+            if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("loginVC") {
                                 
                 self.presentViewController(loginVC, animated: false, completion: nil)
                 
@@ -247,10 +247,10 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                 let pressedButton = gesture.view as! UIButton
                 
                 var improperSearchString = alertTextField.text
-                let properSearchStringParts = improperSearchString.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
-                let properSearchString = NSArray(array: properSearchStringParts).componentsJoinedByString("")
+                let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
                 
-                if properSearchString.isEmpty || count(alertTextField.text) <= 1 {
+                if properSearchString.isEmpty || alertTextField.text?.characters.count <= 1 {
                     
                     var emptyAlert = UIAlertController(title: "mité", message: "Please put in a valid subreddit.", preferredStyle: UIAlertControllerStyle.ActionSheet)
                     

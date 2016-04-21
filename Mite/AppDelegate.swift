@@ -14,7 +14,7 @@
         if let defaultPreferencePlistPath = NSBundle.mainBundle().pathForResource("Menu", ofType: "plist") {
             if let defaultPreference = NSDictionary(contentsOfFile: defaultPreferencePlistPath) {
                 
-                menuDefaults.registerDefaults(defaultPreference as [NSObject : AnyObject])
+                menuDefaults.registerDefaults(defaultPreference as! [String : AnyObject])
                 menuDefaults.setObject(defaultPreference, forKey: "defaults")
                 
                 if let buttonOne = defaultPreference["buttonOneDefault"] as? String {
@@ -29,8 +29,8 @@
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         
-        println(url.scheme)
-        println(url)
+        print(url.scheme)
+        print(url)
         
         if url.scheme == "miteapp" {
             
@@ -40,14 +40,14 @@
             
             if let code = getTheCode?[0].stringByReplacingOccurrencesOfString("code=", withString: "") {
                 
-                println(code)
+                print(code)
                 
                 let redditTokenRequestEndpoint = "https://www.reddit.com/api/v1/access_token"
                 let request = NSMutableURLRequest(URL: NSURL(string: redditTokenRequestEndpoint)!)
                 
                 request.HTTPMethod = "POST"
                 let redditPostRequestWithToken = NSString(format: "grant_type=authorization_code&code=\(code)&redirect_uri=miteApp://miteApp.com")
-                println(redditPostRequestWithToken)
+                print(redditPostRequestWithToken)
                 
                 request.HTTPBody = redditPostRequestWithToken.dataUsingEncoding(NSUTF8StringEncoding)
     
@@ -56,33 +56,36 @@
                 let loginString = NSString(format: "%@:%@", username, password)
                 if let loginData = loginString.dataUsingEncoding(NSUTF8StringEncoding)  {
                     
-                    let base64LoginString = loginData.base64EncodedStringWithOptions(nil)
+                    let base64LoginString = loginData.base64EncodedStringWithOptions([])
                     request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
                     
                 }
                 
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.currentQueue(), completionHandler: { (response, data, error) -> Void in
-                    
-                    if error != nil {
-                        println("error=\(error)")
-                        return
-                    }
-                    
+                let session = NSURLSession.sharedSession()
+                
+                session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+                    guard let data = data else { return }
                     let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("responseString = \(responseString)")
+                    print("responseString = \(responseString)")
                     
-                    let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary
-                    
-                    if let accessToken = jsonResult?["access_token"] as? String {
+                    do {
+                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
                         
-                        HTTPRequest.session().token = accessToken
-                        println("This is a token: " + "\(accessToken)")
-                        
-                        self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
-                        NSNotificationCenter.defaultCenter().postNotificationName("sendAlert", object: nil)
+                        if let accessToken = jsonResult?["access_token"] as? String {
+                            
+                            HTTPRequest.session().token = accessToken
+                            print("This is a token: " + "\(accessToken)")
+                            
+                            self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName("sendAlert", object: nil)
+                        }
+                    } catch let e as NSError {
+                        print(e)
+                    } catch {
+                        print(error)
                     }
-                    
-                })
+                
+            }).resume()
                 
             }
             

@@ -119,7 +119,7 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
         
         }
     
-        override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
         var layoutAttributes = [UICollectionViewLayoutAttributes]()
         

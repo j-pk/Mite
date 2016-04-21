@@ -4,7 +4,7 @@
 
 import UIKit
 
-class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIViewControllerInteractiveTransitioning  {
+class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate  {
     
     // MARK: UIViewControllerAnimatedTransitioning protocol methods
     private var presenting = false
@@ -130,12 +130,12 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
             
         }
         
-        container.addSubview(menuView)
-        container.addSubview(mainView)
+        container?.addSubview(menuView)
+        container?.addSubview(mainView)
         
         let duration = self.transitionDuration(transitionContext)
         
-        UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: nil, animations: {
+        UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             
             if self.presenting {
                 self.onStageMenuController(menuViewController) // onstage items: slide in
@@ -164,7 +164,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
                 newView.userInteractionEnabled = !self.presenting
                 
                 for view in newView.subviews as! [UIView] {
-                    println(view)
+                    print(view)
                 }
                 
             } else {
@@ -226,7 +226,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         
         return 0.5
     }

@@ -8,7 +8,7 @@ import AVFoundation
 let reuseIdentifier = "mainCell"
 let redditAPI = "https://www.reddit.com/"
 
-class MainCollectionViewController: UICollectionViewController, UIScrollViewDelegate, MainLayoutDelegate {
+class MainCollectionViewController: UICollectionViewController, MainLayoutDelegate {
     
     var transitionManager = MenuTransitionManager()
     
@@ -59,10 +59,10 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        println(HTTPRequest.session().token)
+        print(HTTPRequest.session().token)
         HTTPRequest.session().getUserIdentity { () -> Void in
             
-            println("Identity")
+            print("Identity")
             
         }
         
@@ -86,6 +86,8 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         collectionView?.addGestureRecognizer(longPressGestureRecognizer)
         
         updateImages(false)
+        
+        //navigationController?.hidesBarsOnSwipe = true
         
     }
     
@@ -237,21 +239,21 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                         let idName = id.id
                         
                         // upvote
-                        println("You're going up")
+                        print("You're going up")
                         cell.pressingUp = true
                         cell.pressingDown = false
                         
                     } else if distanceY < -20 {
                         
                         // downvote
-                        println("You're going down")
+                        print("You're going down")
                         cell.pressingDown = true
                         cell.pressingUp = false
                         
                     } else {
                         
                         // pan more
-                        println("Keep going")
+                        print("Keep going")
                         
                         
                     }
@@ -274,32 +276,32 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
                     if distanceY > 20 {
                         
                         // upvote
-                        println("You're going up")
+                        print("You're going up")
                         cell.pressingUp = true
                         cell.pressingDown = false
                         
                         HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
                         
-                        println("upvote")
+                        print("upvote")
                         
                         })
                         
                     } else if distanceY < -20 {
                         
                         // downvote
-                        println("You're going down")
+                        print("You're going down")
                         cell.pressingDown = true
                         cell.pressingUp = false
                         
                         HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
                         
-                        println("downvote")
+                        print("downvote")
                         
                         })
                         
                     } else {
                         
-                        println("keep going")
+                        print("keep going")
                     }
                     
                     cell.upvoteButton.hidden = true
@@ -387,7 +389,7 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
         
         if (segue.identifier == "imageVC") {
             
-            if let indexPath = collectionView!.indexPathsForSelectedItems().first as? NSIndexPath {
+            if let indexPath = collectionView!.indexPathsForSelectedItems()!.first {
                 
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
@@ -450,121 +452,121 @@ class MainCollectionViewController: UICollectionViewController, UIScrollViewDele
     
     ////////////////////MARK: NavigationBar
     
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        var previousScrollViewYOffset: CGFloat = 0.0
-        
-        var frame = self.navigationController?.navigationBar.frame
-        var size = frame!.size.height - 21
-        var framePercentageHidden = ((20 - frame!.origin.y) / (frame!.size.height - 1))
-        var scrollOffset = scrollView.contentOffset.y
-        var scrollDiff = scrollOffset - previousScrollViewYOffset
-        var scrollHeight = scrollView.frame.size.height
-        var scrollContentHeight = scrollView.contentSize.height
-        var scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom
-        
-        if scrollOffset <= -scrollView.contentInset.top {
-            
-            frame!.origin.y = 20
-            
-        } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
-            
-            frame!.origin.y = -size
-            
-        } else {
-            
-            frame!.origin.y = min(20, max(-size, frame!.origin.y -
-                (frame!.size.height * (scrollDiff / scrollHeight))))
-            
-        }
-        
-        self.navigationController?.navigationBar.frame = frame!
-        updateBarButtonItems(1 - framePercentageHidden)
-        previousScrollViewYOffset = scrollOffset
-        
-    }
-    
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        
-        stoppedScrolling()
-        
-    }
-    
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-        if (!decelerate) {
-            
-            stoppedScrolling()
-        }
-        
-        
-        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
-            
-            if hitBottom { return }
-            
-            println("You're at the bottom, request")
-            
-            hitBottom = true
-            
-            updateImages(true)
-            
-            // run request and in completion block ... hitBottom = false
-            
-        }
-        
-    }
-    
-    func stoppedScrolling() {
-        
-        var frame = navigationController?.navigationBar.frame
-        if frame?.origin.y < 20 {
-            
-            animateNavBarTo(-(frame!.size.height - 21))
-        }
-        
-    }
-    
-    func updateBarButtonItems(alpha:CGFloat){
-        if let left = navigationItem.leftBarButtonItems {
-            for item:UIBarButtonItem in left as! [UIBarButtonItem] {
-                if let view = item.customView {
-                    view.alpha = alpha
-                }
-            }
-        }
-        
-        if let right = navigationItem.rightBarButtonItems {
-            for item:UIBarButtonItem in  right as! [UIBarButtonItem]{
-                if let view = item.customView {
-                    view.alpha = alpha
-                }
-            }
-        }
-        
-        //hides title
-        navigationItem.titleView?.alpha = alpha
-        let black = UIColor.blackColor()
-        let semi = black.colorWithAlphaComponent(alpha)
-        var nav = self.navigationController?.navigationBar
-        nav?.titleTextAttributes = [NSForegroundColorAttributeName: semi]
-        navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.colorWithAlphaComponent(alpha)
-        
-    }
-    
-    func animateNavBarTo(y: CGFloat) {
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            
-            var frame = self.navigationController?.navigationBar.frame
-            let alpha: CGFloat = (frame!.origin.y >= y ? 0 : 1)
-            frame!.origin.y = y
-            self.navigationController?.navigationBar.frame = frame!
-            self.updateBarButtonItems(alpha)
-            
-        })
-        
-    }
-    
+//    override func scrollViewDidScroll(scrollView: UIScrollView) {
+//        
+//        var previousScrollViewYOffset: CGFloat = 0.0
+//        
+//        var frame = self.navigationController?.navigationBar.frame
+//        var size = frame!.size.height - 21
+//        var framePercentageHidden = ((20 - frame!.origin.y) / (frame!.size.height - 1))
+//        var scrollOffset = scrollView.contentOffset.y
+//        var scrollDiff = scrollOffset - previousScrollViewYOffset
+//        var scrollHeight = scrollView.frame.size.height
+//        var scrollContentHeight = scrollView.contentSize.height
+//        var scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom
+//        
+//        if -scrollOffset <= scrollView.contentInset.top {
+//            
+//            frame!.origin.y = 20
+//            
+//        } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
+//            
+//            frame!.origin.y = -size
+//            
+//        } else {
+//            
+//            frame!.origin.y = min(20, max(-size, frame!.origin.y -
+//                (frame!.size.height * (scrollDiff / scrollHeight))))
+//            
+//        }
+//        
+//        self.navigationController?.navigationBar.frame = frame!
+//        updateBarButtonItems(1 - framePercentageHidden)
+//        previousScrollViewYOffset = scrollOffset
+//        
+//    }
+//    
+//    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        
+//        stoppedScrolling()
+//        
+//    }
+//    
+//    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        
+//        if (!decelerate) {
+//            
+//            stoppedScrolling()
+//        }
+//        
+//        
+//        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+//            
+//            if hitBottom { return }
+//            
+//            println("You're at the bottom, request")
+//            
+//            hitBottom = true
+//            
+//            updateImages(true)
+//            
+//            // run request and in completion block ... hitBottom = false
+//            
+//        }
+//        
+//    }
+//    
+//    func stoppedScrolling() {
+//        
+//        var frame = navigationController?.navigationBar.frame
+//        if frame?.origin.y < 20 {
+//            
+//            animateNavBarTo(-(frame!.size.height - 21))
+//        }
+//        
+//    }
+//    
+//    func updateBarButtonItems(alpha:CGFloat){
+//        if let left = navigationItem.leftBarButtonItems {
+//            for item:UIBarButtonItem in left as! [UIBarButtonItem] {
+//                if let view = item.customView {
+//                    view.alpha = alpha
+//                }
+//            }
+//        }
+//        
+//        if let right = navigationItem.rightBarButtonItems {
+//            for item:UIBarButtonItem in  right as! [UIBarButtonItem]{
+//                if let view = item.customView {
+//                    view.alpha = alpha
+//                }
+//            }
+//        }
+//        
+//        //hides title
+//        navigationItem.titleView?.alpha = alpha
+//        let black = UIColor.blackColor()
+//        let semi = black.colorWithAlphaComponent(alpha)
+//        var nav = self.navigationController?.navigationBar
+//        nav?.titleTextAttributes = [NSForegroundColorAttributeName: semi]
+//        navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.colorWithAlphaComponent(alpha)
+//        
+//    }
+//    
+//    func animateNavBarTo(y: CGFloat) {
+//        
+//        UIView.animateWithDuration(0.2, animations: { () -> Void in
+//            
+//            var frame = self.navigationController?.navigationBar.frame
+//            let alpha: CGFloat = (frame!.origin.y >= y ? 0 : 1)
+//            frame!.origin.y = y
+//            self.navigationController?.navigationBar.frame = frame!
+//            self.updateBarButtonItems(alpha)
+//            
+//        })
+//        
+//    }
+//    
 }
 
 

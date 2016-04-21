@@ -25,91 +25,98 @@ class ImageRequest: NSObject {
             
             let request = NSURLRequest(URL: url)
             
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+            let session = NSURLSession.sharedSession()
+            
+            session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+                guard let data = data else { return }
                 
-                if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
+                do {
                     
-                    if let pageAfter = jsonResult["data"] as? NSDictionary {
+                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
                         
-                        if let after = pageAfter["after"] as? String {
+                        if let pageAfter = jsonResult["data"] as? NSDictionary {
                             
-                            self.pageRedditAfter = after
-                            
-                        }
-                        
-                    }
-                    
-                    if let results = jsonResult["data"]!["children"] as? NSArray {
-                        
-                        if results.count == 0 {
-                            
-                            Alert.session().sendAlert()
-                        }
-                        
-                        for result in results {
-                            
-                            
-                            if let data = result["data"] as? [String:AnyObject] {
+                            if let after = pageAfter["after"] as? String {
                                 
-                                if let preview = data["preview"] as? [String:AnyObject] {
+                                self.pageRedditAfter = after
+                                
+                            }
+                            
+                        }
+                        
+                        if let results = jsonResult["data"]!["children"] as? NSArray {
+                            
+                            if results.count == 0 {
+                                
+                                Alert.session().sendAlert()
+                            }
+                            
+                            for result in results {
+                                
+                                
+                                if let data = result["data"] as? [String:AnyObject] {
                                     
-                                    if let id = data["id"] as? String {
+                                    if let preview = data["preview"] as? [String:AnyObject] {
                                         
-                                        self.tempRedditData.id = id
-                                        
-                                    }
-                                    
-                                    if let score = data["score"] as? Int {
-                                        
-                                        self.tempRedditData.score = score
-                                        
-                                    }
-                                    
-                                    if let title = data["title"] as? String {
-                                        
-                                        self.tempRedditData.title = title
-                                        
-                                    }
-                                    
-                                    if let url = data["url"] as? String {
-                                        
-                                        self.tempRedditData.url = url
-                                        
-                                    }
-                                    
-                                    if let previewImages = preview["images"] as? NSArray {
-                                        
-                                        for resolution in previewImages {
+                                        if let id = data["id"] as? String {
                                             
-                                            if let lowResolution = resolution["resolutions"] as? [[String:AnyObject]] {
+                                            self.tempRedditData.id = id
+                                            
+                                        }
+                                        
+                                        if let score = data["score"] as? Int {
+                                            
+                                            self.tempRedditData.score = score
+                                            
+                                        }
+                                        
+                                        if let title = data["title"] as? String {
+                                            
+                                            self.tempRedditData.title = title
+                                            
+                                        }
+                                        
+                                        if let url = data["url"] as? String {
+                                            
+                                            self.tempRedditData.url = url
+                                            
+                                        }
+                                        
+                                        if let previewImages = preview["images"] as? NSArray {
+                                            
+                                            for resolution in previewImages {
                                                 
-                                                for width in lowResolution {
+                                                if let lowResolution = resolution["resolutions"] as? [[String:AnyObject]] {
                                                     
-                                                    if let lowResolutionWidth = width["width"] as? Int {
+                                                    for width in lowResolution {
                                                         
-                                                        if lowResolutionWidth == 320 {
+                                                        if let lowResolutionWidth = width["width"] as? Int {
                                                             
-                                                            if let url = width["url"] as? String {
+                                                            if lowResolutionWidth == 320 {
                                                                 
-                                                                var modifiedURL = url.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                                                                
-                                                                if let url = NSURL(string: modifiedURL) {
+                                                                if let url = width["url"] as? String {
                                                                     
-                                                                    if let imageData = NSData(contentsOfURL: url) {
+                                                                    let modifiedURL = url.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                                                                    
+                                                                    if let url = NSURL(string: modifiedURL) {
                                                                         
-                                                                        if let image = UIImage(data: imageData) {
+                                                                        if let imageData = NSData(contentsOfURL: url) {
                                                                             
-                                                                            self.tempRedditData.image = image
+                                                                            if let image = UIImage(data: imageData) {
+                                                                                
+                                                                                self.tempRedditData.image = image
+                                                                            }
+                                                                            
                                                                         }
                                                                         
                                                                     }
                                                                     
+                                                                    
                                                                 }
                                                                 
-                                                                
+                                                                self.redditData.append(self.tempRedditData)
                                                             }
                                                             
-                                                            self.redditData.append(self.tempRedditData)
                                                         }
                                                         
                                                     }
@@ -128,21 +135,23 @@ class ImageRequest: NSObject {
                             
                         }
                         
+                        completion(images: self.redditData)
+                        
                     }
                     
-                    completion(images: self.redditData)
+                    if error != nil {
+                        print("error= \(error)")
+                        return
+                    }
                     
+                } catch let e as NSError {
+                    print(e)
+                } catch {
+                    print(error)
                 }
                 
-                if error != nil {
-                    println("error= \(error)")
-                    return
-                }
-                
-            }
+            }).resume()
             
         }
-        
     }
-    
 }

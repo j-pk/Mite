@@ -53,7 +53,7 @@ class HTTPRequest: NSObject {
         
         requestWithInfo(info, andCompletion: { (responseInfo) -> Void in
             
-            println("This is a Identity info + \(responseInfo)")
+            print("This is a Identity info + \(responseInfo)")
             
             if let redditIdentity = responseInfo as? [String:AnyObject] {
                 
@@ -99,7 +99,7 @@ class HTTPRequest: NSObject {
             
             requestWithInfo(info, andCompletion: { (responseInfo) -> Void in
                 
-                println("This is a Vote info + \(responseInfo)")
+                print("This is a Vote info + \(responseInfo)")
                 
             })
             
@@ -166,14 +166,18 @@ class HTTPRequest: NSObject {
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
 
                 //dictionary that comes back
-                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as? [String:AnyObject] {
+                guard let data = data else { return }
+                do {
+                    if let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject] {
                     
                     //safe optional in case no data comes back
                     //responseInfo completion block is a function being run above
                     completion?(responseInfo: json)
                     
+                    }
+                } catch let e as NSError {
+                    print(e)
                 }
-                
             })
             
         }

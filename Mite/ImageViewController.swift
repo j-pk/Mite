@@ -37,7 +37,7 @@ class ImageViewController: UIViewController {
         
         self.detailImageView.center = CGPointMake(self.cell.center.x, self.cell.center.y + self.cellYOffset)
         
-        UIView.transitionWithView(detailImageView, duration:0.4, options: nil,
+        UIView.transitionWithView(detailImageView, duration:0.4, options: [],
             animations: {
                 
                 self.detailImageView.center = self.backgroundImageView.center
@@ -82,7 +82,7 @@ class ImageViewController: UIViewController {
             
             titleTextView.text = detailTitle
             
-            println(detailTitle)
+            print(detailTitle)
             
             let size = titleTextView.sizeThatFits(CGSize(width: view.frame.width - 40, height: 500))
             titleHeight.constant = size.height
@@ -117,7 +117,7 @@ class ImageViewController: UIViewController {
         
         dispatch_once(&once, { () -> Void in
             
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: nil, animations: { () -> Void in
+            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: [], animations: { () -> Void in
                 
                 var velocity = sender.velocityInView(self.detailImageView)
                 var imagePushInstant = UIPushBehavior(items: [self.detailImageView], mode: UIPushBehaviorMode.Instantaneous)
@@ -149,7 +149,7 @@ class ImageViewController: UIViewController {
     
     func handleTap(sender: UITapGestureRecognizer) {
         
-        UIView.animateWithDuration(0.4, delay: 0.0, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(0.4, delay: 0.0, options: [], animations: { () -> Void in
             
             let scale = self.cell.frame.width / self.detailImageView.frame.width
             
@@ -196,10 +196,10 @@ class ImageViewController: UIViewController {
             
             HTTPRequest.session().upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
                 
-                println("upvote")
+                print("upvote")
                 self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
                 self.pressedUp = true
-                println("This should be true UP \(self.pressedUp)")
+                print("This should be true UP \(self.pressedUp)")
                 
             })
             
@@ -211,7 +211,7 @@ class ImageViewController: UIViewController {
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
                     self.pressedUp = false
                     self.pressedDown = false
-                    println("This should be false UP \(self.pressedUp)")
+                    print("This should be false UP \(self.pressedUp)")
                     
                 })
             
@@ -229,10 +229,10 @@ class ImageViewController: UIViewController {
             
             HTTPRequest.session().upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
                 
-                println("downvote")
+                print("downvote")
                 self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
                 self.pressedDown = true
-                println("This should be true DOWN \(self.pressedDown)")
+                print("This should be true DOWN \(self.pressedDown)")
                 
             })
             
@@ -244,7 +244,7 @@ class ImageViewController: UIViewController {
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
                     self.pressedDown = false
                     self.pressedUp = false
-                    println("This should be false DOWN \(self.pressedDown)")
+                    print("This should be false DOWN \(self.pressedDown)")
                     
                 })
                 
