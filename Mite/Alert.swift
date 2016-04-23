@@ -32,7 +32,7 @@ class Alert: UIAlertController {
     
     func successfulLoginAlert() {
         
-        var alert = UIAlertController(title: "mité", message: "Login successful.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "mité", message: "Login successful.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Dimiss", style: UIAlertActionStyle.Default, handler: nil))
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0*Double(NSEC_PER_SEC)))
@@ -47,7 +47,7 @@ class Alert: UIAlertController {
     
     func sendAlert() {
         
-        var alert = UIAlertController(title: "mité", message: "Subreddit results returned empty.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "mité", message: "Subreddit results returned empty.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Dimiss", style: UIAlertActionStyle.Default, handler: nil))
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0*Double(NSEC_PER_SEC)))

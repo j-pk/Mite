@@ -36,8 +36,8 @@ class LoginViewController: UIViewController {
         connectToRedditButton.hidden = false
         browseAnonButton.hidden = false
         
-        var offSet = view.frame.height * -1
-        var bottomOffset = view.frame.height
+        let offSet = view.frame.height * -1
+        let bottomOffset = view.frame.height
         self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
         self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
         
@@ -70,8 +70,8 @@ class LoginViewController: UIViewController {
         
         UIView.animateWithDuration(0.6, animations: { () -> Void in
             
-            var offSet = self.view.frame.height * -1
-            var bottomOffset = self.view.frame.height
+            let offSet = self.view.frame.height * -1
+            let bottomOffset = self.view.frame.height
             
             self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
             self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
@@ -100,14 +100,13 @@ class LoginViewController: UIViewController {
         
         let characters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
-        var randomString = NSMutableString(capacity: length)
+        let randomString = NSMutableString(capacity: length)
         
-        for (var i = 0; i <= 20; i++) {
-            
-            var len = UInt32 (characters.length)
-            var rand = arc4random_uniform(len)
+        for _ in 0..<20 {
+            let len = UInt32 (characters.length)
+            let rand = arc4random_uniform(len)
             randomString.appendFormat("%C", characters.characterAtIndex(Int(rand)))
-            
+
         }
         print(randomString)
         return randomString

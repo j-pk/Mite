@@ -114,7 +114,6 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
                 contentHeight = max(contentHeight, CGRectGetMaxY(frame))
                 yOffsets[column] = yOffsets[column] + height
                 column = column >= (numberOfColumns - 1) ? 0 : ++column
-              
             }
         
         }

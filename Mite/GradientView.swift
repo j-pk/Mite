@@ -14,7 +14,7 @@ import UIKit
     
     override func drawRect(rect: CGRect) {
         
-        var gradientLayer = CAGradientLayer()
+        let gradientLayer = CAGradientLayer()
         gradientLayer.frame = layer.bounds
         gradientLayer.locations = [0.0, 1.0]
         gradientLayer.startPoint = startPoint

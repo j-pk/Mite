@@ -50,7 +50,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
-        if let firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String {
+        if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
             
@@ -58,7 +58,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
         }
         
-        if let secondButton = menuDefaults.objectForKey("buttonTwoDefault") as? String {
+        if (menuDefaults.objectForKey("buttonTwoDefault") as? String) != nil {
             
             self.secondButton = menuDefaults.objectForKey("buttonTwoDefault") as? String
             
@@ -66,7 +66,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
-        if let thirdButton = menuDefaults.objectForKey("buttonThreeDefault") as? String {
+        if (menuDefaults.objectForKey("buttonThreeDefault") as? String) != nil {
             
             self.thirdButton = menuDefaults.objectForKey("buttonThreeDefault") as? String
             
@@ -74,7 +74,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
-        if let fourthButton = menuDefaults.objectForKey("buttonFourDefault") as? String {
+        if (menuDefaults.objectForKey("buttonFourDefault") as? String) != nil {
             
             self.fourthButton = menuDefaults.objectForKey("buttonFourDefault") as? String
             
@@ -82,7 +82,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
-        if let fifthButton = menuDefaults.objectForKey("buttonFiveDefault") as? String {
+        if (menuDefaults.objectForKey("buttonFiveDefault") as? String) != nil {
             
             self.fifthButton = menuDefaults.objectForKey("buttonFiveDefault") as? String
             
@@ -95,7 +95,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapper = UITapGestureRecognizer(target: self.view, action:Selector("endEditing:"))
+        let tapper = UITapGestureRecognizer(target: self.view, action:#selector(UIView.endEditing))
         tapper.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapper)
         
@@ -103,7 +103,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         
         for button in arrayOfButtons {
             
-            var longPress = UILongPressGestureRecognizer(target: self, action: "longPress:")
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
             button.addGestureRecognizer(longPress)
             longPress.minimumPressDuration = 0.2
             longPress.delegate = self
@@ -133,13 +133,13 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         
-        var improperSearchString = subredditSearch.text
+        let improperSearchString = subredditSearch.text
         let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
         let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
         
         if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
             
-            var emptyAlert = UIAlertController(title: "mité", message: "Invalid seach parameters.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let emptyAlert = UIAlertController(title: "mité", message: "Invalid seach parameters.", preferredStyle: UIAlertControllerStyle.ActionSheet)
             
             emptyAlert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 
@@ -235,24 +235,24 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         
         if gesture.state == .Ended {
         
-            var alert = UIAlertController(title: "mité", message: "Change current subreddit.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "mité", message: "Change current subreddit.", preferredStyle: UIAlertControllerStyle.Alert)
             
             alert.addTextFieldWithConfigurationHandler(newSubredditNameTextField)
             
             alert.addAction(UIAlertAction(title: "Dimiss", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Change", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 
-                let alertTextField = alert.textFields![0] as! UITextField
+                let alertTextField = alert.textFields![0] 
                 
                 let pressedButton = gesture.view as! UIButton
                 
-                var improperSearchString = alertTextField.text
+                let improperSearchString = alertTextField.text
                 let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
                 let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
                 
                 if properSearchString.isEmpty || alertTextField.text?.characters.count <= 1 {
                     
-                    var emptyAlert = UIAlertController(title: "mité", message: "Please put in a valid subreddit.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    let emptyAlert = UIAlertController(title: "mité", message: "Please put in a valid subreddit.", preferredStyle: UIAlertControllerStyle.ActionSheet)
                     
                     emptyAlert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                         

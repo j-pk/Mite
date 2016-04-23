@@ -58,10 +58,9 @@ class ImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let pan = UIPanGestureRecognizer(target: self, action: "handlePan:")
-        let tap = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let doubleTap = UITapGestureRecognizer(target: self, action: "handleDoubleTap:")
-        let pinchGesture = UIPinchGestureRecognizer(target: self, action: "resizeImage:")
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeImage))
                 
         //listens for gesture
         view.addGestureRecognizer(pinchGesture)
@@ -119,8 +118,8 @@ class ImageViewController: UIViewController {
             
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: [], animations: { () -> Void in
                 
-                var velocity = sender.velocityInView(self.detailImageView)
-                var imagePushInstant = UIPushBehavior(items: [self.detailImageView], mode: UIPushBehaviorMode.Instantaneous)
+                let velocity = sender.velocityInView(self.detailImageView)
+                let imagePushInstant = UIPushBehavior(items: [self.detailImageView], mode: UIPushBehaviorMode.Instantaneous)
                 imagePushInstant.pushDirection = CGVectorMake(velocity.x * 0.7, velocity.y * 0.7)
                 imagePushInstant.setTargetOffsetFromCenter(UIOffsetMake(-400, 400), forItem: self.detailImageView)
                 imagePushInstant.active = true
@@ -176,9 +175,9 @@ class ImageViewController: UIViewController {
         
         if scale.state == .Ended || scale.state == .Changed {
             
-            var currentScale = detailImageView.frame.size.width / detailImageView.bounds.size.width
-            var newScale = currentScale * scale.scale
-            var transform = CGAffineTransformMakeScale(newScale, newScale);
+            let currentScale = detailImageView.frame.size.width / detailImageView.bounds.size.width
+            let newScale = currentScale * scale.scale
+            let transform = CGAffineTransformMakeScale(newScale, newScale);
             detailImageView.transform = transform
             scale.scale = 1
             

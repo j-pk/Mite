@@ -18,7 +18,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         didSet {
             
             enterPanGesture = UIScreenEdgePanGestureRecognizer()
-            enterPanGesture.addTarget(self, action: "handleOnstagePan:")
+            enterPanGesture.addTarget(self, action: #selector(self.handleOnstagePan))
             enterPanGesture.edges = UIRectEdge.Left
             self.mainCollectionViewController.view.addGestureRecognizer(enterPanGesture)
 
@@ -67,7 +67,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         
         didSet {
             exitPanGesture = UIPanGestureRecognizer()
-            exitPanGesture.addTarget(self, action: "handleOffstagePan:")
+            exitPanGesture.addTarget(self, action: #selector(self.handleOffstagePan))
             self.menuViewController.view.addGestureRecognizer(exitPanGesture)
         }
         
@@ -140,9 +140,9 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
             if self.presenting {
                 self.onStageMenuController(menuViewController) // onstage items: slide in
                
-                var mainRemains = mainView.frame.width / 1.10
-                var shiftRightOffset = CGAffineTransformMakeTranslation(mainRemains, 0)
-                var shiftAndShrink = CGAffineTransformMakeScale(0.75, 0.75)
+                let mainRemains = mainView.frame.width / 1.10
+                let shiftRightOffset = CGAffineTransformMakeTranslation(mainRemains, 0)
+                let shiftAndShrink = CGAffineTransformMakeScale(0.75, 0.75)
                 mainView.transform = CGAffineTransformConcat(shiftRightOffset, shiftAndShrink)
                 
             } else {
@@ -163,7 +163,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
                 // TODO: target further in to only disable collectionview
                 newView.userInteractionEnabled = !self.presenting
                 
-                for view in newView.subviews as! [UIView] {
+                for view in newView.subviews {
                     print(view)
                 }
                 
@@ -191,8 +191,8 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         menuViewController.view.alpha = 0
         
         let offstageOffset: CGFloat = 50
-        var shiftLeftOffset = CGAffineTransformMakeTranslation(offstageOffset, 0)
-        var shiftAndShrink = CGAffineTransformMakeScale(0.8, 0.8)
+        let shiftLeftOffset = CGAffineTransformMakeTranslation(offstageOffset, 0)
+        let shiftAndShrink = CGAffineTransformMakeScale(0.8, 0.8)
         
         menuViewController.subredditSearch.alpha = 0
         menuViewController.popularSubredditsLabel.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)

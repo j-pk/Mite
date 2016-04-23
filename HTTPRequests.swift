@@ -43,7 +43,7 @@ class HTTPRequest: NSObject {
     
     func getUserIdentity(completion: () -> Void) {
         
-        var info = [
+        let info = [
             
             "method" : "GET",
             "endpoint" : "/api/v1/me"
@@ -83,7 +83,7 @@ class HTTPRequest: NSObject {
             
         } else {
         
-            var info = [
+            let info = [
                 
                 "method" : "POST",
                 "endpoint" : "/api/vote",
@@ -118,10 +118,10 @@ class HTTPRequest: NSObject {
             
             var first = true
             
-            for (key,value) in query {
+            for (_,_) in query {
                 
                 //choose sign if it is first ?(then) else :
-                var sign = first ? "?" : "&"
+                _ = first ? "?" : "&"
                 
                 //set first the first time it runs
                 first = false

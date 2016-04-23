@@ -14,7 +14,7 @@ import UIKit
     override func drawRect(rect: CGRect) {
         
         //layer within the view
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         let insetRect = CGRectInset(rect, strokeWidth / 2, strokeWidth / 2)
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: cornerRadius)
     
