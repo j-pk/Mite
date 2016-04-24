@@ -44,11 +44,9 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
-        HTTPRequest.session().getUserIdentity { () -> Void in
-            
-            self.userNameLabel.text = "\(HTTPRequest.session().redditUserName)"
-            
-        }
+        let userName = NetworkManager.sharedInstance.getUserIdentity()
+        
+        self.userNameLabel.text = userName
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             
@@ -149,7 +147,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         
         } else {
         
-            ImageRequest.session().searchRedditString = "r/" + "\(properSearchString)"
+            NetworkManager.sharedInstance.searchRedditString = "r/" + "\(properSearchString)"
             
             NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
             
@@ -161,7 +159,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     @IBAction func picsButtonPressed(sender: UIButton) {
         
-        ImageRequest.session().searchRedditString = subreddit + firstButton
+        NetworkManager.sharedInstance.searchRedditString = subreddit + firstButton
         
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
         
@@ -170,7 +168,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     @IBAction func awwButtonPressed(sender: UIButton) {
         
-        ImageRequest.session().searchRedditString = subreddit + secondButton
+        NetworkManager.sharedInstance.searchRedditString = subreddit + secondButton
         
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
         
@@ -179,7 +177,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     @IBAction func funnyButtonPressed(sender: UIButton) {
         
-        ImageRequest.session().searchRedditString = subreddit + thirdButton
+        NetworkManager.sharedInstance.searchRedditString = subreddit + thirdButton
         
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
         
@@ -188,7 +186,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     @IBAction func iTookAPictureButtonPressed(sender: UIButton) {
         
-        ImageRequest.session().searchRedditString = subreddit + fourthButton
+        NetworkManager.sharedInstance.searchRedditString = subreddit + fourthButton
         
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
         
@@ -197,7 +195,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     @IBAction func artButtonPressed(sender: UIButton) {
         
-        ImageRequest.session().searchRedditString = subreddit + fifthButton
+        NetworkManager.sharedInstance.searchRedditString = subreddit + fifthButton
         
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
         
@@ -206,23 +204,19 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     @IBAction func loginButtonPressed(sender: UIButton) {
         
-        if (HTTPRequest.session().token?.isEmpty != nil) {
+        if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
             
             Alert.session().loggedOutAlert()
-            HTTPRequest.session().logoutAndDeleteToken()
+            NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
             
         } else {
             
             if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("loginVC") {
-                                
                 self.presentViewController(loginVC, animated: false, completion: nil)
-                
             }
-            
         }
-        
     }
     
     func newSubredditNameTextField(textField: UITextField!) {

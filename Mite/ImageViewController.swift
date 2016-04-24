@@ -193,8 +193,7 @@ class ImageViewController: UIViewController {
          
             imageIDToVote = imageID
             
-            HTTPRequest.session().upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
-                
+            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
                 print("upvote")
                 self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
                 self.pressedUp = true
@@ -203,8 +202,7 @@ class ImageViewController: UIViewController {
             })
             
             if pressedDown == true {
-                
-                HTTPRequest.session().upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
+                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
                     
                     self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
@@ -226,7 +224,7 @@ class ImageViewController: UIViewController {
             
             imageIDToVote = imageID
             
-            HTTPRequest.session().upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
+            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
                 
                 print("downvote")
                 self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
@@ -237,7 +235,7 @@ class ImageViewController: UIViewController {
             
             if pressedUp == true {
                 
-                HTTPRequest.session().upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
+                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
                     
                     self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)

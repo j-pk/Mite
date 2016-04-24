@@ -18,26 +18,19 @@ class HTTPRequest: NSObject {
     var once: dispatch_once_t = 0
     
     var token: String? {
-        
         get {
             //return the value of the token when this is called
             return defaults.objectForKey("TOKEN") as? String
-            
         }
-        
         set {
-            
             //sets a new token value
             defaults.setValue(newValue, forKey: "TOKEN")
             //gets saved into NSDefaults
             defaults.synchronize()
-            
         }
-        
     }
     
     func logoutAndDeleteToken() {
-        
         defaults.removeObjectForKey("TOKEN")
     }
     

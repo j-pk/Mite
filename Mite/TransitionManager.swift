@@ -163,8 +163,8 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
                 // TODO: target further in to only disable collectionview
                 newView.userInteractionEnabled = !self.presenting
                 
-                for view in newView.subviews {
-                    print(view)
+                for _ in newView.subviews {
+                    //print(view)
                 }
                 
             } else {

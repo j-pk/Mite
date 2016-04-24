@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="927-dt-Fxx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="r1P-NE-3O4">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -263,6 +262,27 @@
             </objects>
             <point key="canvasLocation" x="2143" y="447"/>
         </scene>
+        <!--Splash Screen View Controller-->
+        <scene sceneID="4Qc-PJ-0v6">
+            <objects>
+                <viewController id="r1P-NE-3O4" customClass="SplashScreenViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MZn-t0-22B"/>
+                        <viewControllerLayoutGuide type="bottom" id="sMm-1V-3AO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9Yh-ml-ogy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="927-dt-Fxx" kind="presentation" identifier="splashSegue" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="FpN-bd-8sR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Fw-jF-egr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-119" y="448"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hut-6F-jgp">
             <objects>
@@ -279,7 +299,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4rd-pD-qHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="615" y="447"/>
+            <point key="canvasLocation" x="639" y="447"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="YgC-Fs-cMd">

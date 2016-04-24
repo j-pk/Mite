@@ -28,9 +28,10 @@ class MainCollectionViewCell: UICollectionViewCell {
         self.downvoteButton.hidden = true
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let data = ImageRequest.session().redditData[indexPath.row]
+            let data = NetworkManager.sharedInstance.redditData[indexPath.row]
             let photo = data.image
             self.mainImageView.image = photo
+            print("This is cell \(self) | This is image \(photo) | This is image data count \(NetworkManager.sharedInstance.redditData.count)")
         })
     }
     
@@ -52,7 +53,7 @@ class MainCollectionViewCell: UICollectionViewCell {
     
     func configureGestureOnCell(gesture: UILongPressGestureRecognizer, gestureLocation: CGPoint, indexPath: NSIndexPath,collectionView: UICollectionView?) {
         
-        let id = ImageRequest.session().redditData[indexPath.row]
+        let id = NetworkManager.sharedInstance.redditData[indexPath.row]
         let idName = id.id
         let pressStart: CGFloat?
         
@@ -102,14 +103,14 @@ class MainCollectionViewCell: UICollectionViewCell {
             if distanceY > 20 {
                 // upvote
                 print("You're going up")
-                HTTPRequest.session().upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
+                NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
                     print("upvote")
                 })
                 
             } else if distanceY < -20 {
                 // downvote
                 print("You're going down")
-                HTTPRequest.session().upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
+                NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
                     print("downvote")
                 })
                 
