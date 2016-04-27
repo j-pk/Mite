@@ -114,7 +114,6 @@ class NetworkManager {
                     if results.count == 0 {
                         Alert.session().sendAlert()
                     }
-                    
                     for result in results {
                         guard let dataDict = result["data"].dictionary else { continue }
                         if let images = dataDict["preview"]?["images"].array {
@@ -131,7 +130,6 @@ class NetworkManager {
                                                 self.tempRedditData.score = score
                                                 self.tempRedditData.title = title
                                                 self.tempRedditData.url = url
-                                                print(self.tempRedditData)
                                             }
                                             let url = resolution["url"].string
                                             guard let modifiedURL = url?.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil) else { return }
@@ -152,7 +150,10 @@ class NetworkManager {
                     }
                 }
             }
-            completion(images: self.redditData)
+                self.redditData = self.redditData.filter { $0.id == $0.id }
+                
+                completion(images: self.redditData)
         }
     }
 }
+
