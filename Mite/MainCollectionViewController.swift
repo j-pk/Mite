@@ -17,6 +17,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
     var sourceIndexPath: NSIndexPath?
     
     var presenting = true
+    var hitBottom = false
     
     ////////////////////MARK: Load
     
@@ -72,6 +73,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         
         navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBarHidden = false
         navigationController?.view.clipsToBounds = true
         
         self.collectionView?.reloadData()
@@ -79,7 +81,6 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
     
     func configureCollectionView() {
         let layout = collectionViewLayout as? MasterFlowLayout
-        layout?.itemSize = self.collectionView!.frame.size
         layout?.delegate = self
         layout?.numberOfColumns = 2
         layout?.cellPadding = 5
@@ -151,7 +152,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
     func updateImages(paginate: Bool) {
         
         let requestCount = 10
-        searchRedditString = "r/art" //NetworkManager.sharedInstance.searchRedditString
+        searchRedditString = NetworkManager.sharedInstance.searchRedditString
         var fullURL = "\(redditAPI)" + "\(searchRedditString)" + ".json"
         print(fullURL)
         if paginate {
@@ -198,9 +199,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
                     imageVC.cellYOffset = -collectionView!.contentOffset.y
                     
                 }
-                
             }
-            
         }
         
         if (segue.identifier == "menuVC") {
@@ -210,7 +209,6 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
                 self.transitionManager.menuViewController = menuVC
             }
         }
-        
     }
     
     @IBAction func unwindToSegue (segue : UIStoryboardSegue) {
@@ -225,9 +223,9 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         }
     }
     
-    var hitBottom = false
-    
-    ////////////////////MARK: NavigationBar
+}
+
+extension MainCollectionViewController {
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         
@@ -275,17 +273,12 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
             
             if hitBottom { return }
-            
             print("You're at the bottom, request")
-            
             hitBottom = true
-            
             updateImages(true)
-            
             // run request and in completion block ... hitBottom = false
             
         }
-        
     }
     
     func stoppedScrolling() {
@@ -321,7 +314,6 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         let nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [NSForegroundColorAttributeName: semi]
         navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.colorWithAlphaComponent(alpha)
-        
     }
     
     func animateNavBarTo(y: CGFloat) {
@@ -335,11 +327,8 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
             self.updateBarButtonItems(alpha)
             
         })
-        
     }
-    
 }
-
 
 
 

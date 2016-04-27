@@ -27,12 +27,9 @@ class MainCollectionViewCell: UICollectionViewCell {
         self.upvoteButton.hidden = true
         self.downvoteButton.hidden = true
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let data = NetworkManager.sharedInstance.redditData[indexPath.row]
-            let photo = data.image
-            self.mainImageView.image = photo
-            print("This is cell \(self) | This is image \(photo) | This is image data count \(NetworkManager.sharedInstance.redditData.count)")
-        })
+        let data = NetworkManager.sharedInstance.redditData[indexPath.row]
+        let photo = data.image
+        self.mainImageView.image = photo
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {

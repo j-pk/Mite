@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="r1P-NE-3O4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="927-dt-Fxx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -21,7 +21,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="mainCell" id="gre-Mp-oPP" customClass="MainCollectionViewCell" customModule="mite" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="165" height="150"/>
+                                <rect key="frame" x="0.0" y="0.0" width="165" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="165" height="150"/>
@@ -262,10 +262,10 @@
             </objects>
             <point key="canvasLocation" x="2143" y="447"/>
         </scene>
-        <!--Splash Screen View Controller-->
+        <!--Launch Screen View Controller-->
         <scene sceneID="4Qc-PJ-0v6">
             <objects>
-                <viewController id="r1P-NE-3O4" customClass="SplashScreenViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="r1P-NE-3O4" customClass="LaunchScreenViewController" customModule="mite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MZn-t0-22B"/>
                         <viewControllerLayoutGuide type="bottom" id="sMm-1V-3AO"/>
@@ -273,20 +273,38 @@
                     <view key="view" contentMode="scaleToFill" id="9Yh-ml-ogy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_x" translatesAutoresizingMaskIntoConstraints="NO" id="OQo-XR-6s3">
+                                <rect key="frame" x="150" y="222" width="300" height="156"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2015 Parker Kirby. All rights reserved." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z99-HB-1xo">
+                                <rect key="frame" x="133" y="562" width="334" height="18"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="OQo-XR-6s3" firstAttribute="centerY" secondItem="9Yh-ml-ogy" secondAttribute="centerY" id="49r-Qy-mop"/>
+                            <constraint firstItem="OQo-XR-6s3" firstAttribute="centerX" secondItem="9Yh-ml-ogy" secondAttribute="centerX" id="EpA-Xy-hOZ"/>
+                            <constraint firstItem="sMm-1V-3AO" firstAttribute="top" secondItem="Z99-HB-1xo" secondAttribute="bottom" constant="20" id="FCw-OS-IO4"/>
+                            <constraint firstItem="Z99-HB-1xo" firstAttribute="centerX" secondItem="9Yh-ml-ogy" secondAttribute="centerX" id="m3e-LV-SJX"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="2cq-aO-fwg"/>
                     <connections>
-                        <segue destination="927-dt-Fxx" kind="presentation" identifier="splashSegue" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="FpN-bd-8sR"/>
+                        <segue destination="WgJ-qe-MIh" kind="show" identifier="launchSegue" id="et2-6h-fUR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Fw-jF-egr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-119" y="448"/>
+            <point key="canvasLocation" x="643" y="447"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hut-6F-jgp">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="927-dt-Fxx" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="927-dt-Fxx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Eej-GW-2G0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -294,12 +312,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="WgJ-qe-MIh" kind="relationship" relationship="rootViewController" id="HbB-C9-Ti8"/>
+                        <segue destination="r1P-NE-3O4" kind="relationship" relationship="rootViewController" id="9OW-Le-fPz"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4rd-pD-qHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="639" y="447"/>
+            <point key="canvasLocation" x="-104" y="447"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="YgC-Fs-cMd">
@@ -338,7 +356,7 @@
                                     <segue destination="uHh-nO-Xd2" kind="unwind" identifier="dismissMenu" unwindAction="unwindToSegue:" id="jpN-m1-xc6"/>
                                 </connections>
                             </button>
-                            <searchBar contentMode="redraw" misplaced="YES" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="C1K-xL-1kU">
+                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="C1K-xL-1kU">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -528,7 +546,6 @@
                         <color key="backgroundColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="vqv-Zv-Fog" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="0EN-Uy-W2i"/>
-                            <constraint firstItem="C1K-xL-1kU" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leadingMargin" constant="-16" id="3fG-xZ-YNp"/>
                             <constraint firstItem="iUD-HP-SYZ" firstAttribute="top" secondItem="aba-9B-b0j" secondAttribute="bottom" constant="4" id="41p-JU-GPu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="C1K-xL-1kU" secondAttribute="trailing" constant="-16" id="49A-nP-X1n"/>
                             <constraint firstItem="iLm-1M-tPp" firstAttribute="top" secondItem="vqv-Zv-Fog" secondAttribute="bottom" constant="4" id="9w1-S4-uac"/>
@@ -536,6 +553,7 @@
                             <constraint firstItem="C1K-xL-1kU" firstAttribute="top" secondItem="ji3-D0-NaY" secondAttribute="bottom" id="BwE-Bg-Pab"/>
                             <constraint firstItem="72u-o6-raV" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="COH-tw-gVr"/>
                             <constraint firstItem="iLm-1M-tPp" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="Eji-BY-kdL"/>
+                            <constraint firstItem="C1K-xL-1kU" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Enn-dH-xEQ"/>
                             <constraint firstItem="KLJ-kf-oor" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" constant="35" id="HFU-Cx-a7v"/>
                             <constraint firstItem="iUD-HP-SYZ" firstAttribute="leading" secondItem="uWO-bT-jL3" secondAttribute="leading" id="Hq6-81-FEf"/>
                             <constraint firstItem="OO9-Bh-nNb" firstAttribute="top" secondItem="iUD-HP-SYZ" secondAttribute="bottom" constant="4" id="ILM-lE-T0r"/>
@@ -769,6 +787,7 @@
     <resources>
         <image name="downvote" width="40" height="40"/>
         <image name="downvoteWhite" width="40" height="40"/>
+        <image name="logo_x" width="300" height="156"/>
         <image name="shareWhite" width="40" height="45"/>
         <image name="upvote" width="40" height="40"/>
         <image name="upvoteWhite" width="40" height="40"/>
