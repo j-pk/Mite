@@ -117,23 +117,22 @@ class NetworkManager {
                     
                     for result in results {
                         guard let dataDict = result["data"].dictionary else { continue }
-                        if let previewId = dataDict["id"]?.string,
-                               score = dataDict["score"]?.int,
-                               title = dataDict["title"]?.string,
-                               url = dataDict["url"]?.string {
-                            
-                            self.tempRedditData.id = previewId
-                            self.tempRedditData.score = score
-                            self.tempRedditData.title = title
-                            self.tempRedditData.url = url
-                            print(self.tempRedditData)
-                        }
-   
                         if let images = dataDict["preview"]?["images"].array {
                             for image in images {
                                 if let resolutions = image["resolutions"].array {
                                     for resolution in resolutions {
                                         if let width = resolution["width"].int where width == 320 {
+                                            if let previewId = dataDict["id"]?.string,
+                                                score = dataDict["score"]?.int,
+                                                title = dataDict["title"]?.string,
+                                                url = dataDict["url"]?.string {
+                                                
+                                                self.tempRedditData.id = previewId
+                                                self.tempRedditData.score = score
+                                                self.tempRedditData.title = title
+                                                self.tempRedditData.url = url
+                                                print(self.tempRedditData)
+                                            }
                                             let url = resolution["url"].string
                                             guard let modifiedURL = url?.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil) else { return }
                                             
@@ -153,8 +152,7 @@ class NetworkManager {
                     }
                 }
             }
+            completion(images: self.redditData)
         }
-        print("Print Reddit Data: ", self.redditData)
-        completion(images: self.redditData)
     }
 }
