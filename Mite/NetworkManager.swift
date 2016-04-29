@@ -14,16 +14,12 @@ class NetworkManager {
     
     static let sharedInstance = NetworkManager()
     
+    var pageRedditAfter = ""
+    var searchRedditString = ""
+    
     private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
     private var redditUserName = ""
-    
-    typealias redditDataTuple = (id:String, score:Int, title:String, url:String, image:UIImage)
-    
-    private var tempRedditData: (id:String, score:Int, title:String, url:String, image:UIImage) = (id:"", score:0 , title:"", url:"", image: UIImage.imageWithColor(UIColor.clearColor()))
-    var redditData: [redditDataTuple] = []
-    var pageRedditAfter = ""
-    var searchRedditString = ""
     
     var token: String? {
         get {
@@ -95,64 +91,23 @@ class NetworkManager {
         completion()
     }
     
-    func requestImages(url: String, completion: (images: [redditDataTuple]) -> ()) {
-        Alamofire.request(.GET, url)
-            .responseJSON { response in
-                switch response.result {
-                case .Success:
-                    print("Validation Successful")
-                case .Failure(let error):
+    func requestImages(url: String, completion: (images: [Dictionary<String, AnyObject>]) -> ()) {
+        Alamofire.request(.GET, url).responseJSON { response in
+            switch response.result {
+            case .Success:
+                print("Validation Successful")
+            case .Failure(let error):
+                print(error)
+            }
+            if let JSONData = response.result.value {
+                let json = JSON(JSONData)
+                do {
+                    let images = try ImageContract.parseJSON(json)
+                    completion(images: images)
+                } catch let error {
                     print(error)
                 }
-            if let JSONData = response.result.value {
-                let parsedJSON = JSON(JSONData)
-                if  let pageRedditAfter = parsedJSON["data"]["after"].string {
-                    self.pageRedditAfter = pageRedditAfter
-                    print(pageRedditAfter)
-                }
-                if let results = parsedJSON["data"]["children"].array {
-                    if results.count == 0 {
-                        Alert.session().sendAlert()
-                    }
-                    for result in results {
-                        guard let dataDict = result["data"].dictionary else { continue }
-                        if let images = dataDict["preview"]?["images"].array {
-                            for image in images {
-                                if let resolutions = image["resolutions"].array {
-                                    for resolution in resolutions {
-                                        if let width = resolution["width"].int where width == 320 {
-                                            if let previewId = dataDict["id"]?.string,
-                                                score = dataDict["score"]?.int,
-                                                title = dataDict["title"]?.string,
-                                                url = dataDict["url"]?.string {
-                                                
-                                                self.tempRedditData.id = previewId
-                                                self.tempRedditData.score = score
-                                                self.tempRedditData.title = title
-                                                self.tempRedditData.url = url
-                                            }
-                                            let url = resolution["url"].string
-                                            guard let modifiedURL = url?.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil) else { return }
-                                            
-                                            if let url = NSURL(string: modifiedURL) {
-                                                if let imageData = NSData(contentsOfURL: url) {
-                                                    if let image = UIImage(data: imageData) {
-                                                        self.tempRedditData.image = image
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    self.redditData.append(self.tempRedditData)
-                                }
-                            }
-                        }
-                    }
-                }
             }
-                self.redditData = self.redditData.filter { $0.id == $0.id }
-                
-                completion(images: self.redditData)
         }
     }
 }
