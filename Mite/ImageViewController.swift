@@ -23,6 +23,7 @@ class ImageViewController: UIViewController {
     var detailTitle: String?
     var upvoteCount: String?
     var imageURLToShare: String?
+    var imageURL: String?
     var imageIDToVote: String?
     var lastLocation:CGPoint = CGPointMake(0, 0)
     var animator: UIDynamicAnimator!
@@ -71,38 +72,29 @@ class ImageViewController: UIViewController {
         
         self.backgroundImageView.alpha = 0
         
-        if let detailImage = self.detailImage {
-            
-            detailImageView.image = detailImage
-            
+        if let imageURL = self.imageURL {
+            NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { (image) in
+                self.detailImageView.image = image
+            }
         }
         
         if let detailTitle = self.detailTitle {
-            
             titleTextView.text = detailTitle
-            
-            print(detailTitle)
             
             let size = titleTextView.sizeThatFits(CGSize(width: view.frame.width - 40, height: 500))
             titleHeight.constant = size.height
-            
         }
         
         if let upvoteCount = self.upvoteCount {
-            
             upvoteCountLabel.text = upvoteCount
-            
         }
         
         if let imageURL = self.imageURLToShare {
-            
             imageURLToShare = imageURL
         }
         
         if let imageID = self.imageIDToVote {
-            
             imageIDToVote = imageID
-            
         }
         
         let scale = self.cell.frame.width / self.detailImageView.frame.width

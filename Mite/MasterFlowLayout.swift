@@ -26,15 +26,11 @@ class MainLayoutAttributes: UICollectionViewLayoutAttributes {
         if let attributes = object as? MainLayoutAttributes {
             
             if attributes.photoHeight == photoHeight {
-                
                 return super.isEqual(object)
             }
-            
         }
-        
         return false
     }
-    
 }
 
 
@@ -61,20 +57,16 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
     override class func layoutAttributesClass() -> AnyClass {
         
         return MainLayoutAttributes.self
-        
     }
     
     override func collectionViewContentSize() -> CGSize {
-        
         return CGSize(width: viewWidth, height: contentHeight)
-        
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init()
         
         self.visibleIndexPathSet = NSMutableSet()
-        
     }
     
     ///////////////////// Dynamic Begins \\\\\\\\\\\\\\\\\\\\
@@ -83,6 +75,7 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
         super.prepareLayout()
         
         cache = []
+        contentHeight = 0
             
             let columnWidth = viewWidth / CGFloat(numberOfColumns)
             
@@ -125,15 +118,10 @@ class MasterFlowLayout: UICollectionViewFlowLayout {
         for attributes in cache {
             
             if CGRectIntersectsRect(attributes.frame, rect) {
-                
                 layoutAttributes.append(attributes)
-                
             }
-        
         }
-        
         return layoutAttributes
-        
     }
     
 }

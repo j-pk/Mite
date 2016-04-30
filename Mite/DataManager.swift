@@ -30,7 +30,8 @@ class DataManager {
                 image?.title = data["title"] as? String
                 image?.url = data["url"] as? String
                 image?.imageURL = data["imageURL"] as? String
-                
+                image?.pageAfter = data["pageAfter"] as? String
+                                
                 if save {
                     try moc.save()
                 }

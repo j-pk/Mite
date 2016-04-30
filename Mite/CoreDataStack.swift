@@ -16,7 +16,7 @@ class CoreDataStack {
     
     static let sharedInstance = CoreDataStack()
     
-    let modelName = "Image"
+    let modelName = "DataModel"
     
     lazy var context: NSManagedObjectContext = {
         var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)

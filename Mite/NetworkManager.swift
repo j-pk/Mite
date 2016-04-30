@@ -91,7 +91,7 @@ class NetworkManager {
         completion()
     }
     
-    func requestImages(url: String, completion: (images: [Dictionary<String, AnyObject>]) -> ()) {
+    func requestImages(url: String, completion: (data: [Dictionary<String, AnyObject>]) -> ()) {
         Alamofire.request(.GET, url).responseJSON { response in
             switch response.result {
             case .Success:
@@ -103,9 +103,29 @@ class NetworkManager {
                 let json = JSON(JSONData)
                 do {
                     let images = try ImageContract.parseJSON(json)
-                    completion(images: images)
+                    completion(data: images)
                 } catch let error {
                     print(error)
+                }
+            }
+        }
+    }
+    
+    
+    func fetchImage(fromUrl url:String, completion:(UIImage? -> ())) {
+        Alamofire.request(.GET, url).validate().response() {
+            (request, response, data, error) in
+            if let image = ImageCacheManager.sharedInstance.fetchImage(withKey: url) {
+                completion(image)
+            } else {
+                Alamofire.request(.GET, url).validate().response() {
+                    (request, response, data, error) in
+                    if let imageData = data, let image = UIImage(data:imageData) where error == nil && response != nil {
+                        ImageCacheManager.sharedInstance.addImageToCache(image, withKey: url)
+                        completion(image)
+                    } else {
+                        completion(nil)
+                    }
                 }
             }
         }

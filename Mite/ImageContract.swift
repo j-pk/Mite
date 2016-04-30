@@ -37,7 +37,6 @@ struct ImageContract {
             guard let title = json["data"]["title"].string else { throw ParsingError.FailedToParse(error: "Failed to parse title") }
             guard let url = json["data"]["url"].string else { throw ParsingError.FailedToParse(error: "Failed to parse url") }
             
-            returnDictionary.append(["author": author, "id": id, "over_18": over_18, "score": score, "subreddit": subreddit, "title": title, "url": url, "pageAfter": pageAfter])
             if let previews = json["data"]["preview"]["images"].array {
                 for preview in previews {
                     guard let resolutions = preview["resolutions"].array else { throw ParsingError.FailedToParse(error: "Failed to parse resolutions") }
@@ -45,7 +44,19 @@ struct ImageContract {
                         if let width = resolution["width"].int where width == 320 {
                             guard let imageURL = resolution["url"].string else { throw ParsingError.FailedToParse(error: "Failed to parse imageURL") }
                             let modifiedURL = imageURL.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                            returnDictionary.append(["imageURL": modifiedURL])
+                            returnDictionary.append(
+                                [
+                                    "author": author,
+                                    "id": id,
+                                    "over_18": over_18,
+                                    "score": score,
+                                    "subreddit": subreddit,
+                                    "title": title,
+                                    "url": url,
+                                    "imageURL": modifiedURL,
+                                    "pageAfter": pageAfter
+                                ]
+                            )
                         }
                     }
                 }

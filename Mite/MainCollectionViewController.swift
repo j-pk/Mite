@@ -11,37 +11,30 @@ let redditAPI = "https://www.reddit.com/"
 class MainCollectionViewController: UICollectionViewController, MainLayoutDelegate {
     
     var transitionManager = MenuTransitionManager()
-    
     var searchRedditString = "r/art"
-    
-    var sourceIndexPath: NSIndexPath?
-    
     var presenting = true
     var hitBottom = false
     
-    ////////////////////MARK: Load
+    var imageResults = [Dictionary<String, AnyObject>]()
+    
+   //MARK: Load
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.updateImages(false)
-        
-        transitionManager.mainCollectionViewController = self
+        self.updateImages(false)
         self.configureViews()
         self.configureCollectionView()
         
-        print(NetworkManager.sharedInstance.token)
-        NetworkManager.sharedInstance.getUserIdentity()
+        transitionManager.mainCollectionViewController = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadTheData), name: "notifyToReload", object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadData), name: "notifyToReload", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.sendLoginAlert), name: "sendAlert", object: nil)
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressAction))
         collectionView?.addGestureRecognizer(longPressGestureRecognizer)
-        
     }
-    
-    ////////////////////MARK: Configure Views
+
+    //MARK: Configure Views
     
     func configureViews() {
         let titleBarImageView = UIImageView(frame: CGRectMake(0, 0, 54, 28))
@@ -75,8 +68,6 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBarHidden = false
         navigationController?.view.clipsToBounds = true
-        
-        self.collectionView?.reloadData()
     }
     
     func configureCollectionView() {
@@ -89,12 +80,11 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         collectionView?.contentInset = layout!.insets
     }
     
-    ////////////////////MARK: CollectionView
-    
-    func reloadTheData(notification: NSNotification) {
+    func reloadData(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateImages(false)
-            NetworkManager.sharedInstance.redditData = []
+            self.imageResults = []
+            ImageCacheManager.sharedInstance.imageCache.removeAllObjects()
             self.collectionView?.reloadData()
         })
     }
@@ -103,29 +93,32 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         Alert.session().successfulLoginAlert()
     }
     
+    //MARK: CollectionView
+    
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return NetworkManager.sharedInstance.redditData.count
+        return self.imageResults.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MainCollectionViewCell
         
-        cell.configureCell(indexPath)
+        cell.configureCell(self.imageResults[indexPath.row])
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat {
         
-        let data = NetworkManager.sharedInstance.redditData[indexPath.row]
-        let photo = data.image
+        let data = self.imageResults[indexPath.row]
+        guard let photo = data["imageURL"] as? String else { return 0 } 
+        guard let url = NSURL(string: photo), imageData = NSData(contentsOfURL: url), image = UIImage(data: imageData) else { return 0 }
         
         let boundingRect = CGRect(x: 0, y: 0, width: width, height: CGFloat(MAXFLOAT))
-        let rect = AVMakeRectWithAspectRatioInsideRect(photo.size, boundingRect)
+        let rect = AVMakeRectWithAspectRatioInsideRect(image.size, boundingRect)
         
         return rect.height
         
@@ -135,8 +128,8 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         return 0
     }
 
-    ////////////////////MARK: Cell Gestures
-        
+    //MARK: Cell Gestures
+    
     func longPressAction(gesture: UILongPressGestureRecognizer) {
         
         let location = gesture.locationInView(collectionView)
@@ -144,66 +137,65 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
               let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? MainCollectionViewCell else { return }
         
         cell.configureGestureOnCell(gesture, gestureLocation: location, indexPath: indexPath, collectionView: collectionView)
-        
     }
     
-    ////////////////////MARK: Update Images
+    //MARK: Update Images
     
     func updateImages(paginate: Bool) {
         
         let requestCount = 10
         searchRedditString = NetworkManager.sharedInstance.searchRedditString
         var fullURL = "\(redditAPI)" + "\(searchRedditString)" + ".json"
-        print(fullURL)
         if paginate {
-            fullURL += "?limit=\(requestCount)&after=\(NetworkManager.sharedInstance.pageRedditAfter)"
+            if let pageAfter = self.imageResults.last!["pageAfter"] as? String {
+                fullURL += "?limit=\(requestCount)&after=\(pageAfter)"
+            }
         } else {
             collectionView?.reloadData()
             collectionView?.contentOffset = CGPoint(x: 0, y: -70)
         }
         
-        NetworkManager.sharedInstance.requestImages(fullURL, completion: { (images) -> () in
+        NetworkManager.sharedInstance.requestImages(fullURL, completion: { (data) -> () in
+            if paginate {
+                for d in data {
+                    self.imageResults.append(d)
+                }
+            } else {
+                self.imageResults = data
+            }
             self.hitBottom = false
             self.collectionView?.reloadData()
         })
     }
     
-    ////////////////////MARK: Push & Exit VC
+    //MARK: Segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         if (segue.identifier == "imageVC") {
-            
             if let indexPath = collectionView!.indexPathsForSelectedItems()!.first {
-                
                 if let imageVC = segue.destinationViewController as? ImageViewController {
                     
-                    let data = NetworkManager.sharedInstance.redditData[indexPath.row]
-                    let image = data.image
-                    let scoreToSend = NetworkManager.sharedInstance.redditData[indexPath.row]
-                    let score = scoreToSend.score
-                    let idToSend = NetworkManager.sharedInstance.redditData[indexPath.row]
-                    let id = idToSend.id
-                    let titleToSend = NetworkManager.sharedInstance.redditData[indexPath.row]
-                    let title = titleToSend.title
-                    let urlToSend = NetworkManager.sharedInstance.redditData[indexPath.row]
-                    let url = urlToSend.url
+                    let image = self.imageResults[indexPath.row]["imageURL"] as? String
+                    let score = self.imageResults[indexPath.row]["score"] as? Int
+                    let id = self.imageResults[indexPath.row]["id"] as? String
+                    let title = self.imageResults[indexPath.row]["title"] as? String
+                    let url = self.imageResults[indexPath.row]["url"] as? String
                     
-                    imageVC.upvoteCount = String(score)
-                    imageVC.detailImage = image
+                    if let score = score {
+                        imageVC.upvoteCount = String(score)
+                    }
+                    imageVC.imageURL = image
                     imageVC.detailTitle = title 
                     imageVC.imageURLToShare = url
                     imageVC.imageIDToVote = id
 
                     imageVC.cell = sender as? MainCollectionViewCell
                     imageVC.cellYOffset = -collectionView!.contentOffset.y
-                    
                 }
             }
         }
         
         if (segue.identifier == "menuVC") {
-            
             if let menuVC = segue.destinationViewController as? MenuViewController {
                 menuVC.transitioningDelegate = transitionManager
                 self.transitionManager.menuViewController = menuVC
@@ -222,15 +214,12 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
             performSegueWithIdentifier("menuVC", sender: self)
         }
     }
-    
 }
 
 extension MainCollectionViewController {
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        
         var previousScrollViewYOffset: CGFloat = 0.0
-        
         var frame = self.navigationController?.navigationBar.frame
         let size = frame!.size.height - 21
         let framePercentageHidden = ((20 - frame!.origin.y) / (frame!.size.height - 1))
@@ -240,18 +229,11 @@ extension MainCollectionViewController {
         let scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom
         
         if scrollOffset <= -scrollView.contentInset.top {
-            
             frame!.origin.y = 20
-            
         } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
-            
             frame!.origin.y = -size
-            
         } else {
-            
-            frame!.origin.y = min(20, max(-size, frame!.origin.y -
-                (frame!.size.height * (scrollDiff / scrollHeight))))
-            
+            frame!.origin.y = min(20, max(-size, frame!.origin.y - (frame!.size.height * (scrollDiff / scrollHeight))))
         }
         
         self.navigationController?.navigationBar.frame = frame!
@@ -265,29 +247,24 @@ extension MainCollectionViewController {
     }
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
         if (!decelerate) {
             stoppedScrolling()
         }
         
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
-            
             if hitBottom { return }
             print("You're at the bottom, request")
             hitBottom = true
             updateImages(true)
             // run request and in completion block ... hitBottom = false
-            
         }
     }
     
     func stoppedScrolling() {
         let frame = navigationController?.navigationBar.frame
         if frame?.origin.y < 20 {
-            
             animateNavBarTo(-(frame!.size.height - 21))
         }
-        
     }
     
     func updateBarButtonItems(alpha:CGFloat){
@@ -317,15 +294,12 @@ extension MainCollectionViewController {
     }
     
     func animateNavBarTo(y: CGFloat) {
-        
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            
             var frame = self.navigationController?.navigationBar.frame
             let alpha: CGFloat = (frame!.origin.y >= y ? 0 : 1)
             frame!.origin.y = y
             self.navigationController?.navigationBar.frame = frame!
             self.updateBarButtonItems(alpha)
-            
         })
     }
 }

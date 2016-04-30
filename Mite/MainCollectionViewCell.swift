@@ -1,4 +1,4 @@
-//
+    //
 //  Copyright (c) 2015 Parker Kirby. All rights reserved.
 //
 
@@ -22,14 +22,14 @@ class MainCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCell(indexPath: NSIndexPath) {
+    func configureCell(image: Dictionary<String, AnyObject>) {
         self.backgroundColor = UIColor.clearColor()
         self.upvoteButton.hidden = true
         self.downvoteButton.hidden = true
-        
-        let data = NetworkManager.sharedInstance.redditData[indexPath.row]
-        let photo = data.image
-        self.mainImageView.image = photo
+        let imageURL = image["imageURL"] as? String ?? ""
+        NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { (image) in
+            self.mainImageView.image = image
+        }
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {
@@ -50,8 +50,8 @@ class MainCollectionViewCell: UICollectionViewCell {
     
     func configureGestureOnCell(gesture: UILongPressGestureRecognizer, gestureLocation: CGPoint, indexPath: NSIndexPath,collectionView: UICollectionView?) {
         
-        let id = NetworkManager.sharedInstance.redditData[indexPath.row]
-        let idName = id.id
+        //let id = NetworkManager.sharedInstance.redditData[indexPath.row]
+        //let idName = id.id
         let pressStart: CGFloat?
         
         switch gesture.state {
@@ -100,16 +100,16 @@ class MainCollectionViewCell: UICollectionViewCell {
             if distanceY > 20 {
                 // upvote
                 print("You're going up")
-                NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
-                    print("upvote")
-                })
+                //NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: 1, completion: { () -> Void in
+                //    print("upvote")
+                //})
                 
             } else if distanceY < -20 {
                 // downvote
                 print("You're going down")
-                NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
-                    print("downvote")
-                })
+                //NetworkManager.sharedInstance.upvoteAndDownvote(idName, direction: -1, completion: { () -> Void in
+                //    print("downvote")
+                //})
                 
             } else {
                 print("keep going")

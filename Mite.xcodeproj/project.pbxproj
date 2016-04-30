@@ -27,6 +27,7 @@
 		C083F2431B52DDC800C7384A /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2421B52DDC800C7384A /* CustomButton.swift */; };
 		C083F2451B52ECAE00C7384A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2441B52ECAE00C7384A /* LoginViewController.swift */; };
 		C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2461B52F55400C7384A /* CustomTextField.swift */; };
+		C09DAD3D1CD4544E00FED508 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DAD3C1CD4544E00FED508 /* ImageCacheManager.swift */; };
 		C0AA44601B5497DA001F4E3E /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA445F1B5497DA001F4E3E /* Keys.swift */; };
 		C0AA9A441B4DCDCC0088B09D /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA9A431B4DCDCC0088B09D /* MainCollectionViewController.swift */; };
 		C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA9A451B4DCDE10088B09D /* MainCollectionViewCell.swift */; };
@@ -79,6 +80,7 @@
 		C083F2421B52DDC800C7384A /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C083F2441B52ECAE00C7384A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C083F2461B52F55400C7384A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		C09DAD3C1CD4544E00FED508 /* ImageCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		C0AA445F1B5497DA001F4E3E /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		C0AA9A431B4DCDCC0088B09D /* MainCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		C0AA9A451B4DCDE10088B09D /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				C0C4E5F71B546F910085CED3 /* ImageRequest.swift */,
 				C02DC4FA1B56AC1C0067A4BA /* Alert.swift */,
 				C0AA445F1B5497DA001F4E3E /* Keys.swift */,
+				C09DAD3C1CD4544E00FED508 /* ImageCacheManager.swift */,
 				C07D44B81CCC141200C1A708 /* NetworkManager.swift */,
 				C0DF1E911CD1A897005E0249 /* ImageContract.swift */,
 				C0DF1E931CD30BC5005E0249 /* DataManager.swift */,
@@ -458,6 +461,7 @@
 				C07D44BC1CCC143800C1A708 /* HTTPRequests.swift in Sources */,
 				C0DF1E901CD1A561005E0249 /* CoreDataStack.swift in Sources */,
 				C0DF1E9B1CD31255005E0249 /* Image+CoreDataProperties.swift in Sources */,
+				C09DAD3D1CD4544E00FED508 /* ImageCacheManager.swift in Sources */,
 				C02DC4FD1B573E020067A4BA /* ProgressIndicator.swift in Sources */,
 				C0AA9A441B4DCDCC0088B09D /* MainCollectionViewController.swift in Sources */,
 				C0DF1E9C1CD31255005E0249 /* Image.swift in Sources */,
