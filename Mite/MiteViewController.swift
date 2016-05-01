@@ -128,6 +128,51 @@ class MiteViewController: UIViewController {
         Alert.session().successfulLoginAlert()
     }
     
+    func setAlphaStateForDeselectedCells(cell: MiteCollectionViewCell, alpha: CGFloat) {
+        for c in miteCollectionView!.visibleCells() as! [MiteCollectionViewCell] {
+            if c != cell {
+                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                    c.alpha = alpha
+                })
+            }
+        }
+    }
+    
+    func longPressOnCell(gesture: UILongPressGestureRecognizer) {
+        let location = gesture.locationInView(self.miteCollectionView)
+        let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(location)
+        guard let index = indexPath, cell = miteCollectionView!.cellForItemAtIndexPath(index) as? MiteCollectionViewCell else { return }
+        
+        switch gesture.state {
+        case .Began:
+            self.initialGestureState = gesture.locationInView(miteCollectionView)
+            cell.initialGestureState()
+            self.setAlphaStateForDeselectedCells(cell, alpha: 0.2)
+        
+        case .Changed:
+            guard let initialGestureState = self.initialGestureState else { return }
+            let distanceY = initialGestureState.y - location.y
+            cell.cellVote(distanceY)
+        case .Ended:
+            guard let initialGestureState = self.initialGestureState else { return }
+            let distanceY = initialGestureState.y - location.y
+            let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(initialGestureState)
+            let newPoint = gesture.locationInView(self.miteCollectionView)
+            let newIndexPath = self.miteCollectionView!.indexPathForItemAtPoint(newPoint)
+            
+            cell.cellVote(distanceY)
+            cell.resetCell()
+            self.setAlphaStateForDeselectedCells(cell, alpha: 1.0)
+            if newIndexPath != indexPath {
+                if let cell = miteCollectionView!.cellForItemAtIndexPath(indexPath!) as? MiteCollectionViewCell {
+                    cell.resetCell()
+                }
+            }
+        default:
+            cell.resetCell()
+        }
+    }
+    
     func sideMenuButtonPressed(sender: UIButton) {
         if presentedViewController != nil {
             presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
@@ -168,49 +213,6 @@ class MiteViewController: UIViewController {
             }
         }
     }
-    
-    func setAlphaStateForDeselectedCells(cell: MiteCollectionViewCell, alpha: CGFloat) {
-        for c in miteCollectionView!.visibleCells() as! [MiteCollectionViewCell] {
-            if c != cell {
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    c.alpha = alpha
-                })
-            }
-        }
-    }
-    
-    func longPressOnCell(gesture: UILongPressGestureRecognizer) {
-        let location = gesture.locationInView(self.miteCollectionView)
-        let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(location)
-        guard let index = indexPath, cell = miteCollectionView!.cellForItemAtIndexPath(index) as? MiteCollectionViewCell else { return }
-        
-        switch gesture.state {
-        case .Began:
-            self.initialGestureState = gesture.locationInView(miteCollectionView)
-            cell.initialGestureState()
-            self.setAlphaStateForDeselectedCells(cell, alpha: 0.2)
-        
-        case .Changed:
-            let distanceY = initialGestureState!.y - location.y
-            cell.cellVote(distanceY)
-        case .Ended:
-            let distanceY = initialGestureState!.y - location.y
-            let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(initialGestureState!)
-            let newPoint = gesture.locationInView(self.miteCollectionView)
-            let newIndexPath = self.miteCollectionView!.indexPathForItemAtPoint(newPoint)
-            
-            cell.cellVote(distanceY)
-            cell.resetCell()
-            self.setAlphaStateForDeselectedCells(cell, alpha: 1.0)
-            if newIndexPath != indexPath {
-                if let cell = miteCollectionView!.cellForItemAtIndexPath(indexPath!) as? MiteCollectionViewCell {
-                    cell.resetCell()
-                }
-            }
-        default:
-            cell.resetCell()
-        }
-    }
 
 }
 
@@ -228,10 +230,6 @@ extension MiteViewController: UICollectionViewDelegate {
     }
 }
 
-extension MiteViewController: UICollectionViewDataSource {
-    
-}
-
 extension MiteViewController: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
     
@@ -243,84 +241,11 @@ extension MiteViewController: CHTCollectionViewDelegateWaterfallLayout {
 }
 
 extension MiteViewController {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        var previousScrollViewYOffset: CGFloat = 0.0
-        var frame = self.navigationController?.navigationBar.frame
-        let size = frame!.size.height - 21
-        let framePercentageHidden = ((20 - frame!.origin.y) / (frame!.size.height - 1))
-        let scrollOffset = scrollView.contentOffset.y
-        let scrollDiff = scrollOffset - previousScrollViewYOffset
-        let scrollHeight = scrollView.frame.size.height
-        let scrollContentSizeHeight = scrollView.contentSize.height + scrollView.contentInset.bottom
-        
-        if scrollOffset <= -scrollView.contentInset.top {
-            frame!.origin.y = 20
-        } else if ((scrollOffset + scrollHeight) >= scrollContentSizeHeight) {
-            frame!.origin.y = -size
-        } else {
-            frame!.origin.y = min(20, max(-size, frame!.origin.y - (frame!.size.height * (scrollDiff / scrollHeight))))
-        }
-        
-        self.navigationController?.navigationBar.frame = frame!
-        self.updateBarButtonItems(1 - framePercentageHidden)
-        previousScrollViewYOffset = scrollOffset
-        
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.stoppedScrolling()
-    }
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if (!decelerate) {
-            self.stoppedScrolling()
-        }
-        
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
             if self.hitBottom { return }
             self.hitBottom = true
             self.fetchAPIData(paginate: true)
         }
-    }
-    
-    func stoppedScrolling() {
-        let frame = navigationController?.navigationBar.frame
-        if frame?.origin.y < 20 {
-            self.animateNavBarTo(-(frame!.size.height - 21))
-        }
-    }
-    
-    func updateBarButtonItems(alpha:CGFloat){
-        if let left = navigationItem.leftBarButtonItems {
-            for item:UIBarButtonItem in left {
-                if let view = item.customView {
-                    view.alpha = alpha
-                }
-            }
-        }
-        
-        if let right = navigationItem.rightBarButtonItems {
-            for item:UIBarButtonItem in  right {
-                if let view = item.customView {
-                    view.alpha = alpha
-                }
-            }
-        }
-        navigationItem.titleView?.alpha = alpha
-        let black = UIColor.blackColor()
-        let semi = black.colorWithAlphaComponent(alpha)
-        let nav = self.navigationController?.navigationBar
-        nav?.titleTextAttributes = [NSForegroundColorAttributeName: semi]
-        navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.colorWithAlphaComponent(alpha)
-    }
-    
-    func animateNavBarTo(y: CGFloat) {
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            var frame = self.navigationController?.navigationBar.frame
-            let alpha: CGFloat = (frame!.origin.y >= y ? 0 : 1)
-            frame!.origin.y = y
-            self.navigationController?.navigationBar.frame = frame!
-            self.updateBarButtonItems(alpha)
-        })
     }
 }
