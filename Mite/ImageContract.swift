@@ -21,7 +21,7 @@ extension JSON {
 
 struct ImageContract {
     
-    static func parseJSON(jsonData: JSON) throws -> [Dictionary<String, AnyObject>] {
+    static func parseJSON(jsonData: JSON) throws -> [MiteImages] {
         
         var returnDictionary: [Dictionary<String, AnyObject>] = [[:]]
         

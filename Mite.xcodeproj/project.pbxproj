@@ -28,6 +28,9 @@
 		C083F2451B52ECAE00C7384A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2441B52ECAE00C7384A /* LoginViewController.swift */; };
 		C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2461B52F55400C7384A /* CustomTextField.swift */; };
 		C09DAD3D1CD4544E00FED508 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DAD3C1CD4544E00FED508 /* ImageCacheManager.swift */; };
+		C09DAD3F1CD5461C00FED508 /* MiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DAD3E1CD5461C00FED508 /* MiteViewController.swift */; };
+		C09DAD411CD5475000FED508 /* MiteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DAD401CD5475000FED508 /* MiteCollectionViewCell.swift */; };
+		C09DAD431CD5492D00FED508 /* CollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DAD421CD5492D00FED508 /* CollectionViewLayout.swift */; };
 		C0AA44601B5497DA001F4E3E /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA445F1B5497DA001F4E3E /* Keys.swift */; };
 		C0AA9A441B4DCDCC0088B09D /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA9A431B4DCDCC0088B09D /* MainCollectionViewController.swift */; };
 		C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA9A451B4DCDE10088B09D /* MainCollectionViewCell.swift */; };
@@ -81,6 +84,9 @@
 		C083F2441B52ECAE00C7384A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C083F2461B52F55400C7384A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		C09DAD3C1CD4544E00FED508 /* ImageCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		C09DAD3E1CD5461C00FED508 /* MiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiteViewController.swift; sourceTree = "<group>"; };
+		C09DAD401CD5475000FED508 /* MiteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiteCollectionViewCell.swift; sourceTree = "<group>"; };
+		C09DAD421CD5492D00FED508 /* CollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewLayout.swift; sourceTree = "<group>"; };
 		C0AA445F1B5497DA001F4E3E /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		C0AA9A431B4DCDCC0088B09D /* MainCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		C0AA9A451B4DCDE10088B09D /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -170,7 +176,7 @@
 				C078E3E01B4CA5A900EB7176 /* Main.storyboard */,
 				C078E3E31B4CA5A900EB7176 /* Images.xcassets */,
 				C083F2411B52DDA100C7384A /* IBDesignable */,
-				C0F87CDF1B4DCFC600551C80 /* Main */,
+				C0F87CDF1B4DCFC600551C80 /* Mite */,
 				C0F87CE01B4DCFDF00551C80 /* Image */,
 				C0BECEB31B4EB346004E7A9C /* Menu + Login */,
 				C0BECEB21B4EB32E004E7A9C /* Transition Manager */,
@@ -262,15 +268,17 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		C0F87CDF1B4DCFC600551C80 /* Main */ = {
+		C0F87CDF1B4DCFC600551C80 /* Mite */ = {
 			isa = PBXGroup;
 			children = (
-				C0F87CE11B4DD01B00551C80 /* Master Flow Layout */,
+				C09DAD3E1CD5461C00FED508 /* MiteViewController.swift */,
+				C09DAD401CD5475000FED508 /* MiteCollectionViewCell.swift */,
+				C0F87CE11B4DD01B00551C80 /* CV Flow Layout */,
 				C0AA9A431B4DCDCC0088B09D /* MainCollectionViewController.swift */,
 				C0AA9A451B4DCDE10088B09D /* MainCollectionViewCell.swift */,
 				C07D44BE1CCC7BDD00C1A708 /* LaunchScreenViewController.swift */,
 			);
-			name = Main;
+			name = Mite;
 			sourceTree = "<group>";
 		};
 		C0F87CE01B4DCFDF00551C80 /* Image */ = {
@@ -281,12 +289,13 @@
 			name = Image;
 			sourceTree = "<group>";
 		};
-		C0F87CE11B4DD01B00551C80 /* Master Flow Layout */ = {
+		C0F87CE11B4DD01B00551C80 /* CV Flow Layout */ = {
 			isa = PBXGroup;
 			children = (
 				C0AA9A491B4DCE390088B09D /* MasterFlowLayout.swift */,
+				C09DAD421CD5492D00FED508 /* CollectionViewLayout.swift */,
 			);
-			name = "Master Flow Layout";
+			name = "CV Flow Layout";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -451,6 +460,8 @@
 				C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */,
 				C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */,
 				C0AA44601B5497DA001F4E3E /* Keys.swift in Sources */,
+				C09DAD411CD5475000FED508 /* MiteCollectionViewCell.swift in Sources */,
+				C09DAD3F1CD5461C00FED508 /* MiteViewController.swift in Sources */,
 				C03B31791CD04E7600CACB23 /* DataModel.xcdatamodeld in Sources */,
 				C0DF1E941CD30BC5005E0249 /* DataManager.swift in Sources */,
 				C083F2431B52DDC800C7384A /* CustomButton.swift in Sources */,
@@ -466,6 +477,7 @@
 				C0AA9A441B4DCDCC0088B09D /* MainCollectionViewController.swift in Sources */,
 				C0DF1E9C1CD31255005E0249 /* Image.swift in Sources */,
 				C07D44BF1CCC7BDD00C1A708 /* LaunchScreenViewController.swift in Sources */,
+				C09DAD431CD5492D00FED508 /* CollectionViewLayout.swift in Sources */,
 				C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */,
 				C0AA9A4E1B4DCEB40088B09D /* AnimatedGIF.swift in Sources */,
 				C0AA9A4A1B4DCE390088B09D /* MasterFlowLayout.swift in Sources */,

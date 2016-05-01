@@ -10,7 +10,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
     private var presenting = false
     private var interactive = false
     private var enterPanGesture: UIScreenEdgePanGestureRecognizer!
-    var mainViewCollection: UIViewController?
+    var viewController: UIViewController?
     
     //Transition to Menu
     var mainCollectionViewController: UIViewController! {
@@ -114,10 +114,10 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         let screens : (from:UIViewController, to:UIViewController) = (transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!, transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!)
         
         let menuViewController = !self.presenting ? screens.from as! MenuViewController : screens.to as! MenuViewController
-        let mainViewCollection = !self.presenting ? screens.to as UIViewController : screens.from as UIViewController
+        let vc = !self.presenting ? screens.to as UIViewController : screens.from as UIViewController
         
         let menuView = menuViewController.view
-        let mainView = mainViewCollection.view
+        let mainView = vc.view
         
         mainView.layer.masksToBounds = false
         mainView.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
@@ -169,7 +169,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
                 
             } else {
                 
-                self.mainViewCollection = mainViewCollection
+                self.viewController = vc
                 transitionContext.completeTransition(false)
 
             }
@@ -235,7 +235,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
                 
         if transitionCompleted == false {
             
-            UIApplication.sharedApplication().keyWindow!.addSubview(mainViewCollection!.view)
+            UIApplication.sharedApplication().keyWindow!.addSubview(viewController!.view)
 
         }
         

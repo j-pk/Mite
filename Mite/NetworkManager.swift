@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
+typealias MiteImages = Dictionary<String, AnyObject>
+
 class NetworkManager {
     
     static let sharedInstance = NetworkManager()
@@ -91,7 +93,7 @@ class NetworkManager {
         completion()
     }
     
-    func requestImages(url: String, completion: (data: [Dictionary<String, AnyObject>]) -> ()) {
+    func requestImages(url: String, completion: (data: [MiteImages]) -> ()) {
         Alamofire.request(.GET, url).responseJSON { response in
             switch response.result {
             case .Success:
@@ -127,6 +129,17 @@ class NetworkManager {
                         completion(nil)
                     }
                 }
+            }
+        }
+    }
+    
+    func fetchImageData(fromUrl url:String, completion:(NSData? -> ())) {
+        Alamofire.request(.GET, url).validate().response() {
+            (request, response, data, error) in
+            if let imageData = data where error == nil && response != nil {
+                completion(imageData)
+            } else {
+                completion(nil)
             }
         }
     }

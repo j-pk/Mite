@@ -25,7 +25,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         self.configureViews()
         self.configureCollectionView()
         
-        transitionManager.mainCollectionViewController = self
+        //transitionManager.mainCollectionViewController = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadData), name: "notifyToReload", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.sendLoginAlert), name: "sendAlert", object: nil)
@@ -112,10 +112,9 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
     }
     
     func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MainCollectionViewCell
         
-        let data = self.imageResults[indexPath.row]
-        guard let photo = data["imageURL"] as? String else { return 0 } 
-        guard let url = NSURL(string: photo), imageData = NSData(contentsOfURL: url), image = UIImage(data: imageData) else { return 0 }
+        guard let image = cell.detailImage else { return 0 }
         
         let boundingRect = CGRect(x: 0, y: 0, width: width, height: CGFloat(MAXFLOAT))
         let rect = AVMakeRectWithAspectRatioInsideRect(image.size, boundingRect)
@@ -189,7 +188,7 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
                     imageVC.imageURLToShare = url
                     imageVC.imageIDToVote = id
 
-                    imageVC.cell = sender as? MainCollectionViewCell
+                    imageVC.cell = sender as? MiteCollectionViewCell
                     imageVC.cellYOffset = -collectionView!.contentOffset.y
                 }
             }

@@ -10,6 +10,8 @@ class MainCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var upvoteButton: UIButton!
     @IBOutlet weak var downvoteButton: UIButton!
     
+    var detailImage: UIImage?
+    
     var pressingUp = false {
         didSet{
             pressingUp ? upvoteButton.setImage(UIImage(named: "upvoteSelected"), forState: .Normal) : upvoteButton.setImage(UIImage(named: "upvote"), forState: .Normal)
@@ -29,6 +31,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         let imageURL = image["imageURL"] as? String ?? ""
         NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { (image) in
             self.mainImageView.image = image
+            self.detailImage = image
         }
     }
     

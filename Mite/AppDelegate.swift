@@ -20,7 +20,6 @@
                 menuDefaults.setObject(defaultPreference, forKey: "defaults")
                 
                 if let buttonOne = defaultPreference["buttonOneDefault"] as? String {
-                    
                         MenuDefaults.session().buttonOne = buttonOne
                 }
             }

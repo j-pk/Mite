@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Gifu
 
 class ImageViewController: UIViewController {
     
@@ -16,7 +17,7 @@ class ImageViewController: UIViewController {
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
     
-    var cell: MainCollectionViewCell!
+    var cell: MiteCollectionViewCell!
     var cellYOffset: CGFloat = 0
     
     var detailImage: UIImage?
@@ -89,8 +90,8 @@ class ImageViewController: UIViewController {
             upvoteCountLabel.text = upvoteCount
         }
         
-        if let imageURL = self.imageURLToShare {
-            imageURLToShare = imageURL
+        if let url = self.imageURLToShare {
+            imageURLToShare = url
         }
         
         if let imageID = self.imageIDToVote {
@@ -100,6 +101,47 @@ class ImageViewController: UIViewController {
         let scale = self.cell.frame.width / self.detailImageView.frame.width
         self.detailImageView.transform = CGAffineTransformMakeScale(scale, scale)
         self.detailImageView.backgroundColor = UIColor.clearColor()
+        
+        self.loadAndAnimateGifs()
+    }
+    
+    func loadAndAnimateGifs() {
+        guard var url = self.imageURLToShare, ext = NSURL(string: url)?.pathExtension else { return }
+        var adjustedURL: String? = ""
+        
+        if url.hasPrefix("http") {
+            url = url.stringByReplacingOccurrencesOfString("http", withString: "https", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        }
+
+        if ext == "gif" || ext == "gifv" {
+            if url.characters.last == "v" {
+                adjustedURL = String(url.characters.dropLast())
+                print(url)
+                print(adjustedURL)
+            }
+            let data = adjustedURL ?? url
+            
+            NetworkManager.sharedInstance.fetchImageData(fromUrl: data, completion: { (imageData) in
+                let gifView = AnimatableImageView(frame: self.detailImageView.frame)
+                gifView.contentMode = .ScaleAspectFit
+                self.detailImageView.hidden = true
+                self.view.addSubview(gifView)
+                gifView.animateWithImageData(imageData!)
+                self.delay(0.5) {
+                    gifView.startAnimatingGIF()
+                }
+            })
+            
+        }
+    }
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
     }
     
     ////////////////////MARK: Gestures
