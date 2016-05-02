@@ -10,20 +10,15 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
     private var presenting = false
     private var interactive = false
     private var enterPanGesture: UIScreenEdgePanGestureRecognizer!
-    var viewController: UIViewController?
     
     //Transition to Menu
-    var mainCollectionViewController: UIViewController! {
-        
+    var viewController: UIViewController! {
         didSet {
-            
             enterPanGesture = UIScreenEdgePanGestureRecognizer()
             enterPanGesture.addTarget(self, action: #selector(self.handleOnstagePan))
             enterPanGesture.edges = UIRectEdge.Left
-            self.mainCollectionViewController.view.addGestureRecognizer(enterPanGesture)
-
+            self.viewController.view.addGestureRecognizer(enterPanGesture)
         }
-        
     }
     
     func handleOnstagePan(gesture: UIScreenEdgePanGestureRecognizer) {
@@ -36,7 +31,7 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         case UIGestureRecognizerState.Began:
             
             self.interactive = true
-            self.mainCollectionViewController.performSegueWithIdentifier("menuVC", sender: self)
+            self.viewController.performSegueWithIdentifier("menuVC", sender: self)
             break
             
         case UIGestureRecognizerState.Changed:

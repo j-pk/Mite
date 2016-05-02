@@ -3,6 +3,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 import Gifu
 
 class ImageViewController: UIViewController {
@@ -26,6 +28,7 @@ class ImageViewController: UIViewController {
     var imageURLToShare: String?
     var imageURL: String?
     var imageIDToVote: String?
+    var media: Bool = false 
     var lastLocation:CGPoint = CGPointMake(0, 0)
     var animator: UIDynamicAnimator!
     
@@ -33,123 +36,188 @@ class ImageViewController: UIViewController {
     var pressedUp = false
     var pressedDown = false
     
-    ////////////////////MARK: Load
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        self.detailImageView.center = CGPointMake(self.cell.center.x, self.cell.center.y + self.cellYOffset)
-        
-        UIView.transitionWithView(detailImageView, duration:0.4, options: [],
-            animations: {
-                
-                self.detailImageView.center = self.backgroundImageView.center
-                self.detailImageView.transform = CGAffineTransformIdentity
-                
-            }, completion: nil)
-        
-        UIView.animateWithDuration(0.6, animations: { () -> Void in
-            
-            self.backgroundImageView.alpha = 1
-            
-            }) { (finished) -> Void in
-                
-        }
-        
-    }
+    //MARK: Load
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureView()
+        if media {
+            self.loadAndAnimateGifs()
+        }
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan))
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeImage))
-                
+        
         //listens for gesture
         view.addGestureRecognizer(pinchGesture)
         view.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
         
-        animator = UIDynamicAnimator(referenceView: view)
+        self.animator = UIDynamicAnimator(referenceView: view)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.detailImageView.center = CGPointMake(self.cell.center.x, self.cell.center.y + self.cellYOffset)
         
+        UIView.transitionWithView(detailImageView, duration:0.4, options: [],
+                                  animations: {
+                                    self.detailImageView.center = self.backgroundImageView.center
+                                    self.detailImageView.transform = CGAffineTransformIdentity
+            }, completion: nil)
+        UIView.animateWithDuration(0.6, animations: { () -> Void in
+            self.backgroundImageView.alpha = 1
+            }, completion: nil)
+    }
+    
+    
+    func configureView() {
         self.backgroundImageView.alpha = 0
         
-        if let imageURL = self.imageURL {
+        if let imageURL = self.imageURL, detailTitle = self.detailTitle, upvoteCount = self.upvoteCount, url = self.imageURLToShare, imageID = self.imageIDToVote {
             NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { (image) in
                 self.detailImageView.image = image
             }
-        }
-        
-        if let detailTitle = self.detailTitle {
-            titleTextView.text = detailTitle
-            
+            self.titleTextView.text = detailTitle
+            self.upvoteCountLabel.text = upvoteCount
+            self.imageURLToShare = url
+            self.imageIDToVote = imageID
+    
             let size = titleTextView.sizeThatFits(CGSize(width: view.frame.width - 40, height: 500))
             titleHeight.constant = size.height
-        }
-        
-        if let upvoteCount = self.upvoteCount {
-            upvoteCountLabel.text = upvoteCount
-        }
-        
-        if let url = self.imageURLToShare {
-            imageURLToShare = url
-        }
-        
-        if let imageID = self.imageIDToVote {
-            imageIDToVote = imageID
         }
         
         let scale = self.cell.frame.width / self.detailImageView.frame.width
         self.detailImageView.transform = CGAffineTransformMakeScale(scale, scale)
         self.detailImageView.backgroundColor = UIColor.clearColor()
+    }
+    
+    //MARK: Buttons Pressed
+    
+    @IBAction func upvoteButtonPressed(sender: UIButton) {
+        if let imageID = imageIDToVote {
+            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
+                print("upvote")
+                self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
+                self.pressedUp = true
+                print("This should be true UP \(self.pressedUp)")
+                
+            })
+            
+            if pressedDown == true {
+                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
+                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
+                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
+                    self.pressedUp = false
+                    self.pressedDown = false
+                    print("This should be false UP \(self.pressedUp)")
+                })
+            }
+        }
+    }
+    
+    @IBAction func downvoteButtonPressed(sender: UIButton) {
+        if let imageID = imageIDToVote {
+            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
+                print("downvote")
+                self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
+                self.pressedDown = true
+                print("This should be true DOWN \(self.pressedDown)")
+            })
+            
+            if pressedUp == true {
+                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
+                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
+                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
+                    self.pressedDown = false
+                    self.pressedUp = false
+                    print("This should be false DOWN \(self.pressedDown)")
+                    
+                })
+            }
+        }
+    }
+    
+    @IBAction func shareButtonPressed(sender: UIButton) {
+        let actionSheetController = UIAlertController(title: "Share", message: "", preferredStyle: .ActionSheet)
         
-        self.loadAndAnimateGifs()
+        let copyImage = UIAlertAction(title: "Copy Image", style: .Default) { (action) -> Void in
+            if let image = self.detailImage {
+                UIPasteboard.generalPasteboard().image = image
+            }
+            self.showProgressHUD()
+        }
+        
+        let copyURL = UIAlertAction(title: "Copy Image URL", style: .Default) { (action) -> Void in
+            if let url = self.imageURLToShare {
+                UIPasteboard.generalPasteboard().string = url
+            }
+            self.showProgressHUD()
+        }
+        
+        let saveImage = UIAlertAction(title: "Save Image to Camera Roll", style: .Default) { (action) -> Void in
+            if let image = self.detailImage {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            }
+            self.showProgressHUD()
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        actionSheetController.addAction(copyImage)
+        actionSheetController.addAction(copyURL)
+        actionSheetController.addAction(saveImage)
+        actionSheetController.addAction(cancel)
+        
+        presentViewController(actionSheetController, animated: true, completion: nil)
+    }
+    
+    func showProgressHUD() {
+        let progressHUD = ProgressIndicator(text: "Copied")
+        self.view.addSubview(progressHUD)
+        self.view.center = progressHUD.center
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            progressHUD.show()
+            }, completion: { (finished) -> Void in
+                delay(0.5) {
+                    progressHUD.hidden = true
+                }
+        })
     }
     
     func loadAndAnimateGifs() {
-        guard var url = self.imageURLToShare, ext = NSURL(string: url)?.pathExtension else { return }
-        var adjustedURL: String? = ""
-        
-        if url.hasPrefix("http") {
-            url = url.stringByReplacingOccurrencesOfString("http", withString: "https", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        }
-
-        if ext == "gif" || ext == "gifv" {
-            if url.characters.last == "v" {
-                adjustedURL = String(url.characters.dropLast())
-                print(url)
-                print(adjustedURL)
+        guard let url = self.imageURLToShare else { return }
+        if url.hasSuffix("mp4") {
+            let videoURL = NSURL(string: url)
+            let player = AVPlayer(URL: videoURL!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.view.bounds
+            self.detailImageView.layer.addSublayer(playerLayer)
+            player.play()
+            NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
+                player.seekToTime(kCMTimeZero)
+                player.play()
             }
-            let data = adjustedURL ?? url
-            
-            NetworkManager.sharedInstance.fetchImageData(fromUrl: data, completion: { (imageData) in
+        } else if url.hasSuffix("gif") {
+            NetworkManager.sharedInstance.fetchImageData(fromUrl: url, completion: { filePath in
                 let gifView = AnimatableImageView(frame: self.detailImageView.frame)
                 gifView.contentMode = .ScaleAspectFit
-                self.detailImageView.hidden = true
-                self.view.addSubview(gifView)
-                gifView.animateWithImageData(imageData!)
-                self.delay(0.5) {
+                self.detailImageView.addSubview(gifView)
+                guard let filePath = filePath else { return }
+                gifView.animateWithImageData(filePath)
+                delay(0.5) {
                     gifView.startAnimatingGIF()
                 }
             })
-            
         }
     }
     
-    func delay(delay:Double, closure:()->()) {
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), closure)
-    }
-    
-    ////////////////////MARK: Gestures
+    //MARK: Gestures
     
     func handlePan(sender: UIPanGestureRecognizer) {
         
         dispatch_once(&once, { () -> Void in
-            
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: [], animations: { () -> Void in
                 
                 let velocity = sender.velocityInView(self.detailImageView)
@@ -160,24 +228,15 @@ class ImageViewController: UIViewController {
                 
                 self.animator.removeAllBehaviors()
                 self.animator.addBehavior(imagePushInstant)
-                
-                }) { (finished) -> Void in
-                    
-            }
+                }, completion: nil)
             
             UIView.animateWithDuration(0.6, animations: { () -> Void in
-                
                 self.detailImageView.alpha = 0
                 self.backgroundImageView.alpha = 0
-                
                 }, completion: { (finished) -> Void in
-                    
                     self.dismissViewControllerAnimated(false, completion: nil)
-                    
             })
-            
         })
-        
     }
     
     func handleTap(sender: UITapGestureRecognizer) {
@@ -189,9 +248,7 @@ class ImageViewController: UIViewController {
             self.detailImageView.transform = CGAffineTransformMakeScale(scale, scale)
             self.detailImageView.center = CGPointMake(self.cell.center.x, self.cell.center.y + self.cellYOffset)
             
-            }) { (finished) -> Void in
-                
-        }
+            }, completion: nil)
         
         UIView.animateWithDuration(0.6, animations: { () -> Void in
             
@@ -199,192 +256,17 @@ class ImageViewController: UIViewController {
             self.backgroundImageView.alpha = 0
             
             }, completion: { (finished) -> Void in
-                
                 self.dismissViewControllerAnimated(false, completion: nil)
-                
         })
     }
     
     func resizeImage(scale: UIPinchGestureRecognizer) {
-        
         if scale.state == .Ended || scale.state == .Changed {
-            
             let currentScale = detailImageView.frame.size.width / detailImageView.bounds.size.width
             let newScale = currentScale * scale.scale
             let transform = CGAffineTransformMakeScale(newScale, newScale);
             detailImageView.transform = transform
             scale.scale = 1
-            
         }
-        
     }
-    
-    ////////////////////MARK: Buttons Pressed
-    
-    @IBAction func upvoteButtonPressed(sender: UIButton) {
-        
-        if let imageID = imageIDToVote {
-         
-            imageIDToVote = imageID
-            
-            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
-                print("upvote")
-                self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
-                self.pressedUp = true
-                print("This should be true UP \(self.pressedUp)")
-                
-            })
-            
-            if pressedDown == true {
-                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
-                    
-                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
-                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
-                    self.pressedUp = false
-                    self.pressedDown = false
-                    print("This should be false UP \(self.pressedUp)")
-                    
-                })
-            
-            }
-            
-        }
-        
-    }
-    
-    @IBAction func downvoteButtonPressed(sender: UIButton) {
-        
-        if let imageID = imageIDToVote {
-            
-            imageIDToVote = imageID
-            
-            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
-                
-                print("downvote")
-                self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
-                self.pressedDown = true
-                print("This should be true DOWN \(self.pressedDown)")
-                
-            })
-            
-            if pressedUp == true {
-                
-                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
-                    
-                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
-                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
-                    self.pressedDown = false
-                    self.pressedUp = false
-                    print("This should be false DOWN \(self.pressedDown)")
-                    
-                })
-                
-            }
-            
-        }
-        
-    }
-    
-    @IBAction func shareButtonPressed(sender: UIButton) {
-        
-        let progressHUD = ProgressIndicator(text: "Copied")
-        
-        let actionSheetController = UIAlertController(title: "Share", message: "", preferredStyle: .ActionSheet)
-        
-        let copyImage = UIAlertAction(title: "Copy Image", style: .Default) { (action) -> Void in
-            
-            if let image = self.detailImage {
-            
-                UIPasteboard.generalPasteboard().image = image
-            }
-            
-            self.view.addSubview(progressHUD)
-            self.view.center = progressHUD.center
-            
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                
-                progressHUD.show()
-                
-            }, completion: { (finished) -> Void in
-                
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5*Double(NSEC_PER_SEC)))
-                
-                dispatch_after(delayTime, dispatch_get_main_queue()) {
-                
-                    progressHUD.hidden = true
-                
-                }
-                
-            })
-        
-        }
-        
-        
-        let copyURL = UIAlertAction(title: "Copy Image URL", style: .Default) { (action) -> Void in
-            
-            if let url = self.imageURLToShare {
-                
-                UIPasteboard.generalPasteboard().string = url
-            }
-            
-            self.view.addSubview(progressHUD)
-            self.view.center = progressHUD.center
-            
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                
-                progressHUD.show()
-                
-            }, completion: { (finished) -> Void in
-                
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5*Double(NSEC_PER_SEC)))
-                
-                dispatch_after(delayTime, dispatch_get_main_queue()) {
-                    
-                    progressHUD.hidden = true
-                    
-                }
-            })
-            
-        }
-        
-        let saveImage = UIAlertAction(title: "Save Image to Camera Roll", style: .Default) { (action) -> Void in
-            
-            if let image = self.detailImage {
-               
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-               
-            }
-            
-            self.view.addSubview(progressHUD)
-            self.view.center = progressHUD.center
-            
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                
-                progressHUD.show()
-                
-                }, completion: { (finished) -> Void in
-                    
-                    let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5*Double(NSEC_PER_SEC)))
-                    
-                    dispatch_after(delayTime, dispatch_get_main_queue()) {
-                        
-                        progressHUD.hidden = true
-                        
-                    }
-                    
-            })
-            
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        
-        actionSheetController.addAction(copyImage)
-        actionSheetController.addAction(copyURL)
-        actionSheetController.addAction(saveImage)
-        actionSheetController.addAction(cancel)
-        
-        presentViewController(actionSheetController, animated: true, completion: nil)
-        
-    }
-    
 }

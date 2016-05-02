@@ -249,8 +249,8 @@
                                                     </state>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="zQr-l4-7oh"/>
                                                             <exclude reference="uYy-tD-B0e"/>
+                                                            <exclude reference="zQr-l4-7oh"/>
                                                         </mask>
                                                     </variation>
                                                 </button>

@@ -35,7 +35,13 @@ struct ImageContract {
             guard let score = json["data"]["score"].number  else { throw ParsingError.FailedToParse(error: "Failed to parse score") }
             guard let subreddit = json["data"]["subreddit"].string else { throw ParsingError.FailedToParse(error: "Failed to parse subreddit") }
             guard let title = json["data"]["title"].string else { throw ParsingError.FailedToParse(error: "Failed to parse title") }
-            guard let url = json["data"]["url"].string else { throw ParsingError.FailedToParse(error: "Failed to parse url") }
+            guard var url = json["data"]["url"].string else { throw ParsingError.FailedToParse(error: "Failed to parse url") }
+            guard let mediaURL = self.modifyURL(url).filter({ $0.0 == "adjustedURL" }).map({ $0.1 as! String }).first else { throw ParsingError.FailedToParse(error: "Failed to parse media url") }
+            guard let mediaBool = self.modifyURL(url).filter({ $0.0 == "media" }).map({ $0.1 as! Bool }).first else {
+                throw ParsingError.FailedToParse(error: "Failed to parse media bool") }
+            
+            url = url == mediaURL ? url : mediaURL
+            print(url)
             
             if let previews = json["data"]["preview"]["images"].array {
                 for preview in previews {
@@ -54,7 +60,8 @@ struct ImageContract {
                                     "title": title,
                                     "url": url,
                                     "imageURL": modifiedURL,
-                                    "pageAfter": pageAfter
+                                    "pageAfter": pageAfter,
+                                    "media": mediaBool
                                 ]
                             )
                         }
@@ -63,5 +70,27 @@ struct ImageContract {
             }
         }
         return returnDictionary
+    }
+    
+    private static func modifyURL(urlString: String) -> Dictionary<String, AnyObject> {
+        var media: Bool = false
+        let stringArray = urlString.componentsSeparatedByString(":")
+        var adjustedURLString = String()
+        
+        if stringArray.first == "http" {
+            adjustedURLString = "https:" + stringArray[1]
+        }
+        
+        if adjustedURLString.hasSuffix("gifv") || adjustedURLString.hasSuffix("webm") {
+            adjustedURLString = adjustedURLString.stringByReplacingOccurrencesOfString("gifv", withString: "mp4", options: .LiteralSearch, range: nil)
+            media = true
+        } else if adjustedURLString.hasSuffix("gif") {
+            media = true
+            return ["adjustedURL": adjustedURLString, "media": media]
+        } else {
+            return ["adjustedURL": urlString, "media": media]
+        }
+        
+        return ["adjustedURL": adjustedURLString, "media": media]
     }
 }

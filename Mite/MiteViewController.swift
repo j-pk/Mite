@@ -83,6 +83,10 @@ class MiteViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBarHidden = false
         navigationController?.view.clipsToBounds = true
+        for gesture in (navigationController?.view.gestureRecognizers)! {
+            print(gesture)
+            gesture.enabled = false
+        }
     }
     
     @IBAction func unwindToSegue (segue : UIStoryboardSegue) {
@@ -175,9 +179,9 @@ class MiteViewController: UIViewController {
     
     func sideMenuButtonPressed(sender: UIButton) {
         if presentedViewController != nil {
-            presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
         } else {
-            performSegueWithIdentifier("menuVC", sender: self)
+            self.performSegueWithIdentifier("menuVC", sender: self)
         }
     }
     
@@ -192,6 +196,7 @@ class MiteViewController: UIViewController {
                     let id = self.miteImages[indexPath.row]["id"] as? String
                     let title = self.miteImages[indexPath.row]["title"] as? String
                     let url = self.miteImages[indexPath.row]["url"] as? String
+                    let media = self.miteImages[indexPath.row]["media"] as! Bool
                     
                     if let score = score {
                         imageVC.upvoteCount = String(score)
@@ -200,6 +205,7 @@ class MiteViewController: UIViewController {
                     imageVC.detailTitle = title
                     imageVC.imageURLToShare = url
                     imageVC.imageIDToVote = id
+                    imageVC.media = media 
                     
                     imageVC.cell = sender as? MiteCollectionViewCell
                     imageVC.cellYOffset = -self.miteCollectionView!.contentOffset.y

@@ -19,6 +19,7 @@ class NetworkManager {
     var pageRedditAfter = ""
     var searchRedditString = ""
     
+    private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
     private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
     private var redditUserName = ""
@@ -141,6 +142,28 @@ class NetworkManager {
             } else {
                 completion(nil)
             }
+        }
+    }
+    
+    func downloadImage(fromUrl url:String, completion: (String?) -> ()) {
+        Alamofire.download(.GET, url, destination: destination)
+            .progress { bytesRead, totalBytesRead, totalBytesExpectedToRead in
+                print(totalBytesRead)
+                
+                // This closure is NOT called on the main queue for performance
+                // reasons. To update your ui, dispatch to the main queue.
+                dispatch_async(dispatch_get_main_queue()) {
+                    print("Total bytes read on main queue: \(totalBytesRead)")
+                }
+            }
+            .response { _, response, _, error in
+                if let error = error {
+                    print("Failed with error: \(error)")
+                } else {
+                    print("Downloaded file successfully")
+                }
+                print(response?.suggestedFilename)
+                completion(response?.suggestedFilename)
         }
     }
 }
