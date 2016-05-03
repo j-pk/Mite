@@ -35,13 +35,9 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     override func viewWillAppear(animated: Bool) {
         
         if (HTTPRequest.session().token?.isEmpty != nil) {
-            
             loginButton.setTitle("Logout", forState: .Normal)
-            
         } else {
-            
             loginButton.setTitle("Login", forState: .Normal)
-            
         }
         
         let userName = NetworkManager.sharedInstance.getUserIdentity()
@@ -49,45 +45,29 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         self.userNameLabel.text = userName
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
-            
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
-            
             picsButton.setTitle(self.firstButton, forState: .Normal)
-    
         }
         
         if (menuDefaults.objectForKey("buttonTwoDefault") as? String) != nil {
-            
             self.secondButton = menuDefaults.objectForKey("buttonTwoDefault") as? String
-            
             awwButton.setTitle(self.secondButton, forState: .Normal)
-            
         }
         
         if (menuDefaults.objectForKey("buttonThreeDefault") as? String) != nil {
-            
             self.thirdButton = menuDefaults.objectForKey("buttonThreeDefault") as? String
-            
             funnyButton.setTitle(self.thirdButton, forState: .Normal)
-            
         }
         
         if (menuDefaults.objectForKey("buttonFourDefault") as? String) != nil {
-            
             self.fourthButton = menuDefaults.objectForKey("buttonFourDefault") as? String
-            
             iTookAPictureButton.setTitle(self.fourthButton, forState: .Normal)
-            
         }
         
         if (menuDefaults.objectForKey("buttonFiveDefault") as? String) != nil {
-            
             self.fifthButton = menuDefaults.objectForKey("buttonFiveDefault") as? String
-            
             artButton.setTitle(self.fifthButton, forState: .Normal)
-            
         }
-        
     }
     
     override func viewDidLoad() {

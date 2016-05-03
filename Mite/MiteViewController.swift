@@ -11,11 +11,14 @@ import UIKit
 class MiteViewController: UIViewController {
 
     @IBOutlet weak var miteCollectionView: UICollectionView!
+    @IBOutlet weak var navBarView: UIView!
+    @IBOutlet weak var subredditLabel: UILabel!
     
     var miteImages = [MiteImages]()
     private var transitionManager = MenuTransitionManager()
     private var hitBottom = false
     private var initialGestureState: CGPoint?
+    private var defaultSubreddit: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +43,7 @@ class MiteViewController: UIViewController {
         layout.columnCount = 2
         layout.headerHeight = 10
         layout.footerHeight = 10
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 44, left: 10, bottom: 0, right: 10)
         
         // Collection view attributes
         self.miteCollectionView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
@@ -52,40 +55,20 @@ class MiteViewController: UIViewController {
     
     //MARK: Configure Views
     func setupViews() {
-        let titleBarImageView = UIImageView(frame: CGRectMake(0, 0, 54, 28))
-        titleBarImageView.contentMode = .ScaleAspectFit
-        let image = UIImage(named: "logo")
-        titleBarImageView.image = image
-        navigationItem.titleView = titleBarImageView
-        
-        let sideMenuButton = UIButton()
-        sideMenuButton.setImage(UIImage(named: "menu"), forState: .Normal)
-        sideMenuButton.frame = CGRectMake(0, 0, 20, 16)
-        sideMenuButton.contentMode = .ScaleAspectFit
-        sideMenuButton.addTarget(self, action: #selector(self.sideMenuButtonPressed), forControlEvents: .TouchUpInside)
-        
-        let sideMenuBarItem = UIBarButtonItem()
-        sideMenuBarItem.customView = sideMenuButton
-        navigationItem.leftBarButtonItem = sideMenuBarItem
-        
-        let sideSubredditLabel = UILabel()
-        sideSubredditLabel.frame = CGRectMake(0, 0, 100, 20)
-        
-        let sideSubredditBarItem = UIBarButtonItem()
-        sideSubredditBarItem.customView = sideSubredditLabel
-        navigationItem.rightBarButtonItem = sideSubredditBarItem
-        
-        sideSubredditLabel.textAlignment = .Right
-        sideSubredditLabel.font = UIFont(name: "HelveticaNeue-Light", size: 14)
-        sideSubredditLabel.text = NetworkManager.sharedInstance.searchRedditString
-        
-        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBarHidden = false
-        navigationController?.view.clipsToBounds = true
-        for gesture in (navigationController?.view.gestureRecognizers)! {
-            print(gesture)
-            gesture.enabled = false
+        self.navBarView.layer.shadowColor = UIColor.blackColor().CGColor
+        self.navBarView.layer.shadowOpacity = 0.20
+        self.navBarView.layer.shadowOffset = CGSizeMake(0, 2.0)
+        self.navBarView.layer.shadowRadius = 2.0
+        self.miteCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0)
+        self.defaultSubreddit = "r/top"
+        self.subredditLabel.text = self.defaultSubreddit
+    }
+    
+    @IBAction func menuButtonPressed(sender: UIButton) {
+        if presentedViewController != nil {
+            self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            self.performSegueWithIdentifier("menuVC", sender: self)
         }
     }
     
@@ -96,6 +79,7 @@ class MiteViewController: UIViewController {
     func fetchAPIData(paginate paginate: Bool) {
         let requestCount = 15
         var fullURL = redditAPI + NetworkManager.sharedInstance.searchRedditString + ".json"
+        self.subredditLabel.text = self.defaultSubreddit ?? NetworkManager.sharedInstance.searchRedditString
         
         if paginate {
             if let pageAfter = self.miteImages.last!["pageAfter"] as? String {
@@ -124,6 +108,7 @@ class MiteViewController: UIViewController {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.miteImages = []
             ImageCacheManager.sharedInstance.imageCache.removeAllObjects()
+            self.defaultSubreddit = nil
             self.fetchAPIData(paginate: false)
         })
     }
@@ -177,14 +162,6 @@ class MiteViewController: UIViewController {
         }
     }
     
-    func sideMenuButtonPressed(sender: UIButton) {
-        if presentedViewController != nil {
-            self.presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
-        } else {
-            self.performSegueWithIdentifier("menuVC", sender: self)
-        }
-    }
-    
     //MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "imageVC") {
@@ -229,7 +206,7 @@ extension MiteViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MiteCollectionViewCell
-        
+
         cell.configureCell(self.miteImages[indexPath.row])
         
         return cell
@@ -252,6 +229,19 @@ extension MiteViewController {
             if self.hitBottom { return }
             self.hitBottom = true
             self.fetchAPIData(paginate: true)
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let velocity = scrollView.panGestureRecognizer.velocityInView(scrollView).y
+        if velocity < 0 {
+            UIView.animateWithDuration(0.5, animations: {
+                self.navBarView.alpha = 0.8
+            })
+        } else if velocity > 0 {
+            UIView.animateWithDuration(0.5, animations: {
+                self.navBarView.alpha = 1.0
+            })
         }
     }
 }

@@ -13,6 +13,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var upvoteButton: UIButton!
     @IBOutlet weak var downvoteButton: UIButton!
+    @IBOutlet weak var mediaViewIcon: MediaView!
     
     var pressingUp = false {
         didSet{
@@ -26,15 +27,30 @@ class MiteCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCell(image: Dictionary<String, AnyObject>) {
+    func configureCell(data: Dictionary<String, AnyObject>) {
         self.backgroundColor = UIColor.clearColor()
         self.upvoteButton.hidden = true
         self.downvoteButton.hidden = true
         
-        guard let imageURL = image["imageURL"] as? String else { return }
+        guard let imageURL = data["imageURL"] as? String else { return }
         guard let image = ImageCacheManager.sharedInstance.fetchImage(withKey: imageURL) else { return }
-        
         self.mainImageView.image = image
+        
+        let media = data["media"] as! Bool
+        if media == true {
+            self.mediaViewIcon.hidden = false
+        } else {
+            self.mediaViewIcon.hidden = true 
+        }
+        
+        let over18 = data["over_18"] as! Bool
+        if over18 == true {
+            self.hidden = true
+            self.userInteractionEnabled = false
+        } else {
+            self.hidden = false
+            self.userInteractionEnabled = true
+        }
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {

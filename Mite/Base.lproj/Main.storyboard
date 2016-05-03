@@ -254,6 +254,14 @@
                                                         </mask>
                                                     </variation>
                                                 </button>
+                                                <view alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tdt-ER-ZtJ" customClass="MediaView" customModule="mite" customModuleProvider="target">
+                                                    <rect key="frame" x="143" y="128" width="20" height="20"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="b93-l4-iIb"/>
+                                                        <constraint firstAttribute="width" constant="20" id="t1P-PA-ssy"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -264,6 +272,8 @@
                                             <constraint firstItem="RzE-a9-N5x" firstAttribute="top" secondItem="4Y0-au-Iuj" secondAttribute="top" id="QWF-k5-9sy"/>
                                             <constraint firstItem="RzE-a9-N5x" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" id="Von-RS-qZM"/>
                                             <constraint firstAttribute="bottom" secondItem="Xx1-E4-gBc" secondAttribute="bottom" id="W9V-cF-pTj"/>
+                                            <constraint firstAttribute="trailing" secondItem="Tdt-ER-ZtJ" secondAttribute="trailing" constant="2" id="cFV-GD-s2h"/>
+                                            <constraint firstAttribute="bottom" secondItem="Tdt-ER-ZtJ" secondAttribute="bottom" constant="2" id="jPE-II-KK7"/>
                                             <constraint firstAttribute="bottom" secondItem="RzE-a9-N5x" secondAttribute="bottom" id="jYp-c2-r2j"/>
                                             <constraint firstItem="Eqi-Qv-tVu" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" id="rQB-82-T41"/>
                                             <constraint firstAttribute="trailing" secondItem="Eqi-Qv-tVu" secondAttribute="trailing" id="rRZ-mn-pM9"/>
@@ -272,6 +282,7 @@
                                         <connections>
                                             <outlet property="downvoteButton" destination="Xx1-E4-gBc" id="k6W-Zd-KY2"/>
                                             <outlet property="mainImageView" destination="RzE-a9-N5x" id="zeg-Lb-nsH"/>
+                                            <outlet property="mediaViewIcon" destination="Tdt-ER-ZtJ" id="Lfa-Ov-dpP"/>
                                             <outlet property="upvoteButton" destination="Eqi-Qv-tVu" id="iYt-O9-UDp"/>
                                             <segue destination="bQc-lb-KOw" kind="presentation" identifier="imageVC" animates="NO" id="Olj-t8-Ssi"/>
                                         </connections>
@@ -282,23 +293,67 @@
                                     <outlet property="delegate" destination="lme-po-GWT" id="bsP-cT-0CK"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vfG-Uk-2Yj">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="p6Y-sN-lPJ">
+                                        <rect key="frame" x="263" y="26" width="74" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="CSW-Pm-TdX"/>
+                                            <constraint firstAttribute="width" constant="74" id="X9b-IK-Akn"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/r/main" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhY-UM-4ad">
+                                        <rect key="frame" x="547" y="30" width="45" height="17"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                        <color key="textColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VT0-Gr-EIg">
+                                        <rect key="frame" x="16" y="30" width="26" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="Tza-V6-sPa"/>
+                                            <constraint firstAttribute="width" constant="26" id="g77-kn-aWe"/>
+                                        </constraints>
+                                        <state key="normal" image="menu"/>
+                                        <connections>
+                                            <action selector="menuButtonPressed:" destination="lme-po-GWT" eventType="touchUpInside" id="tPr-Td-WxG"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="p6Y-sN-lPJ" firstAttribute="centerY" secondItem="vfG-Uk-2Yj" secondAttribute="centerY" constant="9" id="8Ig-YG-1EV"/>
+                                    <constraint firstItem="HhY-UM-4ad" firstAttribute="centerY" secondItem="vfG-Uk-2Yj" secondAttribute="centerY" constant="6.5" id="9mF-WF-KEp"/>
+                                    <constraint firstAttribute="height" constant="64" id="AIH-wZ-lQ0"/>
+                                    <constraint firstItem="VT0-Gr-EIg" firstAttribute="leading" secondItem="vfG-Uk-2Yj" secondAttribute="leading" constant="16" id="FnQ-o6-tLC"/>
+                                    <constraint firstAttribute="trailing" secondItem="HhY-UM-4ad" secondAttribute="trailing" constant="8" id="MCu-96-YOr"/>
+                                    <constraint firstItem="VT0-Gr-EIg" firstAttribute="centerY" secondItem="vfG-Uk-2Yj" secondAttribute="centerY" constant="8" id="diF-0i-apS"/>
+                                    <constraint firstItem="p6Y-sN-lPJ" firstAttribute="centerX" secondItem="vfG-Uk-2Yj" secondAttribute="centerX" id="fj4-fF-42g"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="vfG-Uk-2Yj" firstAttribute="leading" secondItem="1p3-xZ-JNo" secondAttribute="leading" id="Kdb-Lp-TD3"/>
                             <constraint firstItem="gV9-7E-MhR" firstAttribute="top" secondItem="1p3-xZ-JNo" secondAttribute="top" id="O3X-93-ydu"/>
                             <constraint firstItem="gV9-7E-MhR" firstAttribute="leading" secondItem="1p3-xZ-JNo" secondAttribute="leading" id="Uee-L7-5HL"/>
+                            <constraint firstAttribute="trailing" secondItem="vfG-Uk-2Yj" secondAttribute="trailing" id="dJe-41-buv"/>
+                            <constraint firstItem="vfG-Uk-2Yj" firstAttribute="top" secondItem="1p3-xZ-JNo" secondAttribute="top" id="eXk-6g-2XK"/>
                             <constraint firstAttribute="trailing" secondItem="gV9-7E-MhR" secondAttribute="trailing" id="lfb-cR-xZ9"/>
                             <constraint firstItem="0ll-8L-bkL" firstAttribute="top" secondItem="gV9-7E-MhR" secondAttribute="bottom" id="rac-2G-iKX"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="miteCollectionView" destination="gV9-7E-MhR" id="fgZ-9j-1gu"/>
+                        <outlet property="navBarView" destination="vfG-Uk-2Yj" id="pic-b5-VGV"/>
+                        <outlet property="subredditLabel" destination="HhY-UM-4ad" id="rge-Be-mmC"/>
                         <segue destination="tQ1-sC-9f0" kind="presentation" identifier="menuVC" modalPresentationStyle="overFullScreen" id="aDl-fF-39n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Wj-9B-Vdc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1387" y="447"/>
+            <point key="canvasLocation" x="1409" y="447"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hut-6F-jgp">
@@ -786,7 +841,9 @@
     <resources>
         <image name="downvote" width="40" height="40"/>
         <image name="downvoteWhite" width="40" height="40"/>
+        <image name="logo" width="104" height="54"/>
         <image name="logo_x" width="300" height="156"/>
+        <image name="menu" width="39" height="31"/>
         <image name="shareWhite" width="40" height="45"/>
         <image name="upvote" width="40" height="40"/>
         <image name="upvoteWhite" width="40" height="40"/>

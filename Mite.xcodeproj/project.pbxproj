@@ -45,6 +45,7 @@
 		C0DF1E941CD30BC5005E0249 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DF1E931CD30BC5005E0249 /* DataManager.swift */; };
 		C0DF1E9B1CD31255005E0249 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DF1E991CD31255005E0249 /* Image+CoreDataProperties.swift */; };
 		C0DF1E9C1CD31255005E0249 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DF1E9A1CD31255005E0249 /* Image.swift */; };
+		C0DF1E9E1CD82DA3005E0249 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DF1E9D1CD82DA3005E0249 /* MediaView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		C0DF1E931CD30BC5005E0249 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		C0DF1E991CD31255005E0249 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C0DF1E9A1CD31255005E0249 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		C0DF1E9D1CD82DA3005E0249 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +224,7 @@
 				C083F2421B52DDC800C7384A /* CustomButton.swift */,
 				C083F2461B52F55400C7384A /* CustomTextField.swift */,
 				C074E5591B53F01600C7C282 /* GradientView.swift */,
+				C0DF1E9D1CD82DA3005E0249 /* MediaView.swift */,
 			);
 			name = IBDesignable;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C08065071B7304F6008F802F /* RedditViewController.swift in Sources */,
+				C0DF1E9E1CD82DA3005E0249 /* MediaView.swift in Sources */,
 				C07D44BD1CCC143800C1A708 /* TransitionManager.swift in Sources */,
 				C03971711B69815F00D7BB5C /* ImageExtension.swift in Sources */,
 				C07D44B91CCC141200C1A708 /* NetworkManager.swift in Sources */,
