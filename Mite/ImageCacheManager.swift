@@ -8,19 +8,23 @@
 
 import Foundation
 import UIKit
+import AlamofireImage
 
 class ImageCacheManager {
     
+    let imageCache = AutoPurgingImageCache(
+        memoryCapacity: 100 * 1024 * 1024,
+        preferredMemoryUsageAfterPurge: 60 * 1024 * 1024
+    )
+    
     static let sharedInstance = ImageCacheManager()
     
-    var imageCache = NSCache()
-    
     func addImageToCache(image:UIImage, withKey key:String) {
-        self.imageCache.setObject(image, forKey: key)
+        self.imageCache.addImage(image, withIdentifier: key)
     }
     
     func fetchImage(withKey key:String) -> UIImage? {
-        return self.imageCache.objectForKey(key) as? UIImage
+        return self.imageCache.imageWithIdentifier(key)
     }
     
 }

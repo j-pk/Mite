@@ -6,43 +6,38 @@
 	<dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>AlamofireImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Gifu.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0BB2DA154370C2D19380BB050804F0B4</key>
+		<key>55C28265307E30EF28FE4CAA6C5CDF66</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D140B4DD07D735245B8230BCCF4EED2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>79C040AFDDCE1BCBF6D8B5EB0B85887F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AEA56EBE1B518C71721209FB26701898</key>
+		<key>8D0D218459CB11FA144614A32BFC37BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,17 +47,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CDC9CA46815C6A965AC6194553D3650F</key>
+		<key>D38AF55C55B4B472D95BDE021A01E539</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5D951CD7C1ED61E1DE7E5344FA9E6FD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E0F8C83B0AF895D133A6EDC6EF82B7E9</key>
+		<key>D96DB8884DC76741A48DE63FE58D7C2C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

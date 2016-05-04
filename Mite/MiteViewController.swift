@@ -95,22 +95,23 @@ class MiteViewController: UIViewController {
             }
             for image in self.miteImages {
                 if let imageURL = image["imageURL"] as? String {
-                    NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { (image) in
-                        self.miteCollectionView.reloadData()
-                    }
+                    NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { _ in }
                 }
             }
             self.hitBottom = false
         }
+        dispatch_async(dispatch_get_main_queue()) {
+            self.miteCollectionView.reloadData()
+        }
+        NotificationManager.sharedInstance.showNotificationWithTitle("Balls", controller: self, notificationType: NotificationType.Message, timer: 4.0)
     }
     
     func reloadData(notification: NSNotification) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             self.miteImages = []
-            ImageCacheManager.sharedInstance.imageCache.removeAllObjects()
             self.defaultSubreddit = nil
             self.fetchAPIData(paginate: false)
-        })
+        }
     }
     
     func sendLoginAlert(notification: NSNotification) {

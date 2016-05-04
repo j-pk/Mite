@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		862952697B35F80C63C9F6FE /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E733DAD1744D1F6E6433A6 /* Pods.framework */; };
 		C01B46E01B67E45A0049C76C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C078E3E01B4CA5A900EB7176 /* Main.storyboard */; };
 		C02DC4FB1B56AC1C0067A4BA /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FA1B56AC1C0067A4BA /* Alert.swift */; };
 		C02DC4FD1B573E020067A4BA /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DC4FC1B573E020067A4BA /* ProgressIndicator.swift */; };
@@ -15,6 +14,10 @@
 		C03B31791CD04E7600CACB23 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C03B31771CD04E7600CACB23 /* DataModel.xcdatamodeld */; };
 		C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */; };
 		C071F5001B5AEA3200C33947 /* Menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = C071F4FF1B5AEA3200C33947 /* Menu.plist */; };
+		C07287F51CD990E100459EAC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E733DAD1744D1F6E6433A6 /* Pods.framework */; };
+		C07287F61CD990E100459EAC /* Pods.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1E733DAD1744D1F6E6433A6 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C07287F91CD99C1400459EAC /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07287F81CD99C1400459EAC /* NotificationView.swift */; };
+		C07287FB1CD99E1F00459EAC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07287FA1CD99E1F00459EAC /* NotificationManager.swift */; };
 		C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074E5591B53F01600C7C282 /* GradientView.swift */; };
 		C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078E3DC1B4CA5A900EB7176 /* AppDelegate.swift */; };
 		C078E3E41B4CA5A900EB7176 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C078E3E31B4CA5A900EB7176 /* Images.xcassets */; };
@@ -58,6 +61,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C07287F71CD990E100459EAC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C07287F61CD990E100459EAC /* Pods.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		478840B047E5C53A037F94DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7CD9F388FBF68FD712FA2137 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +85,8 @@
 		C03B31781CD04E7600CACB23 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefaults.swift; sourceTree = "<group>"; };
 		C071F4FF1B5AEA3200C33947 /* Menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Menu.plist; sourceTree = "<group>"; };
+		C07287F81CD99C1400459EAC /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		C07287FA1CD99E1F00459EAC /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C074E5591B53F01600C7C282 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		C078E3D71B4CA5A900EB7176 /* mite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078E3DB1B4CA5A900EB7176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -111,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				862952697B35F80C63C9F6FE /* Pods.framework in Frameworks */,
+				C07287F51CD990E100459EAC /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +244,8 @@
 				C083F2461B52F55400C7384A /* CustomTextField.swift */,
 				C074E5591B53F01600C7C282 /* GradientView.swift */,
 				C0DF1E9D1CD82DA3005E0249 /* MediaView.swift */,
+				C07287F81CD99C1400459EAC /* NotificationView.swift */,
+				C07287FA1CD99E1F00459EAC /* NotificationManager.swift */,
 			);
 			name = IBDesignable;
 			sourceTree = "<group>";
@@ -317,6 +338,7 @@
 				C078E3D51B4CA5A900EB7176 /* Resources */,
 				27F61AD49D9143506DEF9286 /* Embed Pods Frameworks */,
 				847F24041ABB8B9DD1293A9F /* Copy Pods Resources */,
+				C07287F71CD990E100459EAC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -466,6 +488,7 @@
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,
 				C0AA9A461B4DCDE10088B09D /* MainCollectionViewCell.swift in Sources */,
 				C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */,
+				C07287F91CD99C1400459EAC /* NotificationView.swift in Sources */,
 				C0AA44601B5497DA001F4E3E /* Keys.swift in Sources */,
 				C09DAD411CD5475000FED508 /* MiteCollectionViewCell.swift in Sources */,
 				C09DAD3F1CD5461C00FED508 /* MiteViewController.swift in Sources */,
@@ -486,6 +509,7 @@
 				C0DF1E9C1CD31255005E0249 /* Image.swift in Sources */,
 				C07D44BF1CCC7BDD00C1A708 /* LaunchScreenViewController.swift in Sources */,
 				C09DAD431CD5492D00FED508 /* CollectionViewLayout.swift in Sources */,
+				C07287FB1CD99E1F00459EAC /* NotificationManager.swift in Sources */,
 				C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */,
 				C0AA9A4E1B4DCEB40088B09D /* AnimatedGIF.swift in Sources */,
 				C0AA9A4A1B4DCE390088B09D /* MasterFlowLayout.swift in Sources */,

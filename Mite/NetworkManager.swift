@@ -115,22 +115,11 @@ class NetworkManager {
     }
     
     
-    func fetchImage(fromUrl url:String, completion:(UIImage? -> ())) {
-        Alamofire.request(.GET, url).validate().response() {
-            (request, response, data, error) in
-            if let image = ImageCacheManager.sharedInstance.fetchImage(withKey: url) {
-                completion(image)
-            } else {
-                Alamofire.request(.GET, url).validate().response() {
-                    (request, response, data, error) in
-                    if let imageData = data, let image = UIImage(data:imageData) where error == nil && response != nil {
-                        ImageCacheManager.sharedInstance.addImageToCache(image, withKey: url)
-                        completion(image)
-                    } else {
-                        completion(nil)
-                    }
-                }
-            }
+    func fetchImage(fromUrl url:String, completion: (UIImage -> Void)) -> (Request) {
+        return Alamofire.request(.GET, url).responseImage { (response) -> Void in
+            guard let image = response.result.value else { return }
+            completion(image)
+            ImageCacheManager.sharedInstance.addImageToCache(image, withKey: url)
         }
     }
     

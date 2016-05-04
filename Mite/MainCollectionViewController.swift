@@ -84,7 +84,6 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updateImages(false)
             self.imageResults = []
-            ImageCacheManager.sharedInstance.imageCache.removeAllObjects()
             self.collectionView?.reloadData()
         })
     }

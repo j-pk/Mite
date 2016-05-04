@@ -33,8 +33,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
         self.downvoteButton.hidden = true
         
         guard let imageURL = data["imageURL"] as? String else { return }
-        guard let image = ImageCacheManager.sharedInstance.fetchImage(withKey: imageURL) else { return }
-        self.mainImageView.image = image
+        self.mainImageView.af_setImageWithURL(NSURL(string: imageURL)!)
         
         let media = data["media"] as! Bool
         if media == true {
