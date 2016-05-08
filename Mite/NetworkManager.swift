@@ -30,6 +30,7 @@ class NetworkManager {
         }
         set {
             defaults.setValue(newValue, forKey: "TOKEN")
+            defaults.synchronize()
         }
     }
     
@@ -59,16 +60,40 @@ class NetworkManager {
                     if  let redditUserName = parsedJSON["name"].string {
                         return self.redditUserName = redditUserName
                     } else {
-                        HTTPRequest.session().logoutAndDeleteToken()
+                        //HTTPRequest.session().logoutAndDeleteToken()
                     }
                 }
         }
         return self.redditUserName
     }
     
+    func getUserPreferences() {
+        let headers = [
+            "Authorization": "bearer \(token)",
+            "Content-Type" : "application/x-www-form-urlencoded"
+        ]
+        
+        Alamofire.request(.GET, API_URL + "/api/v1/me/prefs", headers: headers)
+            .responseJSON { response in
+                
+                //error example
+                switch response.result {
+                case .Success:
+                    print("Validation Successful")
+                case .Failure(let error):
+                    print(error)
+                }
+                print(response.result.value)
+                if let JSONData = response.result.value {
+                    let parsedJSON = JSON(JSONData)
+                    print(parsedJSON)
+                }
+        }
+    }
+    
     func upvoteAndDownvote(linkName: String, direction: Int, completion: () -> Void) {
         if token == nil {
-            Alert.session().loginAlert()
+            NotificationManager.sharedInstance.showNotificationWithTitle("Login to use this feature.", notificationType: NotificationType.Warning, timer: 2.0)
             return
         }
         
@@ -86,15 +111,17 @@ class NetworkManager {
             .responseJSON { response in
                 switch response.result {
                 case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
                     print("Validation Successful")
                 case .Failure(let error):
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)
                 }
         }
         completion()
     }
     
-    func requestImages(url: String, completion: (data: [MiteImages]) -> ()) {
+    func requestImages(url: String, completion: (data: [MiteImage]) -> ()) {
         Alamofire.request(.GET, url).responseJSON { response in
             switch response.result {
             case .Success:
@@ -105,8 +132,8 @@ class NetworkManager {
             if let JSONData = response.result.value {
                 let json = JSON(JSONData)
                 do {
-                    let images = try ImageContract.parseJSON(json)
-                    completion(data: images)
+                    let parsedData = try ImageContract.parseJSON(json)
+                    completion(data: parsedData)
                 } catch let error {
                     print(error)
                 }
@@ -118,11 +145,12 @@ class NetworkManager {
     func fetchImage(fromUrl url:String, completion: (UIImage -> Void)) -> (Request) {
         return Alamofire.request(.GET, url).responseImage { (response) -> Void in
             guard let image = response.result.value else { return }
+            print(image)
             completion(image)
             ImageCacheManager.sharedInstance.addImageToCache(image, withKey: url)
         }
     }
-    
+        
     func fetchImageData(fromUrl url:String, completion:(NSData? -> ())) {
         Alamofire.request(.GET, url).validate().response() {
             (request, response, data, error) in

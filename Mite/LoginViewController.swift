@@ -16,44 +16,33 @@ class LoginViewController: UIViewController {
     ////////////////////MARK: Load
     
     override func viewWillAppear(animated: Bool) {
-        
         connectToRedditButton.hidden = true
         browseAnonButton.hidden = true
         returnButton.alpha = 0
-        
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         randomString = generateRandomString(20)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dismissVC), name: "dismissVC", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
-        
         connectToRedditButton.hidden = false
         browseAnonButton.hidden = false
-        
+    
         let offSet = view.frame.height * -1
         let bottomOffset = view.frame.height
         self.connectToRedditButton.transform = CGAffineTransformMakeTranslation(0, offSet)
         self.browseAnonButton.transform = CGAffineTransformMakeTranslation(0, bottomOffset)
         
         UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.2, options: [], animations: { () -> Void in
-            
             self.connectToRedditButton.transform = CGAffineTransformIdentity
             self.browseAnonButton.transform = CGAffineTransformIdentity
-            
             }) { (finished) -> Void in
-                
                 UIView.animateWithDuration(0.4, animations: { () -> Void in
-                    
                     self.returnButton.alpha = 1
-                    
                 })
-                
         }
         
     }
@@ -88,13 +77,19 @@ class LoginViewController: UIViewController {
     
     @IBAction func connectButtonPressed(sender: UIButton) {
         
-        if let authorizationURL = NSURL(string: "https://www.reddit.com/api/v1/authorize?client_id=\(miteKey)&response_type=code&state=\(randomString)&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
+        if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=\(randomString)&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
             
             urlToSend = authorizationURL
             
         }
         
     }
+    
+    
+    func dismissVC() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     
     func generateRandomString(length: Int) -> NSString {
         
@@ -113,15 +108,10 @@ class LoginViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         if segue.identifier == "redditWebView" {
-            
             if let redditVC = segue.destinationViewController as? RedditViewController {
-                
                 redditVC.url = urlToSend
-                
                 print(urlToSend)
-                
             }
             
         }

@@ -41,6 +41,8 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         }
         
         let userName = NetworkManager.sharedInstance.getUserIdentity()
+        NetworkManager.sharedInstance.getUserPreferences()
+        print(NetworkManager.sharedInstance.token)
         
         self.userNameLabel.text = userName
         
@@ -187,7 +189,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
             
             Alert.session().loggedOutAlert()
-            NetworkManager.sharedInstance.logoutAndDeleteToken()
+            //NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
             

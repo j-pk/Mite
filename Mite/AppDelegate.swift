@@ -74,11 +74,11 @@
                         
                         if let accessToken = jsonResult?["access_token"] as? String {
                             
-                            HTTPRequest.session().token = accessToken
+                            NetworkManager.sharedInstance.token = accessToken
                             print("This is a token: " + "\(accessToken)")
                             
-                            self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
-                            NSNotificationCenter.defaultCenter().postNotificationName("sendAlert", object: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName("dismissVC", object: nil)
+                            NotificationManager.sharedInstance.showNotificationWithTitle("Login Successful", notificationType: NotificationType.Success, timer: 2.0)
                         }
                     } catch let e as NSError {
                         print(e)

@@ -13,12 +13,13 @@ class MiteViewController: UIViewController {
     @IBOutlet weak var miteCollectionView: UICollectionView!
     @IBOutlet weak var navBarView: UIView!
     @IBOutlet weak var subredditLabel: UILabel!
-    
-    var miteImages = [MiteImages]()
+    @IBOutlet weak var activityIndicator: CircularProgressView!
+
     private var transitionManager = MenuTransitionManager()
     private var hitBottom = false
     private var initialGestureState: CGPoint?
     private var defaultSubreddit: String?
+    private var miteImages = [MiteImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,39 +80,40 @@ class MiteViewController: UIViewController {
     func fetchAPIData(paginate paginate: Bool) {
         let requestCount = 15
         var fullURL = redditAPI + NetworkManager.sharedInstance.searchRedditString + ".json"
-        self.subredditLabel.text = self.defaultSubreddit ?? NetworkManager.sharedInstance.searchRedditString
         
         if paginate {
-            if let pageAfter = self.miteImages.last!["pageAfter"] as? String {
+            if let pageAfter = self.miteImages.last?.pageAfter {
                 fullURL += "?limit=\(requestCount)&after=\(pageAfter)"
             }
         }
         
-        NetworkManager.sharedInstance.requestImages(fullURL) { (data) in
-            if !paginate {
-                self.miteImages = data
-            } else {
-                data.forEach({ self.miteImages.append($0) })
-            }
-            for image in self.miteImages {
-                if let imageURL = image["imageURL"] as? String {
-                    NetworkManager.sharedInstance.fetchImage(fromUrl: imageURL) { _ in }
+        activityIndicator.hidden = false
+        let blockOperation = NSBlockOperation {
+            NetworkManager.sharedInstance.requestImages(fullURL) { (data) in
+                if !paginate {
+                    self.miteImages = data
+                } else {
+                    data.forEach({ self.miteImages.append($0) })
                 }
+                data.forEach({ mite in
+                    NetworkManager.sharedInstance.fetchImage(fromUrl: mite.modifiedURL) { _ in
+                        NSOperationQueue.mainQueue().addOperationWithBlock {
+                            self.activityIndicator.hidden = true
+                            self.miteCollectionView.reloadData()
+                        }
+                    }
+                })
             }
-            self.hitBottom = false
         }
-        dispatch_async(dispatch_get_main_queue()) {
-            self.miteCollectionView.reloadData()
-        }
-        NotificationManager.sharedInstance.showNotificationWithTitle("Balls", controller: self, notificationType: NotificationType.Message, timer: 4.0)
+        let queue = NSOperationQueue()
+        queue.addOperation(blockOperation)
     }
     
     func reloadData(notification: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.miteImages = []
-            self.defaultSubreddit = nil
-            self.fetchAPIData(paginate: false)
-        }
+        self.miteImages = []
+        self.defaultSubreddit = nil
+        self.subredditLabel.text = NetworkManager.sharedInstance.searchRedditString
+        self.fetchAPIData(paginate: false)
     }
     
     func sendLoginAlert(notification: NSNotification) {
@@ -168,23 +170,12 @@ class MiteViewController: UIViewController {
         if (segue.identifier == "imageVC") {
             if let indexPath = self.miteCollectionView!.indexPathsForSelectedItems()!.first {
                 if let imageVC = segue.destinationViewController as? ImageViewController {
-                    
-                    let image = self.miteImages[indexPath.row]["imageURL"] as? String
-                    let score = self.miteImages[indexPath.row]["score"] as? Int
-                    let id = self.miteImages[indexPath.row]["id"] as? String
-                    let title = self.miteImages[indexPath.row]["title"] as? String
-                    let url = self.miteImages[indexPath.row]["url"] as? String
-                    let media = self.miteImages[indexPath.row]["media"] as! Bool
-                    
-                    if let score = score {
-                        imageVC.upvoteCount = String(score)
-                    }
-                    imageVC.imageURL = image
-                    imageVC.detailTitle = title
-                    imageVC.imageURLToShare = url
-                    imageVC.imageIDToVote = id
-                    imageVC.media = media 
-                    
+                    imageVC.upvoteCount = String(self.miteImages[indexPath.row].score)
+                    imageVC.imageURL = self.miteImages[indexPath.row].modifiedURL
+                    imageVC.detailTitle = self.miteImages[indexPath.row].title
+                    imageVC.imageURLToShare = self.miteImages[indexPath.row].url
+                    imageVC.imageIDToVote = self.miteImages[indexPath.row].id
+                    imageVC.media = self.miteImages[indexPath.row].mediaBool
                     imageVC.cell = sender as? MiteCollectionViewCell
                     imageVC.cellYOffset = -self.miteCollectionView!.contentOffset.y
                 }
@@ -217,8 +208,7 @@ extension MiteViewController: UICollectionViewDelegate {
 extension MiteViewController: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
     
-        guard let imageURL = self.miteImages[indexPath.row]["imageURL"] as? String else { return CGSizeZero }
-        guard let image = ImageCacheManager.sharedInstance.fetchImage(withKey: imageURL) else { return CGSizeZero }
+        guard let image = ImageCacheManager.sharedInstance.fetchImage(withKey: self.miteImages[indexPath.row].modifiedURL) else { return CGSizeZero }
 
         return image.size
     }
@@ -227,7 +217,6 @@ extension MiteViewController: CHTCollectionViewDelegateWaterfallLayout {
 extension MiteViewController {
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
-            if self.hitBottom { return }
             self.hitBottom = true
             self.fetchAPIData(paginate: true)
         }

@@ -19,11 +19,11 @@ enum NotificationType {
     var color:UIColor {
         switch self {
         case .Success:
-            return UIColor.greenColor()
+            return UIColor(red:0.29, green:0.9, blue:0.49, alpha:1)
         case .Error:
-            return UIColor.redColor()
+            return UIColor(red:1, green:0.16, blue:0, alpha:1)
         case .Warning:
-            return UIColor.yellowColor()
+            return UIColor(red:1, green:0.95, blue:0.78, alpha:1)
         case .Message:
             return UIColor.grayColor()
         }
@@ -91,12 +91,13 @@ class NotificationView: UIView {
         
         setupNotificationType()
         
-        let labelRect = CGRectMake(10,10, screenBounds.size.width, notificationViewHeight)
+        let labelRect = CGRectMake(referenceView.frame.minX, 10, screenBounds.size.width, notificationViewHeight)
         
         let titleLabel = UILabel(frame: labelRect)
         titleLabel.text = title
-        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
-        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.textAlignment = .Center
+        titleLabel.font = UIFont(name: "HelveticaNeue-SemiBold", size: 17)
+        titleLabel.textColor = UIColor.blackColor()
         
         addSubview(titleLabel)
     }

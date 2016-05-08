@@ -156,10 +156,10 @@ class MainCollectionViewController: UICollectionViewController, MainLayoutDelega
         NetworkManager.sharedInstance.requestImages(fullURL, completion: { (data) -> () in
             if paginate {
                 for d in data {
-                    self.imageResults.append(d)
+                    //self.imageResults.append(d)
                 }
             } else {
-                self.imageResults = data
+                //self.imageResults = data
             }
             self.hitBottom = false
             self.collectionView?.reloadData()

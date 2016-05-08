@@ -189,7 +189,6 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         let shiftLeftOffset = CGAffineTransformMakeTranslation(offstageOffset, 0)
         let shiftAndShrink = CGAffineTransformMakeScale(0.8, 0.8)
         
-        menuViewController.subredditSearch.alpha = 0
         menuViewController.popularSubredditsLabel.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
         menuViewController.picsButton.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
         menuViewController.awwButton.transform = CGAffineTransformConcat(shiftLeftOffset, shiftAndShrink)
@@ -207,7 +206,6 @@ class MenuTransitionManager: UIPercentDrivenInteractiveTransition, UIViewControl
         
         menuViewController.view.alpha = 1
         
-        menuViewController.subredditSearch.alpha = 1
         menuViewController.popularSubredditsLabel.transform = CGAffineTransformIdentity
         menuViewController.picsButton.transform = CGAffineTransformIdentity
         menuViewController.awwButton.transform = CGAffineTransformIdentity

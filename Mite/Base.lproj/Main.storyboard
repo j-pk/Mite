@@ -262,10 +262,18 @@
                                                         <constraint firstAttribute="width" constant="20" id="t1P-PA-ssy"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NSFW" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQY-PX-LLQ">
+                                                    <rect key="frame" x="2" y="135" width="38" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="0.1450980392" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="OQY-PX-LLQ" secondAttribute="bottom" id="95m-o4-PpI"/>
+                                            <constraint firstItem="OQY-PX-LLQ" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" constant="2" id="BwX-Vq-oOD"/>
                                             <constraint firstItem="Eqi-Qv-tVu" firstAttribute="top" secondItem="4Y0-au-Iuj" secondAttribute="top" id="E5v-fQ-E8i"/>
                                             <constraint firstAttribute="trailing" secondItem="RzE-a9-N5x" secondAttribute="trailing" id="IsP-i4-N9j"/>
                                             <constraint firstAttribute="trailing" secondItem="Xx1-E4-gBc" secondAttribute="trailing" id="PfN-Bh-bLT"/>
@@ -283,6 +291,7 @@
                                             <outlet property="downvoteButton" destination="Xx1-E4-gBc" id="k6W-Zd-KY2"/>
                                             <outlet property="mainImageView" destination="RzE-a9-N5x" id="zeg-Lb-nsH"/>
                                             <outlet property="mediaViewIcon" destination="Tdt-ER-ZtJ" id="Lfa-Ov-dpP"/>
+                                            <outlet property="nsfwLabel" destination="OQY-PX-LLQ" id="16W-Cp-I4d"/>
                                             <outlet property="upvoteButton" destination="Eqi-Qv-tVu" id="iYt-O9-UDp"/>
                                             <segue destination="bQc-lb-KOw" kind="presentation" identifier="imageVC" animates="NO" id="Olj-t8-Ssi"/>
                                         </connections>
@@ -332,9 +341,24 @@
                                     <constraint firstItem="p6Y-sN-lPJ" firstAttribute="centerX" secondItem="vfG-Uk-2Yj" secondAttribute="centerX" id="fj4-fF-42g"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mq5-9L-Nuk" customClass="CircularProgressView" customModule="mite" customModuleProvider="target">
+                                <rect key="frame" x="280" y="280" width="40" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="E7t-4Y-aaV"/>
+                                    <constraint firstAttribute="height" constant="40" id="ZFX-EU-YZc"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                        <real key="value" value="18"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.29803921570000003" green="0.29411764709999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="Mq5-9L-Nuk" firstAttribute="centerX" secondItem="1p3-xZ-JNo" secondAttribute="centerX" id="4S4-tQ-aqh"/>
+                            <constraint firstItem="Mq5-9L-Nuk" firstAttribute="centerY" secondItem="1p3-xZ-JNo" secondAttribute="centerY" id="B9E-wN-czn"/>
                             <constraint firstItem="vfG-Uk-2Yj" firstAttribute="leading" secondItem="1p3-xZ-JNo" secondAttribute="leading" id="Kdb-Lp-TD3"/>
                             <constraint firstItem="gV9-7E-MhR" firstAttribute="top" secondItem="1p3-xZ-JNo" secondAttribute="top" id="O3X-93-ydu"/>
                             <constraint firstItem="gV9-7E-MhR" firstAttribute="leading" secondItem="1p3-xZ-JNo" secondAttribute="leading" id="Uee-L7-5HL"/>
@@ -345,6 +369,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Mq5-9L-Nuk" id="gjy-u1-FC6"/>
                         <outlet property="miteCollectionView" destination="gV9-7E-MhR" id="fgZ-9j-1gu"/>
                         <outlet property="navBarView" destination="vfG-Uk-2Yj" id="pic-b5-VGV"/>
                         <outlet property="subredditLabel" destination="HhY-UM-4ad" id="rge-Be-mmC"/>
@@ -675,7 +700,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MDV-o9-CTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="uHh-nO-Xd2" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1387" y="1190"/>
+            <point key="canvasLocation" x="1409" y="1203"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="WS6-4D-RTX">

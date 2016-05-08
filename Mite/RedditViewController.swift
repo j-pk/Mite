@@ -28,7 +28,7 @@ class RedditViewController: UIViewController {
         
         let request = NSURLRequest(URL: url!)
         redditWebView.loadRequest(request)
-        
+                
     }
     
     @IBAction func cancelWebView(sender: AnyObject) {
@@ -36,5 +36,6 @@ class RedditViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
         
     }
+
     
 }

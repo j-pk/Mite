@@ -21,9 +21,9 @@ extension JSON {
 
 struct ImageContract {
     
-    static func parseJSON(jsonData: JSON) throws -> [MiteImages] {
+    static func parseJSON(jsonData: JSON) throws -> [MiteImage] {
         
-        var returnDictionary: [Dictionary<String, AnyObject>] = [[:]]
+        var returnMiteData: [MiteImage] = []
         
         guard let pageAfter = jsonData["data"]["after"].string else { throw ParsingError.FailedToParse(error: "Failed to parse pageAfter") }
         guard let jsonArray = jsonData["data"]["children"].array else { throw ParsingError.FailedToParse(error: "Failed to parse json children array") }
@@ -41,7 +41,6 @@ struct ImageContract {
                 throw ParsingError.FailedToParse(error: "Failed to parse media bool") }
             
             url = url == mediaURL ? url : mediaURL
-            print(url)
             
             if let previews = json["data"]["preview"]["images"].array {
                 for preview in previews {
@@ -50,26 +49,13 @@ struct ImageContract {
                         if let width = resolution["width"].int where width == 320 {
                             guard let imageURL = resolution["url"].string else { throw ParsingError.FailedToParse(error: "Failed to parse imageURL") }
                             let modifiedURL = imageURL.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                            returnDictionary.append(
-                                [
-                                    "author": author,
-                                    "id": id,
-                                    "over_18": over_18,
-                                    "score": score,
-                                    "subreddit": subreddit,
-                                    "title": title,
-                                    "url": url,
-                                    "imageURL": modifiedURL,
-                                    "pageAfter": pageAfter,
-                                    "media": mediaBool
-                                ]
-                            )
+                            returnMiteData.append(MiteImage(author: author, id: id, over_18: over_18, score: score, subreddit: subreddit, title: title, url: url, modifiedURL: modifiedURL, pageAfter: pageAfter, mediaBool: mediaBool))
                         }
                     }
                 }
             }
         }
-        return returnDictionary
+        return returnMiteData
     }
     
     private static func modifyURL(urlString: String) -> Dictionary<String, AnyObject> {

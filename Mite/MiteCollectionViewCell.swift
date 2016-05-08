@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class MiteCollectionViewCell: UICollectionViewCell {
     
@@ -14,6 +15,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var upvoteButton: UIButton!
     @IBOutlet weak var downvoteButton: UIButton!
     @IBOutlet weak var mediaViewIcon: MediaView!
+    @IBOutlet weak var nsfwLabel: UILabel!
     
     var pressingUp = false {
         didSet{
@@ -27,29 +29,39 @@ class MiteCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCell(data: Dictionary<String, AnyObject>) {
+    func configureCell(data: MiteImage) {
         self.backgroundColor = UIColor.clearColor()
         self.upvoteButton.hidden = true
         self.downvoteButton.hidden = true
+        self.nsfwLabel.hidden = true
+        self.mainImageView.af_setImageWithURL(NSURL(string: data.modifiedURL)!, placeholderImage: UIImage(named: "placeholder"))
         
-        guard let imageURL = data["imageURL"] as? String else { return }
-        self.mainImageView.af_setImageWithURL(NSURL(string: imageURL)!)
-        
-        let media = data["media"] as! Bool
+        let media = data.mediaBool
         if media == true {
             self.mediaViewIcon.hidden = false
         } else {
             self.mediaViewIcon.hidden = true 
         }
         
-        let over18 = data["over_18"] as! Bool
+        let over18 = data.over_18
         if over18 == true {
-            self.hidden = true
+            let filter = BlurFilter(blurRadius: 20)
+            //self.mainImageView.image = nil
+            //self.mainImageView.af_cancelImageRequest()
+            self.mainImageView.af_setImageWithURL(
+                NSURL(string: data.modifiedURL)!,
+                placeholderImage: UIImage(named: "placeholder"),
+                filter: filter
+            )
+            //self.hidden = true
+            self.nsfwLabel.hidden = false
             self.userInteractionEnabled = false
+            ()
         } else {
             self.hidden = false
             self.userInteractionEnabled = true
         }
+        self.setNeedsDisplay()
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {
