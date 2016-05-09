@@ -55,6 +55,13 @@ class NotificationView: UIView {
         setup()
     }
     
+    override func drawRect(rect: CGRect) {
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOpacity = 0.20
+        self.layer.shadowOffset = CGSizeMake(0, 2.0)
+        self.layer.shadowRadius = 2.0
+    }
+    
     func hideNotification() {
         animator.removeBehavior(gravity)
         gravity = UIGravityBehavior(items: [self])
@@ -97,7 +104,7 @@ class NotificationView: UIView {
         titleLabel.text = title
         titleLabel.textAlignment = .Center
         titleLabel.font = UIFont(name: "HelveticaNeue-SemiBold", size: 17)
-        titleLabel.textColor = UIColor.blackColor()
+        titleLabel.textColor = UIColor.whiteColor()
         
         addSubview(titleLabel)
     }

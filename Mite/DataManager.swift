@@ -13,29 +13,6 @@ class DataManager {
     
     static let sharedInstance = DataManager()
     
-    var miteImages = [MiteImage]()
-    
-    func fetchAPIData(paginate paginate: Bool, completion: (([MiteImage]) -> ())?) {
-        let requestCount = 15
-        var fullURL = redditAPI + NetworkManager.sharedInstance.searchRedditString + ".json"
-        
-        if paginate {
-            if let pageAfter = self.miteImages.last?.pageAfter {
-                fullURL += "?limit=\(requestCount)&after=\(pageAfter)"
-            }
-        }
-        
-        NetworkManager.sharedInstance.requestImages(fullURL) { (data) in
-            if !paginate {
-                self.miteImages = data
-            } else {
-                data.forEach({ self.miteImages.append($0) })
-            }
-            completion?(data)
-        }
-        //NotificationManager.sharedInstance.showNotificationWithTitle("Balls", notificationType: NotificationType.Message, timer: 4.0)
-    }
-    
     func saveImage(data:Dictionary<String, AnyObject>, moc:NSManagedObjectContext? = nil, save:Bool = true) {
         let moc = CoreDataStack.sharedInstance.context
         

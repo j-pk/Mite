@@ -20,6 +20,7 @@ struct MiteImage {
     var pageAfter: String
     var mediaBool: Bool
     var image: UIImage?
+    var buttonState: Bool?
     
     init(author: String, id: String, over_18: Bool, score: NSNumber, subreddit: String, title: String, url: String, modifiedURL: String, pageAfter: String, mediaBool: Bool) {
         self.author = author

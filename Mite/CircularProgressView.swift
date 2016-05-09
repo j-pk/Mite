@@ -37,6 +37,14 @@ class CircularProgressView: UIView {
         circularProgressLayer.path = UIBezierPath(roundedRect: CGRectMake(2, 2, radius * 2.0, radius * 2.0), cornerRadius: radius).CGPath
     }
     
+    func show() {
+        self.hidden = false
+    }
+    
+    func hide() {
+        self.hidden = true
+    }
+    
     override func didMoveToWindow() {
         super.didMoveToWindow()
         

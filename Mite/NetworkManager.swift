@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-typealias MiteImages = Dictionary<String, AnyObject>
+let redditAPI = "https://www.reddit.com/"
 
 class NetworkManager {
     
@@ -75,15 +75,15 @@ class NetworkManager {
         
         Alamofire.request(.GET, API_URL + "/api/v1/me/prefs", headers: headers)
             .responseJSON { response in
-                
                 //error example
+                print(response.result.debugDescription)
                 switch response.result {
                 case .Success:
                     print("Validation Successful")
                 case .Failure(let error):
                     print(error)
                 }
-                print(response.result.value)
+
                 if let JSONData = response.result.value {
                     let parsedJSON = JSON(JSONData)
                     print(parsedJSON)
@@ -93,7 +93,7 @@ class NetworkManager {
     
     func upvoteAndDownvote(linkName: String, direction: Int, completion: () -> Void) {
         if token == nil {
-            NotificationManager.sharedInstance.showNotificationWithTitle("Login to use this feature.", notificationType: NotificationType.Warning, timer: 2.0)
+            NotificationManager.sharedInstance.showNotificationWithTitle("Login to use this feature.", notificationType: NotificationType.Error, timer: 2.0)
             return
         }
         
@@ -112,7 +112,6 @@ class NetworkManager {
                 switch response.result {
                 case .Success:
                     NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
-                    print("Validation Successful")
                 case .Failure(let error):
                     NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)

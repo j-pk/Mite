@@ -7,6 +7,10 @@ import AVKit
 import AVFoundation
 import Gifu
 
+protocol VoteStateForImageDelegate: class {
+    func voteState(id: String, state: Bool)
+}
+
 class ImageViewController: UIViewController {
     
     @IBOutlet weak var detailImageView: UIImageView!
@@ -21,6 +25,7 @@ class ImageViewController: UIViewController {
     
     var cell: MiteCollectionViewCell!
     var cellYOffset: CGFloat = 0
+    weak var delegate: VoteStateForImageDelegate?
     
     var detailImage: UIImage?
     var detailTitle: String?
@@ -28,7 +33,8 @@ class ImageViewController: UIViewController {
     var imageURLToShare: String?
     var imageURL: String?
     var imageIDToVote: String?
-    var media: Bool = false 
+    var media: Bool = false
+    var buttonState: Bool?
     var lastLocation:CGPoint = CGPointMake(0, 0)
     var animator: UIDynamicAnimator!
     
@@ -44,7 +50,7 @@ class ImageViewController: UIViewController {
         if media {
             self.loadAndAnimateGifs()
         }
-        
+                
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan))
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeImage))
@@ -55,6 +61,13 @@ class ImageViewController: UIViewController {
         view.addGestureRecognizer(pan)
         
         self.animator = UIDynamicAnimator(referenceView: view)
+            if buttonState == true {
+                self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
+                self.upvoteButton.enabled = false
+            } else if buttonState == false {
+                self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
+                self.downvoteButton.enabled = false
+            }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -100,6 +113,10 @@ class ImageViewController: UIViewController {
                 print("upvote")
                 self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
                 self.pressedUp = true
+                self.upvoteButton.enabled = false
+                if let delegate = self.delegate {
+                    delegate.voteState(imageID, state: true)
+                }
                 print("This should be true UP \(self.pressedUp)")
                 
             })
@@ -110,6 +127,8 @@ class ImageViewController: UIViewController {
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
                     self.pressedUp = false
                     self.pressedDown = false
+                    self.upvoteButton.enabled = true
+                    self.delegate?.voteState(imageID, state: false)
                     print("This should be false UP \(self.pressedUp)")
                 })
             }
@@ -122,6 +141,7 @@ class ImageViewController: UIViewController {
                 print("downvote")
                 self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
                 self.pressedDown = true
+                self.downvoteButton.enabled = false
                 print("This should be true DOWN \(self.pressedDown)")
             })
             
@@ -131,6 +151,7 @@ class ImageViewController: UIViewController {
                     self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
                     self.pressedDown = false
                     self.pressedUp = false
+                    self.downvoteButton.enabled = true
                     print("This should be false DOWN \(self.pressedDown)")
                     
                 })

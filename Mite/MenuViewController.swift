@@ -34,17 +34,17 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     override func viewWillAppear(animated: Bool) {
         
-        if (HTTPRequest.session().token?.isEmpty != nil) {
+        if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
             loginButton.setTitle("Logout", forState: .Normal)
         } else {
             loginButton.setTitle("Login", forState: .Normal)
         }
         
-        let userName = NetworkManager.sharedInstance.getUserIdentity()
-        NetworkManager.sharedInstance.getUserPreferences()
+        //NetworkManager.sharedInstance.getUserIdentity()
+        //NetworkManager.sharedInstance.getUserPreferences()
         print(NetworkManager.sharedInstance.token)
         
-        self.userNameLabel.text = userName
+        //self.userNameLabel.text = userName
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
@@ -119,13 +119,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         
         if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
             
-            let emptyAlert = UIAlertController(title: "mité", message: "Invalid seach parameters.", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            
-            emptyAlert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                
-            }))
-            
-            self.presentViewController(emptyAlert, animated: true, completion: nil)
+            NotificationManager.sharedInstance.showNotificationWithTitle("Invalid search parameters", notificationType: NotificationType.Error, timer: 3.0)
         
         } else {
         
@@ -186,10 +180,9 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     @IBAction func loginButtonPressed(sender: UIButton) {
         
-        if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
-            
-            Alert.session().loggedOutAlert()
-            //NetworkManager.sharedInstance.logoutAndDeleteToken()
+        if NetworkManager.sharedInstance.token != nil {
+            NotificationManager.sharedInstance.showNotificationWithTitle("Logged out of Reddit", notificationType: NotificationType.Message, timer: 2.0)
+            NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
             

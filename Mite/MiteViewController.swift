@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MiteViewController: UIViewController {
+class MiteViewController: UIViewController, VoteStateForImageDelegate {
 
     @IBOutlet weak var miteCollectionView: UICollectionView!
     @IBOutlet weak var navBarView: UIView!
@@ -26,13 +26,11 @@ class MiteViewController: UIViewController {
         self.fetchAPIData(paginate: false)
         self.setupCollectionView()
         self.setupViews()
-        
         self.transitionManager.viewController = self
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressOnCell))
         miteCollectionView?.addGestureRecognizer(longPressGestureRecognizer)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadData), name: "notifyToReload", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.sendLoginAlert), name: "sendAlert", object: nil)
     }
     
     func setupCollectionView(){
@@ -116,10 +114,6 @@ class MiteViewController: UIViewController {
         self.fetchAPIData(paginate: false)
     }
     
-    func sendLoginAlert(notification: NSNotification) {
-        Alert.session().successfulLoginAlert()
-    }
-    
     func setAlphaStateForDeselectedCells(cell: MiteCollectionViewCell, alpha: CGFloat) {
         for c in miteCollectionView!.visibleCells() as! [MiteCollectionViewCell] {
             if c != cell {
@@ -176,8 +170,10 @@ class MiteViewController: UIViewController {
                     imageVC.imageURLToShare = self.miteImages[indexPath.row].url
                     imageVC.imageIDToVote = self.miteImages[indexPath.row].id
                     imageVC.media = self.miteImages[indexPath.row].mediaBool
+                    imageVC.buttonState = self.miteImages[indexPath.row].buttonState
                     imageVC.cell = sender as? MiteCollectionViewCell
                     imageVC.cellYOffset = -self.miteCollectionView!.contentOffset.y
+                    imageVC.delegate = self 
                 }
             }
         }
@@ -188,6 +184,13 @@ class MiteViewController: UIViewController {
             }
         }
     }
+    
+    func voteState(id: String, state: Bool) {
+        for (index, data) in self.miteImages.enumerate() where data.id == id {
+            self.miteImages[index].buttonState = state
+        }
+        print(self.miteImages)
+    }
 
 }
 
@@ -197,7 +200,7 @@ extension MiteViewController: UICollectionViewDelegate {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MiteCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("mainCell", forIndexPath: indexPath) as! MiteCollectionViewCell
 
         cell.configureCell(self.miteImages[indexPath.row])
         
