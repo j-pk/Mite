@@ -24,12 +24,14 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Alamofire.request(Router.GetIdentity).responseJSON { response in
+        Alamofire.request(Router.GetIdentity)
+            .responseJSON { response in
             print(response.response?.allHeaderFields)
             print(response.result.value)
             print(response.request)
         }
         print(NetworkManager.sharedInstance.token)
+        //NetworkManager.sharedInstance.refreshAccessToken()
         self.fetchAPIData(paginate: false)
         self.setupCollectionView()
         self.setupViews()

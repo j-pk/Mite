@@ -44,6 +44,7 @@ enum Router: URLRequestConvertible {
         if let token = Router.OAuthtoken {
             URLRequest.setValue("bearer \(token)", forHTTPHeaderField: "Authorization")
         }
+        
         switch self {
         case .UpvoteAndDownvote(let linkName, let direction):
             let parameters = [
@@ -75,6 +76,16 @@ class NetworkManager {
         }
         set {
             defaults.setValue(newValue, forKey: "AccessToken")
+            defaults.synchronize()
+        }
+    }
+    
+    var refreshToken: String? {
+        get {
+            return defaults.objectForKey("RefreshToken") as? String
+        }
+        set {
+            defaults.setValue(newValue, forKey: "RefreshToken")
             defaults.synchronize()
         }
     }
@@ -169,13 +180,43 @@ class NetworkManager {
                 if let JSONData = results {
                     let json = JSON(data: JSONData)
                     print(json)
-                    if  let accessToken = json["access_token"].string {
-                        print(accessToken)
+                    if let accessToken = json["access_token"].string, refreshToken = json["refresh_token"].string {
+                        print(accessToken, refreshToken)
                         self.token = accessToken
+                        self.refreshToken = refreshToken
                     }
                 }
             }
         }
+    }
+    
+    func refreshAccessToken() {
+        guard let refreshToken = self.refreshToken else { return }
+        let refreshPath = "https://www.reddit.com/api/v1/access_token"
+        let refreshParameters =  [
+            "grant_type": "refresh_token",
+            "refresh_token": refreshToken
+        ]
+        Alamofire.request(.POST, refreshPath, parameters: refreshParameters)
+            .authenticate(user: "\(miteKey)", password: "")
+            .response { (request, response, results, error) in
+                if error != nil {
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit", notificationType: .Error, timer: 3.0)
+                }
+                print("request: ", request)
+                print("headers: ", response?.allHeaderFields)
+                print("results: ", results)
+                if let JSONData = results {
+                    let json = JSON(data: JSONData)
+                    print(json)
+                    if let accessToken = json["access_token"].string {
+                        print(accessToken, refreshToken)
+                        self.token = accessToken
+                    }
+                }
+                
+        }
+        
     }
 }
 

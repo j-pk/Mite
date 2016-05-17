@@ -163,7 +163,6 @@ class ImageViewController: UIViewController {
                     self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
                     self.pressedDown = true
                     self.downvoteButton.enabled = false
-                    print("This should be true DOWN \(self.pressedDown)")
                 case .Failure(let error):
                     NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)
