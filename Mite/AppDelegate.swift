@@ -30,66 +30,14 @@
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
+        
         print(url.scheme)
         print(url)
         
         if url.scheme == "miteapp" {
-            
-            let breakResponse = url.query?.componentsSeparatedByString("&")
-            let codePredicate = NSPredicate(format:"SELF BEGINSWITH %@", "code=")
-            let getTheCode = breakResponse?.filter { codePredicate.evaluateWithObject($0) }
-            
-            if let code = getTheCode?[0].stringByReplacingOccurrencesOfString("code=", withString: "") {
-                
-                print(code)
-                
-                let redditTokenRequestEndpoint = "https://www.reddit.com/api/v1/access_token"
-                let request = NSMutableURLRequest(URL: NSURL(string: redditTokenRequestEndpoint)!)
-                
-                request.HTTPMethod = "POST"
-                let redditPostRequestWithToken = NSString(format: "grant_type=authorization_code&code=\(code)&redirect_uri=miteApp://miteApp.com")
-                print(redditPostRequestWithToken)
-                
-                request.HTTPBody = redditPostRequestWithToken.dataUsingEncoding(NSUTF8StringEncoding)
-    
-                let username = miteKey
-                let password = ""
-                let loginString = NSString(format: "%@:%@", username, password)
-                if let loginData = loginString.dataUsingEncoding(NSUTF8StringEncoding)  {
-                    
-                    let base64LoginString = loginData.base64EncodedStringWithOptions([])
-                    request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-                    
-                }
-                
-                let session = NSURLSession.sharedSession()
-                
-                session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
-                    guard let data = data else { return }
-                    let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    print("responseString = \(responseString)")
-                    
-                    do {
-                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
-                        
-                        if let accessToken = jsonResult?["access_token"] as? String {
-                            
-                            NetworkManager.sharedInstance.token = accessToken
-                            print("This is a token: " + "\(accessToken)")
-                            
-                            NSNotificationCenter.defaultCenter().postNotificationName("dismissVC", object: nil)
-                            NotificationManager.sharedInstance.showNotificationWithTitle("Login Successful", notificationType: NotificationType.Success, timer: 2.0)
-                        }
-                    } catch let e as NSError {
-                        print(e)
-                    } catch {
-                        print(error)
-                    }
-                
-            }).resume()
-                
-            }
-            
+            NetworkManager.sharedInstance.processOAuthResponse(handleOpenURL: url)
+            NSNotificationCenter.defaultCenter().postNotificationName("dismissVC", object: nil)
+            return true
         }
         
         return false

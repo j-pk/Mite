@@ -22,7 +22,6 @@ class RedditViewController: UIViewController {
         if let url = self.url {
             
             self.url = url
-            print(url)
             
         }
         

@@ -5,6 +5,7 @@
 import UIKit
 import AVKit
 import AVFoundation
+import Alamofire
 import Gifu
 
 protocol VoteStateForImageDelegate: class {
@@ -109,52 +110,82 @@ class ImageViewController: UIViewController {
     
     @IBAction func upvoteButtonPressed(sender: UIButton) {
         if let imageID = imageIDToVote {
-            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 1, completion: { () -> Void in
-                print("upvote")
-                self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
-                self.pressedUp = true
-                self.upvoteButton.enabled = false
-                if let delegate = self.delegate {
-                    delegate.voteState(imageID, state: true)
+            Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: 1)).responseJSON { response in
+                print(response.response?.allHeaderFields)
+                print(response.result.value)
+                print(response.request)
+                switch response.result {
+                case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                    print("upvote")
+                    self.upvoteButton.setImage(UIImage(named: "upvoteWhiteSelected"), forState: .Normal)
+                    self.pressedUp = true
+                    self.upvoteButton.enabled = false
+                    if let delegate = self.delegate {
+                        delegate.voteState(imageID, state: true)
+                    }
+                    print("This should be true UP \(self.pressedUp)")
+                case .Failure(let error):
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    print(error)
                 }
-                print("This should be true UP \(self.pressedUp)")
-                
-            })
+            }
             
             if pressedDown == true {
-                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
-                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
-                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
-                    self.pressedUp = false
-                    self.pressedDown = false
-                    self.upvoteButton.enabled = true
-                    self.delegate?.voteState(imageID, state: false)
-                    print("This should be false UP \(self.pressedUp)")
-                })
+                Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: 0)).responseJSON { response in
+                    switch response.result {
+                    case .Success:
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                        self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
+                        self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
+                        self.pressedUp = false
+                        self.pressedDown = false
+                        self.upvoteButton.enabled = true
+                        self.delegate?.voteState(imageID, state: false)
+                        print("This should be false UP \(self.pressedUp)")
+                    case .Failure(let error):
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                        print(error)
+                    }
+                }
             }
         }
     }
     
     @IBAction func downvoteButtonPressed(sender: UIButton) {
         if let imageID = imageIDToVote {
-            NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: -1, completion: { () -> Void in
-                print("downvote")
-                self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
-                self.pressedDown = true
-                self.downvoteButton.enabled = false
-                print("This should be true DOWN \(self.pressedDown)")
-            })
+            
+            Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: -1)).responseJSON { response in
+                switch response.result {
+                case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                    print("downvote")
+                    self.downvoteButton.setImage(UIImage(named: "downvoteWhiteSelected"), forState: .Normal)
+                    self.pressedDown = true
+                    self.downvoteButton.enabled = false
+                    print("This should be true DOWN \(self.pressedDown)")
+                case .Failure(let error):
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    print(error)
+                }
+            }
             
             if pressedUp == true {
-                NetworkManager.sharedInstance.upvoteAndDownvote(imageID, direction: 0, completion: { () -> Void in
-                    self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
-                    self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
-                    self.pressedDown = false
-                    self.pressedUp = false
-                    self.downvoteButton.enabled = true
-                    print("This should be false DOWN \(self.pressedDown)")
-                    
-                })
+                Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: 0)).responseJSON { response in
+                    switch response.result {
+                    case .Success:
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Voted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                        self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
+                        self.upvoteButton.setImage(UIImage(named: "upvoteWhite"), forState: .Normal)
+                        self.pressedDown = false
+                        self.pressedUp = false
+                        self.downvoteButton.enabled = true
+                        print("This should be false DOWN \(self.pressedDown)")
+                    case .Failure(let error):
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                        print(error)
+                    }
+                }
             }
         }
     }

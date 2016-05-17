@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class MiteViewController: UIViewController, VoteStateForImageDelegate {
 
@@ -23,6 +24,12 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Alamofire.request(Router.GetIdentity).responseJSON { response in
+            print(response.response?.allHeaderFields)
+            print(response.result.value)
+            print(response.request)
+        }
+        print(NetworkManager.sharedInstance.token)
         self.fetchAPIData(paginate: false)
         self.setupCollectionView()
         self.setupViews()
@@ -189,7 +196,6 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         for (index, data) in self.miteImages.enumerate() where data.id == id {
             self.miteImages[index].buttonState = state
         }
-        print(self.miteImages)
     }
 
 }

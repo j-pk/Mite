@@ -42,7 +42,6 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         
         //NetworkManager.sharedInstance.getUserIdentity()
         //NetworkManager.sharedInstance.getUserPreferences()
-        print(NetworkManager.sharedInstance.token)
         
         //self.userNameLabel.text = userName
         

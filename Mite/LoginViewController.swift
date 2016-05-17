@@ -76,13 +76,9 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func connectButtonPressed(sender: UIButton) {
-        
-        if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=\(randomString)&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
-            
+        if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=TEST&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
             urlToSend = authorizationURL
-            
         }
-        
     }
     
     
