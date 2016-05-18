@@ -112,7 +112,7 @@ class ImageViewController: UIViewController {
         Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: 0)).responseJSON { response in
             switch response.result {
             case .Success:
-                NotificationManager.sharedInstance.showNotificationWithTitle("Removed vote", notificationType: NotificationType.Success, timer: 1.0)
+                NotificationManager.sharedInstance.showNotificationWithTitle("Removed vote", notificationType: NotificationType.Message, timer: 1.0)
                 if let sender = self.downvoteButton where sender == self.downvoteButton {
                     sender.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
                 }
@@ -147,7 +147,7 @@ class ImageViewController: UIViewController {
             Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: 1)).responseJSON { response in
                 switch response.result {
                 case .Success:
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Upvoted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Upvoted Successfully", notificationType: NotificationType.Upvote, timer: 1.0)
                     self.upvoteButton.setImage(UIImage(named: "upvoteRed"), forState: .Normal)
                     self.upvoted = true
                     if let delegate = self.delegate {
@@ -175,7 +175,7 @@ class ImageViewController: UIViewController {
             Alamofire.request(Router.UpvoteAndDownvote(linkName: imageID, direction: -1)).responseJSON { response in
                 switch response.result {
                 case .Success:
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Downvoted Successfully", notificationType: NotificationType.Success, timer: 1.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Downvoted Successfully", notificationType: NotificationType.Downvote, timer: 1.0)
                     self.downvoteButton.setImage(UIImage(named: "downvoteRed"), forState: .Normal)
                     self.downvoted = true
                 case .Failure(let error):

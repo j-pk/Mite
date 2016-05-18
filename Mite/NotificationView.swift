@@ -15,6 +15,8 @@ enum NotificationType {
     case Error
     case Warning
     case Message
+    case Upvote
+    case Downvote
     
     var color:UIColor {
         switch self {
@@ -25,7 +27,11 @@ enum NotificationType {
         case .Warning:
             return UIColor(red:1, green:0.95, blue:0.78, alpha:1)
         case .Message:
-            return UIColor.grayColor()
+            return UIColor(red:1, green:0.18, blue:0, alpha:1)
+        case .Upvote:
+            return UIColor(red:1, green:0.55, blue:0.34, alpha:1)
+        case .Downvote:
+            return UIColor(red:0.58, green:0.58, blue:1, alpha:1)
         }
     }
 }
@@ -124,6 +130,10 @@ class NotificationView: UIView {
         case .Warning:
             backgroundColor = notificationType.color
         case .Message:
+            backgroundColor = notificationType.color
+        case .Upvote:
+            backgroundColor = notificationType.color
+        case .Downvote:
             backgroundColor = notificationType.color
         }
     }
