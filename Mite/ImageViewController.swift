@@ -64,10 +64,10 @@ class ImageViewController: UIViewController {
         self.animator = UIDynamicAnimator(referenceView: view)
         if buttonState == true {
             self.upvoteButton.setImage(UIImage(named: "upvoteRed"), forState: .Normal)
-            self.upvoteButton.enabled = false
+            self.upvoted = true
         } else if buttonState == false {
             self.downvoteButton.setImage(UIImage(named: "downvoteRed"), forState: .Normal)
-            self.downvoteButton.enabled = false
+            self.downvoted = true
         }
     }
     
