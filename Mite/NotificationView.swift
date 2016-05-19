@@ -27,11 +27,11 @@ enum NotificationType {
         case .Warning:
             return UIColor(red:1, green:0.95, blue:0.78, alpha:1)
         case .Message:
-            return UIColor(red:1, green:0.18, blue:0, alpha:1)
+            return UIColor(red:0.54, green:0.48, blue:0.48, alpha:1)
         case .Upvote:
-            return UIColor(red:1, green:0.55, blue:0.34, alpha:1)
+            return UIColor(red:1, green:0.18, blue:0, alpha:1)
         case .Downvote:
-            return UIColor(red:0.58, green:0.58, blue:1, alpha:1)
+            return UIColor(red:0.62, green:0.02, blue:0.1, alpha:1)
         }
     }
 }

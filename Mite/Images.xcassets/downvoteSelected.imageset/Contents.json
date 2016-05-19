@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "downvoteSelected.png"
+      "filename" : "downvoteSelected.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
