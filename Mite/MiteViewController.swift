@@ -147,7 +147,7 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         case .Changed:
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y
-            cell.cellVote(distanceY)
+            cell.cellDetectGesture(distanceY)
         case .Ended:
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 import AlamofireImage
 
 class MiteCollectionViewCell: UICollectionViewCell {
@@ -16,6 +17,10 @@ class MiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var downvoteButton: UIButton!
     @IBOutlet weak var mediaViewIcon: MediaView!
     @IBOutlet weak var nsfwLabel: UILabel!
+    
+    weak var delegate: VoteStateForImageDelegate?
+    var imageId: String?
+    var voted: Bool = false
     
     var pressingUp = false {
         didSet{
@@ -35,6 +40,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
         self.downvoteButton.hidden = true
         self.nsfwLabel.hidden = true
         self.mainImageView.af_setImageWithURL(NSURL(string: data.modifiedURL)!, placeholderImage: UIImage(named: "placeholder"))
+        self.imageId = data.id
         
         let media = data.mediaBool
         if media == true {
@@ -83,13 +89,73 @@ class MiteCollectionViewCell: UICollectionViewCell {
         })
     }
     
-    func cellVote(point: CGFloat) {
+    func cellDetectGesture(point: CGFloat) {
         if point > 20 {
             self.pressingUp = true
             self.pressingDown = false
         } else if point < -20 {
             self.pressingDown = true
             self.pressingUp = false
+        }
+    }
+    
+    func cellVote(point: CGFloat) {
+        guard let imageId = self.imageId else { return }
+        if point > 20 {
+            self.pressingUp = true
+            self.pressingDown = false
+            if self.pressingUp == true && self.voted == true {
+                self.removeVote(imageId)
+                return
+            }
+            Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: 1)).responseJSON { response in
+                switch response.result {
+                case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Upvoted Successfully", notificationType: NotificationType.Upvote, timer: 1.0)
+                    if let delegate = self.delegate {
+                        delegate.voteState(imageId, state: true)
+                    }
+                    self.voted = true
+                case .Failure(let error):
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    print(error)
+                }
+            }
+        } else if point < -20 {
+            self.pressingDown = true
+            self.pressingUp = false
+            if self.pressingDown == true && self.voted == true {
+                self.removeVote(imageId)
+                return
+            }
+            Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: -1)).responseJSON { response in
+                switch response.result {
+                case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Downvoted Successfully", notificationType: NotificationType.Downvote, timer: 1.0)
+                    if let delegate = self.delegate {
+                        delegate.voteState(imageId, state: true)
+                    }
+                    self.voted = true
+                case .Failure(let error):
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func removeVote(imageId: String) {
+        Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: 0)).responseJSON { response in
+            switch response.result {
+            case .Success:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Removed vote", notificationType: NotificationType.Message, timer: 1.0)
+                self.pressingUp = false
+                self.pressingDown = false
+                self.voted = false
+            case .Failure(let error):
+                NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                print(error)
+            }
         }
     }
     
