@@ -109,6 +109,7 @@ class NetworkManager {
                     completion(data: parsedData)
                 } catch let error {
                     print(error)
+                    NSNotificationCenter.defaultCenter().postNotificationName("notifyFailedSearch", object: nil)
                 }
             }
         }

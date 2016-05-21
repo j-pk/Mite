@@ -40,6 +40,8 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressOnCell))
         miteCollectionView?.addGestureRecognizer(longPressGestureRecognizer)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadData), name: "notifyToReload", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.handleSearchError), name: "notifyFailedSearch", object: nil)
+
     }
     
     func setupCollectionView(){
@@ -123,6 +125,16 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         self.fetchAPIData(paginate: false)
     }
     
+    func handleSearchError(notification: NSNotification) {
+        delay(0.5) {
+            self.miteImages = []
+            self.subredditLabel.text = ""
+            self.miteCollectionView.reloadData()
+            NotificationManager.sharedInstance.showNotificationWithTitle("Invalid search parameters", notificationType: NotificationType.Error, timer: 3.0)
+        }
+        self.activityIndicator.hidden = true
+    }
+    
     func setAlphaStateForDeselectedCells(cell: MiteCollectionViewCell, alpha: CGFloat) {
         for c in miteCollectionView!.visibleCells() as! [MiteCollectionViewCell] {
             if c != cell {
@@ -137,7 +149,6 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         let location = gesture.locationInView(self.miteCollectionView)
         let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(location)
         guard let index = indexPath, cell = miteCollectionView!.cellForItemAtIndexPath(index) as? MiteCollectionViewCell else { return }
-        print(gesture.cancelsTouchesInView)
         switch gesture.state {
         case .Began:
             self.initialGestureState = gesture.locationInView(miteCollectionView)
@@ -148,7 +159,6 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y
             cell.cellDetectGesture(distanceY)
-            print(distanceY)
         case .Ended:
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y

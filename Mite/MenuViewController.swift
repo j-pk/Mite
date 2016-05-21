@@ -117,15 +117,10 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
         
         if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
-            
             NotificationManager.sharedInstance.showNotificationWithTitle("Invalid search parameters", notificationType: NotificationType.Error, timer: 3.0)
-        
         } else {
-        
             NetworkManager.sharedInstance.searchRedditString = "r/" + "\(properSearchString)"
-            
             NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-            
             performSegueWithIdentifier("dismissMenu", sender: self)
         
         }
