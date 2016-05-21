@@ -20,7 +20,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: VoteStateForImageDelegate?
     var imageId: String?
-    var voted: Bool = false
+    var state: Bool?
     
     var pressingUp = false {
         didSet{
@@ -51,18 +51,12 @@ class MiteCollectionViewCell: UICollectionViewCell {
         
         let over18 = data.over_18
         if over18 == true {
-            let filter = BlurFilter(blurRadius: 20)
-            //self.mainImageView.image = nil
-            //self.mainImageView.af_cancelImageRequest()
             self.mainImageView.af_setImageWithURL(
                 NSURL(string: data.modifiedURL)!,
-                placeholderImage: UIImage(named: "placeholder"),
-                filter: filter
+                placeholderImage: UIImage(named: "placeholder")
             )
-            //self.hidden = true
             self.nsfwLabel.hidden = false
             self.userInteractionEnabled = false
-            ()
         } else {
             self.hidden = false
             self.userInteractionEnabled = true
@@ -102,12 +96,12 @@ class MiteCollectionViewCell: UICollectionViewCell {
     func cellVote(point: CGFloat) {
         guard let imageId = self.imageId else { return }
         if point > 20 {
-            self.pressingUp = true
-            self.pressingDown = false
-            if self.pressingUp == true && self.voted == true {
+             if self.state == true && self.pressingUp == true  {
                 self.removeVote(imageId)
                 return
             }
+            self.pressingUp = true
+            self.pressingDown = false
             Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: 1)).responseJSON { response in
                 switch response.result {
                 case .Success:
@@ -115,27 +109,25 @@ class MiteCollectionViewCell: UICollectionViewCell {
                     if let delegate = self.delegate {
                         delegate.voteState(imageId, state: true)
                     }
-                    self.voted = true
                 case .Failure(let error):
                     NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)
                 }
             }
         } else if point < -20 {
-            self.pressingDown = true
-            self.pressingUp = false
-            if self.pressingDown == true && self.voted == true {
+            if self.state == false && self.pressingDown == true {
                 self.removeVote(imageId)
                 return
             }
+            self.pressingDown = true
+            self.pressingUp = false
             Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: -1)).responseJSON { response in
                 switch response.result {
                 case .Success:
                     NotificationManager.sharedInstance.showNotificationWithTitle("Downvoted Successfully", notificationType: NotificationType.Downvote, timer: 1.0)
                     if let delegate = self.delegate {
-                        delegate.voteState(imageId, state: true)
+                        delegate.voteState(imageId, state: false)
                     }
-                    self.voted = true
                 case .Failure(let error):
                     NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)
@@ -151,11 +143,24 @@ class MiteCollectionViewCell: UICollectionViewCell {
                 NotificationManager.sharedInstance.showNotificationWithTitle("Removed vote", notificationType: NotificationType.Message, timer: 1.0)
                 self.pressingUp = false
                 self.pressingDown = false
-                self.voted = false
+                if let delegate = self.delegate {
+                    delegate.voteState(imageId, state: nil)
+                }
             case .Failure(let error):
                 NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                 print(error)
             }
+        }
+    }
+    
+    func setVoteState(state: Bool?) {
+        if state == true {
+            self.pressingUp = true
+        } else if state == false {
+            self.pressingDown = true
+        } else {
+            self.pressingUp = false
+            self.pressingDown = false
         }
     }
     

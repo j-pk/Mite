@@ -30,7 +30,6 @@
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
-        
         print(url.scheme)
         print(url)
         

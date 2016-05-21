@@ -9,7 +9,7 @@ import Alamofire
 import Gifu
 
 protocol VoteStateForImageDelegate: class {
-    func voteState(id: String, state: Bool)
+    func voteState(id: String, state: Bool?)
 }
 
 class ImageViewController: UIViewController {
@@ -124,7 +124,7 @@ class ImageViewController: UIViewController {
                     self.downvoteButton.setImage(UIImage(named: "downvoteWhite"), forState: .Normal)
                 }
                 if let delegate = self.delegate {
-                    delegate.voteState(imageId, state: false)
+                    delegate.voteState(imageId, state: nil)
                 }
             case .Failure(let error):
                 NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
@@ -178,6 +178,9 @@ class ImageViewController: UIViewController {
                     NotificationManager.sharedInstance.showNotificationWithTitle("Downvoted Successfully", notificationType: NotificationType.Downvote, timer: 1.0)
                     self.downvoteButton.setImage(UIImage(named: "downvoteRed"), forState: .Normal)
                     self.downvoted = true
+                    if let delegate = self.delegate {
+                        delegate.voteState(imageID, state: false)
+                    }
                 case .Failure(let error):
                     NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
                     print(error)

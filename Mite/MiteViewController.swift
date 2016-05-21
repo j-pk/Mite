@@ -137,7 +137,7 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         let location = gesture.locationInView(self.miteCollectionView)
         let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(location)
         guard let index = indexPath, cell = miteCollectionView!.cellForItemAtIndexPath(index) as? MiteCollectionViewCell else { return }
-        
+        print(gesture.cancelsTouchesInView)
         switch gesture.state {
         case .Began:
             self.initialGestureState = gesture.locationInView(miteCollectionView)
@@ -148,13 +148,13 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y
             cell.cellDetectGesture(distanceY)
+            print(distanceY)
         case .Ended:
             guard let initialGestureState = self.initialGestureState else { return }
             let distanceY = initialGestureState.y - location.y
             let indexPath = self.miteCollectionView!.indexPathForItemAtPoint(initialGestureState)
             let newPoint = gesture.locationInView(self.miteCollectionView)
             let newIndexPath = self.miteCollectionView!.indexPathForItemAtPoint(newPoint)
-            
             cell.cellVote(distanceY)
             cell.resetCell()
             self.setAlphaStateForDeselectedCells(cell, alpha: 1.0)
@@ -194,9 +194,14 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         }
     }
     
-    func voteState(id: String, state: Bool) {
+    func voteState(id: String, state: Bool?) {
         for (index, data) in self.miteImages.enumerate() where data.id == id {
             self.miteImages[index].buttonState = state
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+            if let cell = miteCollectionView!.cellForItemAtIndexPath(indexPath) as? MiteCollectionViewCell {
+                cell.setVoteState(state)
+                cell.state = state
+            }
         }
     }
 
@@ -211,6 +216,7 @@ extension MiteViewController: UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("mainCell", forIndexPath: indexPath) as! MiteCollectionViewCell
 
         cell.configureCell(self.miteImages[indexPath.row])
+        cell.delegate = self 
         
         return cell
     }
