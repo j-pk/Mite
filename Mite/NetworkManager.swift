@@ -51,7 +51,7 @@ enum Router: URLRequestConvertible {
                 "id" : "t3_\(linkName)",
                 "dir" : "\(direction)"
             ]
-            return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
+            return Alamofire.ParameterEncoding.URL.encode(URLRequest, parameters: parameters).0
         default:
             return URLRequest
         }
