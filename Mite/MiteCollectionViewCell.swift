@@ -17,6 +17,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var downvoteButton: UIButton!
     @IBOutlet weak var mediaViewIcon: MediaView!
     @IBOutlet weak var nsfwLabel: UILabel!
+    @IBOutlet weak var filterView: UIView!
     
     weak var delegate: VoteStateForImageDelegate?
     var imageId: String?
@@ -39,6 +40,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
         self.upvoteButton.hidden = true
         self.downvoteButton.hidden = true
         self.nsfwLabel.hidden = true
+        self.filterView.hidden = true
         self.mainImageView.af_setImageWithURL(NSURL(string: data.modifiedURL)!, placeholderImage: UIImage(named: "placeholder"))
         self.imageId = data.id
         
@@ -56,12 +58,18 @@ class MiteCollectionViewCell: UICollectionViewCell {
                 placeholderImage: UIImage(named: "placeholder")
             )
             self.nsfwLabel.hidden = false
+            self.filterView.hidden = false
+            self.filterViewBlur()
             self.userInteractionEnabled = false
         } else {
             self.hidden = false
             self.userInteractionEnabled = true
         }
         self.setNeedsDisplay()
+    }
+    
+    func filterViewBlur() {
+        self.filterView.layer.opacity = 1.0
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {

@@ -226,6 +226,10 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RzE-a9-N5x">
                                                     <rect key="frame" x="0.0" y="0.0" width="165" height="150"/>
                                                 </imageView>
+                                                <view alpha="0.10000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKz-HD-bEG">
+                                                    <rect key="frame" x="0.0" y="0.0" width="165" height="150"/>
+                                                    <color key="backgroundColor" red="0.28854618344473681" green="0.16285259590000001" blue="0.17501240530000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eqi-Qv-tVu">
                                                     <rect key="frame" x="0.0" y="0.0" width="165" height="40"/>
                                                     <constraints>
@@ -275,6 +279,7 @@
                                             <constraint firstAttribute="bottom" secondItem="OQY-PX-LLQ" secondAttribute="bottom" id="95m-o4-PpI"/>
                                             <constraint firstItem="OQY-PX-LLQ" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" constant="2" id="BwX-Vq-oOD"/>
                                             <constraint firstItem="Eqi-Qv-tVu" firstAttribute="top" secondItem="4Y0-au-Iuj" secondAttribute="top" id="E5v-fQ-E8i"/>
+                                            <constraint firstItem="zKz-HD-bEG" firstAttribute="top" secondItem="4Y0-au-Iuj" secondAttribute="top" id="I35-zI-M27"/>
                                             <constraint firstAttribute="trailing" secondItem="RzE-a9-N5x" secondAttribute="trailing" id="IsP-i4-N9j"/>
                                             <constraint firstAttribute="trailing" secondItem="Xx1-E4-gBc" secondAttribute="trailing" id="PfN-Bh-bLT"/>
                                             <constraint firstItem="RzE-a9-N5x" firstAttribute="top" secondItem="4Y0-au-Iuj" secondAttribute="top" id="QWF-k5-9sy"/>
@@ -283,12 +288,16 @@
                                             <constraint firstAttribute="trailing" secondItem="Tdt-ER-ZtJ" secondAttribute="trailing" constant="2" id="cFV-GD-s2h"/>
                                             <constraint firstAttribute="bottom" secondItem="Tdt-ER-ZtJ" secondAttribute="bottom" constant="2" id="jPE-II-KK7"/>
                                             <constraint firstAttribute="bottom" secondItem="RzE-a9-N5x" secondAttribute="bottom" id="jYp-c2-r2j"/>
+                                            <constraint firstItem="zKz-HD-bEG" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" id="m5n-iU-aK9"/>
+                                            <constraint firstAttribute="bottom" secondItem="zKz-HD-bEG" secondAttribute="bottom" id="oqY-3P-2Mr"/>
                                             <constraint firstItem="Eqi-Qv-tVu" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" id="rQB-82-T41"/>
                                             <constraint firstAttribute="trailing" secondItem="Eqi-Qv-tVu" secondAttribute="trailing" id="rRZ-mn-pM9"/>
                                             <constraint firstItem="Xx1-E4-gBc" firstAttribute="leading" secondItem="4Y0-au-Iuj" secondAttribute="leading" id="y5b-2K-DxR"/>
+                                            <constraint firstAttribute="trailing" secondItem="zKz-HD-bEG" secondAttribute="trailing" id="zNl-sn-SFI"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="downvoteButton" destination="Xx1-E4-gBc" id="k6W-Zd-KY2"/>
+                                            <outlet property="filterView" destination="zKz-HD-bEG" id="COB-nU-8AU"/>
                                             <outlet property="mainImageView" destination="RzE-a9-N5x" id="zeg-Lb-nsH"/>
                                             <outlet property="mediaViewIcon" destination="Tdt-ER-ZtJ" id="Lfa-Ov-dpP"/>
                                             <outlet property="nsfwLabel" destination="OQY-PX-LLQ" id="16W-Cp-I4d"/>
