@@ -21,6 +21,7 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     private var initialGestureState: CGPoint?
     private var defaultSubreddit: String?
     private var miteImages = [MiteImage]()
+    private lazy var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,17 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         miteCollectionView?.addGestureRecognizer(longPressGestureRecognizer)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reloadData), name: "notifyToReload", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.handleSearchError), name: "notifyFailedSearch", object: nil)
-
+        
+        self.refreshControl.bounds = CGRectMake(0, 44, refreshControl.bounds.width, refreshControl.bounds.height)
+        self.refreshControl.addTarget(self, action: #selector(self.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        self.miteCollectionView.addSubview(refreshControl) // not required when using UITableViewController
+    }
+    
+    func refresh(sender:AnyObject) {
+        self.fetchAPIData(paginate: false)
+        if self.refreshControl.refreshing {
+            self.refreshControl.endRefreshing()
+        }
     }
     
     func setupCollectionView(){

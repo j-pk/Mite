@@ -74,13 +74,8 @@ class LoginViewController: UIViewController {
         }
     }
     
-    
     func dismissVC() {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
-
-
-
-
 
