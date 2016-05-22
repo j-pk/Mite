@@ -12,6 +12,9 @@
 		C03B31791CD04E7600CACB23 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C03B31771CD04E7600CACB23 /* DataModel.xcdatamodeld */; };
 		C05A8D8C1CDC2AC30047153E /* MiteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05A8D8B1CDC2AC30047153E /* MiteImage.swift */; };
 		C05A8D901CDF90010047153E /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05A8D8F1CDF90010047153E /* CircularProgressView.swift */; };
+		C05F5AB31CF26A0900D43F8C /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB21CF26A0900D43F8C /* PreferenceViewController.swift */; };
+		C05F5AB51CF2754000D43F8C /* UserContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB41CF2754000D43F8C /* UserContract.swift */; };
+		C05F5AB71CF275AF00D43F8C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB61CF275AF00D43F8C /* User.swift */; };
 		C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */; };
 		C071F5001B5AEA3200C33947 /* Menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = C071F4FF1B5AEA3200C33947 /* Menu.plist */; };
 		C07287F51CD990E100459EAC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E733DAD1744D1F6E6433A6 /* Pods.framework */; };
@@ -76,6 +79,9 @@
 		C03B31781CD04E7600CACB23 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		C05A8D8B1CDC2AC30047153E /* MiteImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiteImage.swift; sourceTree = "<group>"; };
 		C05A8D8F1CDF90010047153E /* CircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
+		C05F5AB21CF26A0900D43F8C /* PreferenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
+		C05F5AB41CF2754000D43F8C /* UserContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserContract.swift; sourceTree = "<group>"; };
+		C05F5AB61CF275AF00D43F8C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefaults.swift; sourceTree = "<group>"; };
 		C071F4FF1B5AEA3200C33947 /* Menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Menu.plist; sourceTree = "<group>"; };
 		C07287F81CD99C1400459EAC /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -254,6 +260,7 @@
 				C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */,
 				C083F2441B52ECAE00C7384A /* LoginViewController.swift */,
 				C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */,
+				C05F5AB21CF26A0900D43F8C /* PreferenceViewController.swift */,
 			);
 			name = "Menu & Login";
 			sourceTree = "<group>";
@@ -263,6 +270,8 @@
 			children = (
 				C03B317A1CD04E9E00CACB23 /* Core Data Model */,
 				C0DF1E911CD1A897005E0249 /* ImageContract.swift */,
+				C05F5AB41CF2754000D43F8C /* UserContract.swift */,
+				C05F5AB61CF275AF00D43F8C /* User.swift */,
 				C05A8D8B1CDC2AC30047153E /* MiteImage.swift */,
 			);
 			name = Model;
@@ -462,6 +471,7 @@
 				C07D44BD1CCC143800C1A708 /* TransitionManager.swift in Sources */,
 				C07D44B91CCC141200C1A708 /* NetworkManager.swift in Sources */,
 				C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */,
+				C05F5AB71CF275AF00D43F8C /* User.swift in Sources */,
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,
 				C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */,
 				C07287F91CD99C1400459EAC /* NotificationView.swift in Sources */,
@@ -469,10 +479,12 @@
 				C09DAD411CD5475000FED508 /* MiteCollectionViewCell.swift in Sources */,
 				C05A8D901CDF90010047153E /* CircularProgressView.swift in Sources */,
 				C09DAD3F1CD5461C00FED508 /* MiteViewController.swift in Sources */,
+				C05F5AB51CF2754000D43F8C /* UserContract.swift in Sources */,
 				C03B31791CD04E7600CACB23 /* DataModel.xcdatamodeld in Sources */,
 				C0DF1E941CD30BC5005E0249 /* DataManager.swift in Sources */,
 				C083F2431B52DDC800C7384A /* CustomButton.swift in Sources */,
 				C0DF1E921CD1A897005E0249 /* ImageContract.swift in Sources */,
+				C05F5AB31CF26A0900D43F8C /* PreferenceViewController.swift in Sources */,
 				C0BECEB71B4EB390004E7A9C /* MenuViewController.swift in Sources */,
 				C0AA9A481B4DCDF40088B09D /* ImageViewController.swift in Sources */,
 				C0DF1E901CD1A561005E0249 /* CoreDataStack.swift in Sources */,

@@ -25,15 +25,8 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Alamofire.request(Router.GetIdentity)
-            .responseJSON { response in
-            print(response.response?.allHeaderFields)
-            print(response.result.value)
-            print(response.request)
-        }
-        print(NetworkManager.sharedInstance.token)
-        //NetworkManager.sharedInstance.refreshAccessToken()
         self.fetchAPIData(paginate: false)
+        NetworkManager.sharedInstance.confirmUserLoginStatus()
         self.setupCollectionView()
         self.setupViews()
         self.transitionManager.viewController = self
@@ -44,6 +37,7 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.handleSearchError), name: "notifyFailedSearch", object: nil)
         
         self.refreshControl.bounds = CGRectMake(0, 44, refreshControl.bounds.width, refreshControl.bounds.height)
+        self.refreshControl.tintColor = UIColor(red:0.64, green:0.02, blue:0.02, alpha:1)
         self.refreshControl.addTarget(self, action: #selector(self.refresh), forControlEvents: UIControlEvents.ValueChanged)
         self.miteCollectionView.addSubview(refreshControl) // not required when using UITableViewController
     }

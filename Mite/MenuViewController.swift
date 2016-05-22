@@ -17,6 +17,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var customizeLabel: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
    
     var firstButton: String!
     var secondButton: String!
@@ -40,10 +41,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             loginButton.setTitle("Login", forState: .Normal)
         }
         
-        //NetworkManager.sharedInstance.getUserIdentity()
-        //NetworkManager.sharedInstance.getUserPreferences()
-        
-        //self.userNameLabel.text = userName
+        self.userNameLabel.text = NetworkManager.sharedInstance.redditUserPreference?.name ?? ""
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
@@ -89,6 +87,8 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             
         }
         
+        self.settingsButton.tintColor = UIColor.grayColor()
+        
         subredditSearch.delegate = self
         
         for subView in subredditSearch.subviews  {
@@ -124,6 +124,10 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             performSegueWithIdentifier("dismissMenu", sender: self)
         
         }
+        
+    }
+    
+    @IBAction func settingsButton(sender: UIButton) {
         
     }
     

@@ -68,7 +68,7 @@ class NetworkManager {
     private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
     private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
-    private var redditUserName = ""
+    var redditUserPreference: User?
     
     var token: String? {
         get {
@@ -94,8 +94,39 @@ class NetworkManager {
         defaults.removeObjectForKey("AccessToken")
     }
     
+    func confirmUserLoginStatus() {
+        if self.token != nil {
+            Alamofire.request(Router.GetIdentity)
+                .validate()
+                .responseJSON { response in
+                    switch response.result {
+                    case .Success:
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Logged in to Reddit", notificationType: .Error, timer: 2.0)
+                        break
+                    case .Failure(_):
+                        NetworkManager.sharedInstance.refreshAccessToken()
+                        NotificationManager.sharedInstance.showNotificationWithTitle("Attempting to login with Reddit", notificationType: .Error, timer: 2.0)
+                    }
+                    if let JSONData = response.result.value {
+                        let json = JSON(JSONData)
+                        print(json)
+                        do {
+                            let parsedData = try UserContract.parseJSON(json)
+                            self.redditUserPreference = parsedData
+                        } catch let error {
+                            print(error)
+                        }
+                    }
+            }
+        } else {
+            print("empty token")
+        }
+    }
+    
     func requestImages(url: String, completion: (data: [MiteImage]) -> ()) {
-        Alamofire.request(.GET, url).responseJSON { response in
+        Alamofire.request(.GET, url)
+            .validate()
+            .responseJSON { response in
             switch response.result {
             case .Success:
                 print("Validation Successful")
@@ -171,6 +202,7 @@ class NetworkManager {
             print("param: ", tokenParameters)
             Alamofire.request(.POST, tokenPath, parameters: tokenParameters)
                 .authenticate(user: "\(miteKey)", password: "")
+                .validate()
                 .response { (request, response, results, error) in
                 if error != nil {
                     NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit", notificationType: .Error, timer: 3.0)
@@ -200,9 +232,10 @@ class NetworkManager {
         ]
         Alamofire.request(.POST, refreshPath, parameters: refreshParameters)
             .authenticate(user: "\(miteKey)", password: "")
+            .validate()
             .response { (request, response, results, error) in
                 if error != nil {
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit", notificationType: .Error, timer: 3.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit, try again.", notificationType: .Error, timer: 3.0)
                 }
                 print("request: ", request)
                 print("headers: ", response?.allHeaderFields)
