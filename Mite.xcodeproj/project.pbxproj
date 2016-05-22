@@ -25,7 +25,6 @@
 		C07D44B91CCC141200C1A708 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D44B81CCC141200C1A708 /* NetworkManager.swift */; };
 		C07D44BD1CCC143800C1A708 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D44BB1CCC143800C1A708 /* TransitionManager.swift */; };
 		C07D44BF1CCC7BDD00C1A708 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D44BE1CCC7BDD00C1A708 /* LaunchScreenViewController.swift */; };
-		C08065071B7304F6008F802F /* RedditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08065061B7304F6008F802F /* RedditViewController.swift */; };
 		C083F2431B52DDC800C7384A /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2421B52DDC800C7384A /* CustomButton.swift */; };
 		C083F2451B52ECAE00C7384A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2441B52ECAE00C7384A /* LoginViewController.swift */; };
 		C083F2471B52F55400C7384A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083F2461B52F55400C7384A /* CustomTextField.swift */; };
@@ -93,7 +92,6 @@
 		C07D44B81CCC141200C1A708 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C07D44BB1CCC143800C1A708 /* TransitionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
 		C07D44BE1CCC7BDD00C1A708 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
-		C08065061B7304F6008F802F /* RedditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditViewController.swift; sourceTree = "<group>"; };
 		C083F2421B52DDC800C7384A /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C083F2441B52ECAE00C7384A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C083F2461B52F55400C7384A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 			children = (
 				C0BECEB61B4EB390004E7A9C /* MenuViewController.swift */,
 				C083F2441B52ECAE00C7384A /* LoginViewController.swift */,
-				C08065061B7304F6008F802F /* RedditViewController.swift */,
 				C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */,
 			);
 			name = "Menu & Login";
@@ -461,7 +458,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C08065071B7304F6008F802F /* RedditViewController.swift in Sources */,
 				C0DF1E9E1CD82DA3005E0249 /* MediaView.swift in Sources */,
 				C07D44BD1CCC143800C1A708 /* TransitionManager.swift in Sources */,
 				C07D44B91CCC141200C1A708 /* NetworkManager.swift in Sources */,

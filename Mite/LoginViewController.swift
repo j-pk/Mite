@@ -3,6 +3,8 @@
 //
 
 import UIKit
+import SafariServices
+
 
 class LoginViewController: UIViewController {
     
@@ -10,10 +12,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var connectToRedditButton: CustomButton!
     @IBOutlet weak var browseAnonButton: CustomButton!
     
-    var randomString: NSString = ""
-    var urlToSend: NSURL?
-    
-    ////////////////////MARK: Load
+    //MARK: Load
     
     override func viewWillAppear(animated: Bool) {
         connectToRedditButton.hidden = true
@@ -23,7 +22,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        randomString = generateRandomString(20)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dismissVC), name: "dismissVC", object: nil)
     }
     
@@ -47,18 +45,15 @@ class LoginViewController: UIViewController {
         
     }
     
-    ////////////////////MARK: Animate & Button Action
+    //MARK: Animate & Button Action
     
     @IBAction func browseAnon(sender: UIButton) {
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            
             self.returnButton.alpha = 0
-            
         })
         
         UIView.animateWithDuration(0.6, animations: { () -> Void in
-            
             let offSet = self.view.frame.height * -1
             let bottomOffset = self.view.frame.height
             
@@ -68,47 +63,21 @@ class LoginViewController: UIViewController {
             self.browseAnonButton.alpha = 0
             
             }) { (finished) -> Void in
-                
                 self.dismissViewControllerAnimated(false, completion: nil)
-                
         }
-        
     }
     
     @IBAction func connectButtonPressed(sender: UIButton) {
         if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=miteAppv1&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
-            urlToSend = authorizationURL
+            let vc = SFSafariViewController(URL: authorizationURL, entersReaderIfAvailable: false)
+            presentViewController(vc, animated: true, completion: nil)
         }
     }
     
     
     func dismissVC() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
-    func generateRandomString(length: Int) -> NSString {
-        let characters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let randomString = NSMutableString(capacity: length)
-        
-        for _ in 0..<20 {
-            let len = UInt32 (characters.length)
-            let rand = arc4random_uniform(len)
-            randomString.appendFormat("%C", characters.characterAtIndex(Int(rand)))
-
-        }
-        return randomString
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "redditWebView" {
-            if let redditVC = segue.destinationViewController as? RedditViewController {
-                redditVC.url = urlToSend
-                print(urlToSend)
-            }
-        }
-    }
-     
 }
 
 
