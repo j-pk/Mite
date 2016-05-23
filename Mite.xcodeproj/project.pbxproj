@@ -15,6 +15,8 @@
 		C05F5AB31CF26A0900D43F8C /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB21CF26A0900D43F8C /* PreferenceViewController.swift */; };
 		C05F5AB51CF2754000D43F8C /* UserContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB41CF2754000D43F8C /* UserContract.swift */; };
 		C05F5AB71CF275AF00D43F8C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB61CF275AF00D43F8C /* User.swift */; };
+		C05F5AB91CF2959700D43F8C /* PreferencesContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5AB81CF2959700D43F8C /* PreferencesContract.swift */; };
+		C05F5ABB1CF295A600D43F8C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5ABA1CF295A600D43F8C /* Preferences.swift */; };
 		C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */; };
 		C071F5001B5AEA3200C33947 /* Menu.plist in Resources */ = {isa = PBXBuildFile; fileRef = C071F4FF1B5AEA3200C33947 /* Menu.plist */; };
 		C07287F51CD990E100459EAC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E733DAD1744D1F6E6433A6 /* Pods.framework */; };
@@ -82,6 +84,8 @@
 		C05F5AB21CF26A0900D43F8C /* PreferenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
 		C05F5AB41CF2754000D43F8C /* UserContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserContract.swift; sourceTree = "<group>"; };
 		C05F5AB61CF275AF00D43F8C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C05F5AB81CF2959700D43F8C /* PreferencesContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesContract.swift; sourceTree = "<group>"; };
+		C05F5ABA1CF295A600D43F8C /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		C071F4FD1B5AE0A800C33947 /* MenuDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefaults.swift; sourceTree = "<group>"; };
 		C071F4FF1B5AEA3200C33947 /* Menu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Menu.plist; sourceTree = "<group>"; };
 		C07287F81CD99C1400459EAC /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 			children = (
 				C03B317A1CD04E9E00CACB23 /* Core Data Model */,
 				C0DF1E911CD1A897005E0249 /* ImageContract.swift */,
+				C05F5AB81CF2959700D43F8C /* PreferencesContract.swift */,
+				C05F5ABA1CF295A600D43F8C /* Preferences.swift */,
 				C05F5AB41CF2754000D43F8C /* UserContract.swift */,
 				C05F5AB61CF275AF00D43F8C /* User.swift */,
 				C05A8D8B1CDC2AC30047153E /* MiteImage.swift */,
@@ -473,6 +479,7 @@
 				C078E3DD1B4CA5A900EB7176 /* AppDelegate.swift in Sources */,
 				C05F5AB71CF275AF00D43F8C /* User.swift in Sources */,
 				C074E55A1B53F01600C7C282 /* GradientView.swift in Sources */,
+				C05F5ABB1CF295A600D43F8C /* Preferences.swift in Sources */,
 				C071F4FE1B5AE0A800C33947 /* MenuDefaults.swift in Sources */,
 				C07287F91CD99C1400459EAC /* NotificationView.swift in Sources */,
 				C0AA44601B5497DA001F4E3E /* Keys.swift in Sources */,
@@ -489,6 +496,7 @@
 				C0AA9A481B4DCDF40088B09D /* ImageViewController.swift in Sources */,
 				C0DF1E901CD1A561005E0249 /* CoreDataStack.swift in Sources */,
 				C09DAD471CD6E29A00FED508 /* HelperFunctions.swift in Sources */,
+				C05F5AB91CF2959700D43F8C /* PreferencesContract.swift in Sources */,
 				C0DF1E9B1CD31255005E0249 /* Image+CoreDataProperties.swift in Sources */,
 				C09DAD3D1CD4544E00FED508 /* ImageCacheManager.swift in Sources */,
 				C02DC4FD1B573E020067A4BA /* ProgressIndicator.swift in Sources */,

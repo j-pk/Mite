@@ -41,7 +41,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             loginButton.setTitle("Login", forState: .Normal)
         }
         
-        self.userNameLabel.text = NetworkManager.sharedInstance.redditUserPreference?.name ?? ""
+        self.userNameLabel.text = NetworkManager.sharedInstance.redditUser?.name ?? ""
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
@@ -128,7 +128,9 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     
     @IBAction func settingsButton(sender: UIButton) {
-        
+        NetworkManager.sharedInstance.getUserPreferences {
+            self.performSegueWithIdentifier("preferenceSegue", sender: self)
+        }
     }
     
     @IBAction func picsButtonPressed(sender: UIButton) {

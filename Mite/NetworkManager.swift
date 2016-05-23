@@ -68,7 +68,8 @@ class NetworkManager {
     private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
     private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
-    var redditUserPreference: User?
+    var redditUser: User?
+    var redditUserPreferences: Preferences?
     
     var token: String? {
         get {
@@ -101,18 +102,20 @@ class NetworkManager {
                 .responseJSON { response in
                     switch response.result {
                     case .Success:
-                        NotificationManager.sharedInstance.showNotificationWithTitle("Logged in to Reddit", notificationType: .Error, timer: 2.0)
                         break
-                    case .Failure(_):
+                    case .Failure:
                         NetworkManager.sharedInstance.refreshAccessToken()
                         NotificationManager.sharedInstance.showNotificationWithTitle("Attempting to login with Reddit", notificationType: .Error, timer: 2.0)
+                        delay(0.5) {
+                            Alamofire.request(Router.GetIdentity)
+                        }
                     }
                     if let JSONData = response.result.value {
                         let json = JSON(JSONData)
                         print(json)
                         do {
                             let parsedData = try UserContract.parseJSON(json)
-                            self.redditUserPreference = parsedData
+                            self.redditUser = parsedData
                         } catch let error {
                             print(error)
                         }
@@ -120,6 +123,32 @@ class NetworkManager {
             }
         } else {
             print("empty token")
+        }
+    }
+    
+    func getUserPreferences(completion:(() -> ())) {
+        if self.token != nil {
+            Alamofire.request(Router.GetUserPreferences)
+            .validate()
+            .responseJSON { response in
+                switch response.result {
+                case .Success:
+                    break
+                case .Failure:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Failed to get preferences", notificationType: .Error, timer: 2.0)
+                }
+                if let JSONData = response.result.value {
+                    let json = JSON(JSONData)
+                    print(json)
+                    do {
+                        let parsedData = try PreferencesContract.parseJSON(json)
+                        self.redditUserPreferences = parsedData
+                        completion()
+                    } catch let error {
+                        print(error)
+                    }
+                }
+            }
         }
     }
     

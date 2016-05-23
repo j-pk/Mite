@@ -640,7 +640,6 @@
                                 <state key="normal" image="settings"/>
                                 <connections>
                                     <action selector="settingsButton:" destination="tQ1-sC-9f0" eventType="touchUpInside" id="p0F-8l-G1T"/>
-                                    <segue destination="3UX-x0-n6U" kind="presentation" animates="NO" modalPresentationStyle="overFullScreen" id="qlB-R5-uL2"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -720,6 +719,7 @@
                         <outlet property="settingsButton" destination="eHe-Ua-AMW" id="Mut-rF-LyK"/>
                         <outlet property="subredditSearch" destination="C1K-xL-1kU" id="h0n-TI-M0t"/>
                         <outlet property="userNameLabel" destination="iUD-HP-SYZ" id="NTY-02-XJS"/>
+                        <segue destination="3UX-x0-n6U" kind="presentation" identifier="preferenceSegue" animates="NO" modalPresentationStyle="overFullScreen" id="LOX-ux-W8d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MDV-o9-CTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -753,7 +753,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SZP-mb-l51">
-                                <rect key="frame" x="20" y="59" width="560" height="113"/>
+                                <rect key="frame" x="22" y="59" width="558" height="113"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="113" id="cfm-aW-Toz"/>
@@ -762,8 +762,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable Not Safe For Work material" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="PrJ-3d-dY7">
-                                <rect key="frame" x="20" y="180" width="328" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Not Safe For Work material" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="PrJ-3d-dY7">
+                                <rect key="frame" x="20" y="180" width="222" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="U9o-qI-oLh"/>
                                 </constraints>
@@ -777,6 +777,9 @@
                                     <constraint firstAttribute="height" constant="31" id="6OP-px-SVl"/>
                                 </constraints>
                                 <color key="onTintColor" red="1" green="0.1450980392" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="nsfwSwitch:" destination="3UX-x0-n6U" eventType="valueChanged" id="mQy-Po-lNv"/>
+                                </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tEh-0c-HMd">
                                 <rect key="frame" x="12" y="560" width="32" height="32"/>
@@ -789,22 +792,45 @@
                                     <action selector="cancelButton:" destination="3UX-x0-n6U" eventType="touchUpInside" id="Ogy-bM-KJ4"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label NSFW material" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Mgm-uc-qKg">
+                                <rect key="frame" x="20" y="218" width="135" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="lg3-PJ-PPu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g1F-Fe-e2j">
+                                <rect key="frame" x="531" y="218" width="51" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="pgi-gU-kBU"/>
+                                </constraints>
+                                <color key="onTintColor" red="1" green="0.1450980392" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="labelNSFWSwitch:" destination="3UX-x0-n6U" eventType="valueChanged" id="Y3M-l9-6hO"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tWu-3b-Nz7" firstAttribute="top" secondItem="tEh-0c-HMd" secondAttribute="bottom" constant="8" id="204-kc-YNu"/>
+                            <constraint firstItem="Mgm-uc-qKg" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" id="7HM-0x-B7L"/>
                             <constraint firstItem="vcW-xq-9TE" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" id="A4q-LE-ECb"/>
                             <constraint firstItem="PrJ-3d-dY7" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" id="IV1-Gp-rc3"/>
                             <constraint firstItem="tEh-0c-HMd" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" constant="-8" id="IiL-l0-ii9"/>
                             <constraint firstItem="KAq-7e-ZgH" firstAttribute="trailing" secondItem="AjY-5S-na1" secondAttribute="trailingMargin" id="NTk-eN-r4J"/>
+                            <constraint firstItem="Mgm-uc-qKg" firstAttribute="top" secondItem="PrJ-3d-dY7" secondAttribute="bottom" constant="8" id="R8c-Uc-P5q"/>
                             <constraint firstItem="CW5-Kl-TcU" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" id="Sws-z8-58H"/>
+                            <constraint firstItem="g1F-Fe-e2j" firstAttribute="top" secondItem="KAq-7e-ZgH" secondAttribute="bottom" constant="8" id="X5h-Wc-lNH"/>
+                            <constraint firstItem="g1F-Fe-e2j" firstAttribute="trailing" secondItem="AjY-5S-na1" secondAttribute="trailingMargin" id="bsq-0X-pdC"/>
                             <constraint firstItem="SZP-mb-l51" firstAttribute="trailing" secondItem="AjY-5S-na1" secondAttribute="trailingMargin" id="fII-Ma-fpO"/>
                             <constraint firstItem="KAq-7e-ZgH" firstAttribute="trailing" secondItem="AjY-5S-na1" secondAttribute="trailingMargin" id="fXD-2R-shj"/>
                             <constraint firstItem="vcW-xq-9TE" firstAttribute="trailing" secondItem="AjY-5S-na1" secondAttribute="trailingMargin" id="gpy-ue-XLL"/>
                             <constraint firstItem="CW5-Kl-TcU" firstAttribute="top" secondItem="pSa-xN-8II" secondAttribute="bottom" constant="30" id="hqY-Ge-2WV"/>
                             <constraint firstItem="CW5-Kl-TcU" firstAttribute="top" secondItem="vcW-xq-9TE" secondAttribute="bottom" constant="8" id="hrk-Bq-smH"/>
                             <constraint firstItem="PrJ-3d-dY7" firstAttribute="top" secondItem="SZP-mb-l51" secondAttribute="bottom" constant="8" id="j5u-y2-1z6"/>
-                            <constraint firstItem="SZP-mb-l51" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" id="pHF-RX-SfW"/>
+                            <constraint firstItem="SZP-mb-l51" firstAttribute="leading" secondItem="AjY-5S-na1" secondAttribute="leadingMargin" constant="2" id="pHF-RX-SfW"/>
                             <constraint firstItem="KAq-7e-ZgH" firstAttribute="top" secondItem="SZP-mb-l51" secondAttribute="bottom" constant="7" id="s5T-sw-FIu"/>
                             <constraint firstItem="vcW-xq-9TE" firstAttribute="top" secondItem="pSa-xN-8II" secondAttribute="bottom" id="uOI-tF-NCS"/>
                             <constraint firstItem="SZP-mb-l51" firstAttribute="top" secondItem="CW5-Kl-TcU" secondAttribute="bottom" constant="8" id="wng-yf-Fxf"/>
@@ -819,6 +845,8 @@
                     <connections>
                         <outlet property="cancelButton" destination="tEh-0c-HMd" id="iCY-Dv-uOx"/>
                         <outlet property="dividerView" destination="CW5-Kl-TcU" id="Vpz-LF-LGR"/>
+                        <outlet property="labelNSFW" destination="Mgm-uc-qKg" id="lD4-MN-s2C"/>
+                        <outlet property="labelNSFWSwitch" destination="g1F-Fe-e2j" id="rtc-6W-973"/>
                         <outlet property="nsfwLabel" destination="PrJ-3d-dY7" id="h9f-aC-7nj"/>
                         <outlet property="nsfwSwitch" destination="KAq-7e-ZgH" id="rTo-Cc-0aR"/>
                         <outlet property="titleLabel" destination="vcW-xq-9TE" id="Gx4-iY-VqU"/>
