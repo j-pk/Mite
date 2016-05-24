@@ -64,12 +64,13 @@ class NetworkManager {
     
     var pageRedditAfter = ""
     var searchRedditString = ""
+    var loggedIn: Bool = false
+    var redditUser: User?
+    var redditUserPreferences: Preferences?
     
     private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
     private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
-    var redditUser: User?
-    var redditUserPreferences: Preferences?
     
     var token: String? {
         get {
@@ -106,16 +107,18 @@ class NetworkManager {
                     case .Failure:
                         NetworkManager.sharedInstance.refreshAccessToken()
                         NotificationManager.sharedInstance.showNotificationWithTitle("Attempting to login with Reddit", notificationType: .Error, timer: 2.0)
-                        delay(0.5) {
-                            Alamofire.request(Router.GetIdentity)
+                        delay(2.0) {
+                            NetworkManager.sharedInstance.getUser()
                         }
                     }
+                    
                     if let JSONData = response.result.value {
                         let json = JSON(JSONData)
                         print(json)
                         do {
                             let parsedData = try UserContract.parseJSON(json)
                             self.redditUser = parsedData
+                            self.loggedIn = true
                         } catch let error {
                             print(error)
                         }
@@ -123,6 +126,30 @@ class NetworkManager {
             }
         } else {
             print("empty token")
+        }
+    }
+    
+    func getUser() {
+        Alamofire.request(Router.GetIdentity)
+            .validate()
+            .responseJSON{ response in
+                switch response.result {
+                case .Success:
+                    break
+                case .Failure:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Reddit", notificationType: .Error, timer: 2.0)
+                }
+                if let JSONData = response.result.value {
+                    let json = JSON(JSONData)
+                    print(json)
+                    do {
+                        let parsedData = try UserContract.parseJSON(json)
+                        self.redditUser = parsedData
+                        self.loggedIn = true
+                    } catch let error {
+                        print(error)
+                    }
+                }
         }
     }
     

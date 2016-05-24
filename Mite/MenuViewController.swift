@@ -33,15 +33,58 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     ////////////////////MARK: Load
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.configureView()
+        self.configureMenu()
+    }
+    
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.userNameLabel.text = NetworkManager.sharedInstance.redditUser?.name ?? ""
+        self.settingsButton.hidden = true
+        if NetworkManager.sharedInstance.loggedIn {
+            self.settingsButton.hidden = false
+        }
+    }
+    
+    func configureView() {
+        let tapper = UITapGestureRecognizer(target: self.view, action:#selector(UIView.endEditing))
+        tapper.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapper)
         
+        arrayOfButtons = [picsButton, awwButton, funnyButton, iTookAPictureButton, artButton]
+        
+        for button in arrayOfButtons {
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
+            button.addGestureRecognizer(longPress)
+            longPress.minimumPressDuration = 0.2
+            longPress.delegate = self
+        }
+        
+        self.settingsButton.tintColor = UIColor.grayColor()
+        subredditSearch.delegate = self
+        
+        for subView in subredditSearch.subviews  {
+            for subsubView in subView.subviews  {
+                if let textField = subsubView as? UITextField {
+                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search & Discover", comment:""),
+                                                                          attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                    textField.backgroundColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
+                    textField.tintColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
+                    textField.textColor = UIColor.whiteColor()
+                }
+            }
+        }
+        rightSpacing.constant = view.frame.width / 5
+    }
+    
+    func configureMenu() {
         if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
             loginButton.setTitle("Logout", forState: .Normal)
         } else {
             loginButton.setTitle("Login", forState: .Normal)
         }
-        
-        self.userNameLabel.text = NetworkManager.sharedInstance.redditUser?.name ?? ""
         
         if (menuDefaults.objectForKey("buttonOneDefault") as? String) != nil {
             self.firstButton = menuDefaults.objectForKey("buttonOneDefault") as? String
@@ -69,45 +112,6 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let tapper = UITapGestureRecognizer(target: self.view, action:#selector(UIView.endEditing))
-        tapper.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapper)
-        
-        arrayOfButtons = [picsButton, awwButton, funnyButton, iTookAPictureButton, artButton]
-        
-        for button in arrayOfButtons {
-            
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
-            button.addGestureRecognizer(longPress)
-            longPress.minimumPressDuration = 0.2
-            longPress.delegate = self
-            
-        }
-        
-        self.settingsButton.tintColor = UIColor.grayColor()
-        
-        subredditSearch.delegate = self
-        
-        for subView in subredditSearch.subviews  {
-            for subsubView in subView.subviews  {
-                if let textField = subsubView as? UITextField {
-                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search & Discover", comment:""),
-                        attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
-                    textField.backgroundColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
-                    textField.tintColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
-                    textField.textColor = UIColor.whiteColor()
-                    
-                }
-            }
-        }
-        
-        rightSpacing.constant = view.frame.width / 5
-        
-    }
-
     ////////////////////MARK: Button Actions
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -122,72 +126,51 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             NetworkManager.sharedInstance.searchRedditString = "r/" + "\(properSearchString)"
             NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
             performSegueWithIdentifier("dismissMenu", sender: self)
-        
-        }
-        
+        }        
     }
     
     @IBAction func settingsButton(sender: UIButton) {
+        settingsButton.enabled = false
         NetworkManager.sharedInstance.getUserPreferences {
             self.performSegueWithIdentifier("preferenceSegue", sender: self)
+            self.settingsButton.enabled = true
         }
     }
     
     @IBAction func picsButtonPressed(sender: UIButton) {
-        
         NetworkManager.sharedInstance.searchRedditString = subreddit + firstButton
-        
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-        
         performSegueWithIdentifier("dismissMenu", sender: self)
-        
     }
     @IBAction func awwButtonPressed(sender: UIButton) {
-        
         NetworkManager.sharedInstance.searchRedditString = subreddit + secondButton
-        
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-        
         performSegueWithIdentifier("dismissMenu", sender: self)
-        
     }
     @IBAction func funnyButtonPressed(sender: UIButton) {
-        
         NetworkManager.sharedInstance.searchRedditString = subreddit + thirdButton
-        
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-        
         performSegueWithIdentifier("dismissMenu", sender: self)
-        
     }
     @IBAction func iTookAPictureButtonPressed(sender: UIButton) {
-        
         NetworkManager.sharedInstance.searchRedditString = subreddit + fourthButton
-        
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-        
         performSegueWithIdentifier("dismissMenu", sender: self)
-        
     }
     @IBAction func artButtonPressed(sender: UIButton) {
-        
         NetworkManager.sharedInstance.searchRedditString = subreddit + fifthButton
-        
         NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-        
         performSegueWithIdentifier("dismissMenu", sender: self)
     }
     
     @IBAction func loginButtonPressed(sender: UIButton) {
-        
         if NetworkManager.sharedInstance.token != nil {
             NotificationManager.sharedInstance.showNotificationWithTitle("Logged out of Reddit", notificationType: NotificationType.Message, timer: 2.0)
             NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
-            
+            settingsButton.hidden = true
         } else {
-            
             if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("loginVC") {
                 self.presentViewController(loginVC, animated: false, completion: nil)
             }
@@ -195,24 +178,17 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     
     func newSubredditNameTextField(textField: UITextField!) {
-        
         textField.placeholder = "Add Subreddit Name"
-        
     }
     
     func longPress(gesture: UILongPressGestureRecognizer) {
-        
         if gesture.state == .Ended {
-        
             let alert = UIAlertController(title: "mité", message: "Change current subreddit.", preferredStyle: UIAlertControllerStyle.Alert)
-            
             alert.addTextFieldWithConfigurationHandler(newSubredditNameTextField)
-            
             alert.addAction(UIAlertAction(title: "Dimiss", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Change", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 
-                let alertTextField = alert.textFields![0] 
-                
+                let alertTextField = alert.textFields![0]
                 let pressedButton = gesture.view as! UIButton
                 
                 let improperSearchString = alertTextField.text
@@ -220,57 +196,36 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                 let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
                 
                 if properSearchString.isEmpty || alertTextField.text?.characters.count <= 1 {
-                    
                     let emptyAlert = UIAlertController(title: "mité", message: "Please put in a valid subreddit.", preferredStyle: UIAlertControllerStyle.ActionSheet)
-                    
                     emptyAlert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                        
                     }))
-                    
                     self.presentViewController(emptyAlert, animated: true, completion: nil)
-                
                 } else {
                 
                     if pressedButton.tag == 1 {
-                        
                         self.picsButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.firstButton = properSearchString
                         menuDefaults.setValue(properSearchString, forKey: "buttonOneDefault")
-                        
                     } else if pressedButton.tag == 2 {
-                        
                         self.awwButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.secondButton = properSearchString
                         menuDefaults.setValue(properSearchString, forKey: "buttonTwoDefault")
-                        
                     } else if pressedButton.tag == 3 {
-                        
                         self.funnyButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.thirdButton = properSearchString
                         menuDefaults.setValue(properSearchString, forKey: "buttonThreeDefault")
-                        
                     } else if pressedButton.tag == 4 {
-                        
                         self.iTookAPictureButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.fourthButton = properSearchString
                         menuDefaults.setValue(properSearchString, forKey: "buttonFourDefault")
-                        
                     } else if pressedButton.tag == 5 {
-                        
                         self.artButton.setTitle("\(properSearchString) ", forState: .Normal)
                         self.fifthButton = properSearchString
                         menuDefaults.setValue(properSearchString, forKey: "buttonFiveDefault")
-                    
                     }
-                
                 }
-                
             }))
-            
             self.presentViewController(alert, animated: true, completion: nil)
-            
         }
-        
     }
-    
 }
