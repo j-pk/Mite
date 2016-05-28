@@ -26,7 +26,6 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.fetchAPIData(paginate: false)
-        NetworkManager.sharedInstance.confirmUserLoginStatus()
         self.setupCollectionView()
         self.setupViews()
         self.transitionManager.viewController = self

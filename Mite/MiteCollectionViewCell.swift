@@ -50,26 +50,29 @@ class MiteCollectionViewCell: UICollectionViewCell {
         } else {
             self.mediaViewIcon.hidden = true 
         }
-        
-        let over18 = data.over_18
-        if over18 == true {
-            self.mainImageView.af_setImageWithURL(
-                NSURL(string: data.modifiedURL)!,
-                placeholderImage: UIImage(named: "placeholder")
-            )
-            self.nsfwLabel.hidden = false
-            self.filterView.hidden = false
-            self.filterViewBlur()
-            self.userInteractionEnabled = false
-        } else {
-            self.hidden = false
-            self.userInteractionEnabled = true
-        }
+        self.determineNSFW(data)
         self.setNeedsDisplay()
     }
     
-    func filterViewBlur() {
-        self.filterView.layer.opacity = 1.0
+    func determineNSFW(data: MiteImage) {
+        let over18 = data.over_18
+        if let preferences = NetworkManager.sharedInstance.redditUserPreferences {
+            if preferences.label_nsfw && over18 == true {
+                self.nsfwLabel.hidden = false
+                self.filterView.hidden = false
+                self.filterView.layer.opacity = 1.0
+            }
+            if preferences.over_18 && over18 == true {
+                self.userInteractionEnabled = true
+            }
+        } else {
+            if over18 == true {
+                self.nsfwLabel.hidden = false
+                self.filterView.hidden = false
+                self.filterView.layer.opacity = 1.0
+                self.userInteractionEnabled = false
+            } 
+        }
     }
     
     func longPressCellView(transform: CGAffineTransform, alpha: CGFloat) {

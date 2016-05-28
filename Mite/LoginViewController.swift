@@ -68,14 +68,20 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func connectButtonPressed(sender: UIButton) {
-        if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=miteAppv1&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=identity,vote,read") {
+        if let authorizationURL = NSURL(string: "https://ssl.reddit.com/api/v1/authorize.compact?client_id=\(miteKey)&response_type=code&state=miteAppv1&redirect_uri=miteApp://miteApp.com&duration=permanent&scope=account,identity,vote,read") {
             let vc = SFSafariViewController(URL: authorizationURL, entersReaderIfAvailable: false)
             presentViewController(vc, animated: true, completion: nil)
         }
     }
     
     func dismissVC() {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        delay(0.5) {
+            NetworkManager.sharedInstance.getUser()
+            delay(0.5) {
+                NetworkManager.sharedInstance.getUserPreferences()
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
     }
 }
 

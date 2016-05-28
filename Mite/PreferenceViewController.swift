@@ -7,13 +7,13 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class PreferenceViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var userPreferencesTextView: UITextView!
-    @IBOutlet weak var nsfwLabel: UILabel!
-    @IBOutlet weak var nsfwSwitch: UISwitch!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var labelNSFW: UILabel!
@@ -23,9 +23,7 @@ class PreferenceViewController: UIViewController {
         super.viewDidLoad()
         self.cancelButton.tintColor = UIColor.whiteColor()
         self.titleLabel.alpha = 0
-        self.nsfwLabel.alpha = 0
         self.userPreferencesTextView.alpha = 0
-        self.nsfwSwitch.alpha = 0
         self.cancelButton.alpha = 0
         self.dividerView.alpha = 0
         self.labelNSFWSwitch.alpha = 0
@@ -42,9 +40,7 @@ class PreferenceViewController: UIViewController {
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
             self.titleLabel.alpha = 1
-            self.nsfwLabel.alpha = 1
             self.userPreferencesTextView.alpha = 1
-            self.nsfwSwitch.alpha = 1
             self.cancelButton.alpha = 1
             self.dividerView.alpha = 1
             self.labelNSFWSwitch.alpha = 1
@@ -53,45 +49,39 @@ class PreferenceViewController: UIViewController {
         self.configurePreferences()
     }
     
-    @IBAction func nsfwSwitch(sender: AnyObject) {
-
-    }
-    
-    @IBAction func labelNSFWSwitch(sender: AnyObject) {
-    
+    @IBAction func labelNSFWSwitch(sender: UISwitch) {
+        print(sender.on)
+        if sender.on {
+            NetworkManager.sharedInstance.patchLabelNSFWPreference(true)
+        } else {
+            NetworkManager.sharedInstance.patchLabelNSFWPreference(false)
+        }
     }
     
     @IBAction func cancelButton(sender: UIButton) {
         UIView.transitionWithView(self.view, duration: 0.4, options: [], animations: { () -> Void in
             self.titleLabel.alpha = 0
-            self.nsfwLabel.alpha = 0
             self.userPreferencesTextView.alpha = 0
-            self.nsfwSwitch.alpha = 0
             self.cancelButton.alpha = 0
             self.dividerView.alpha = 0
             self.labelNSFWSwitch.alpha = 0
             self.labelNSFW.alpha = 0
+            NetworkManager.sharedInstance.getUserPreferences()
         }) { (finished) -> Void in
             self.dismissViewControllerAnimated(false, completion: nil)
         }
     }
     
     func configurePreferences() {
-        self.nsfwSwitch.on = false
         self.labelNSFWSwitch.on = false
         
         guard let user = NetworkManager.sharedInstance.redditUser else { return }
         if !user.over_18 {
-            self.nsfwLabel.enabled = false
-            self.nsfwSwitch.enabled = false
             self.labelNSFW.enabled = false
             self.labelNSFWSwitch.enabled = false
         }
         
         guard let pref = NetworkManager.sharedInstance.redditUserPreferences else { return }
-        if pref.over_18 {
-            self.nsfwSwitch.on = true
-        }
         if pref.label_nsfw {
             self.labelNSFWSwitch.on = true
         }

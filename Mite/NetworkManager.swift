@@ -19,19 +19,22 @@ enum Router: URLRequestConvertible {
     case GetIdentity
     case GetUserPreferences
     case UpvoteAndDownvote(linkName: String, direction: Int)
+    case PatchLabelNSFWPreferences(labelNSFW: Bool)
+    case PatchOver18Preferences(over_18: Bool)
     
     var method: Alamofire.Method {
         switch self {
         case .GetIdentity: return .GET
         case .GetUserPreferences: return .GET
         case .UpvoteAndDownvote: return .POST
+        case .PatchLabelNSFWPreferences, .PatchOver18Preferences: return .PATCH
         }
     }
     
     var path: String {
         switch self {
         case .GetIdentity: return "/api/v1/me"
-        case .GetUserPreferences: return "/api/v1/me/prefs"
+        case .GetUserPreferences, .PatchLabelNSFWPreferences, .PatchOver18Preferences: return "/api/v1/me/prefs"
         case .UpvoteAndDownvote: return "/api/vote"
         }
     }
@@ -52,6 +55,17 @@ enum Router: URLRequestConvertible {
                 "dir" : "\(direction)"
             ]
             return Alamofire.ParameterEncoding.URL.encode(URLRequest, parameters: parameters).0
+        case .PatchLabelNSFWPreferences(let labelNSFW):
+            let parameters = [
+                "label_nsfw": labelNSFW
+            ]
+            return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
+        case .PatchOver18Preferences(let over_18):
+            let parameters = [
+                "over_18": over_18
+            ]
+            return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
+            
         default:
             return URLRequest
         }
@@ -94,35 +108,35 @@ class NetworkManager {
     
     func logoutAndDeleteToken() {
         defaults.removeObjectForKey("AccessToken")
+        self.redditUser = nil
+        self.redditUserPreferences = nil
+        self.loggedIn = false
     }
     
-    func confirmUserLoginStatus() {
+    func confirmUserLoginStatus(completion: (()->())) {
         if self.token != nil {
             Alamofire.request(Router.GetIdentity)
                 .validate()
                 .responseJSON { response in
-                    switch response.result {
-                    case .Success:
-                        break
-                    case .Failure:
-                        NetworkManager.sharedInstance.refreshAccessToken()
-                        NotificationManager.sharedInstance.showNotificationWithTitle("Attempting to login with Reddit", notificationType: .Error, timer: 2.0)
-                        delay(2.0) {
-                            NetworkManager.sharedInstance.getUser()
-                        }
+                switch response.result {
+                case .Success:
+                    break
+                case .Failure:
+                    NetworkManager.sharedInstance.refreshAccessToken()
+                }
+                
+                if let JSONData = response.result.value {
+                    let json = JSON(JSONData)
+                    print(json)
+                    do {
+                        let parsedData = try UserContract.parseJSON(json)
+                        self.redditUser = parsedData
+                        self.loggedIn = true
+                        completion()
+                    } catch let error {
+                        print(error)
                     }
-                    
-                    if let JSONData = response.result.value {
-                        let json = JSON(JSONData)
-                        print(json)
-                        do {
-                            let parsedData = try UserContract.parseJSON(json)
-                            self.redditUser = parsedData
-                            self.loggedIn = true
-                        } catch let error {
-                            print(error)
-                        }
-                    }
+                }
             }
         } else {
             print("empty token")
@@ -133,27 +147,28 @@ class NetworkManager {
         Alamofire.request(Router.GetIdentity)
             .validate()
             .responseJSON{ response in
-                switch response.result {
-                case .Success:
-                    break
-                case .Failure:
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Reddit", notificationType: .Error, timer: 2.0)
+            switch response.result {
+            case .Success:
+                break
+            case .Failure:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Login to Reddit", notificationType: .Error, timer: 2.0)
+                self.loggedIn = false
+            }
+            if let JSONData = response.result.value {
+                let json = JSON(JSONData)
+                print(json)
+                do {
+                    let parsedData = try UserContract.parseJSON(json)
+                    self.redditUser = parsedData
+                    self.loggedIn = true
+                } catch let error {
+                    print(error)
                 }
-                if let JSONData = response.result.value {
-                    let json = JSON(JSONData)
-                    print(json)
-                    do {
-                        let parsedData = try UserContract.parseJSON(json)
-                        self.redditUser = parsedData
-                        self.loggedIn = true
-                    } catch let error {
-                        print(error)
-                    }
-                }
+            }
         }
     }
     
-    func getUserPreferences(completion:(() -> ())) {
+    func getUserPreferences() {
         if self.token != nil {
             Alamofire.request(Router.GetUserPreferences)
             .validate()
@@ -169,12 +184,43 @@ class NetworkManager {
                     print(json)
                     do {
                         let parsedData = try PreferencesContract.parseJSON(json)
+                        self.redditUserPreferences = nil
                         self.redditUserPreferences = parsedData
-                        completion()
                     } catch let error {
                         print(error)
                     }
                 }
+            }
+        }
+    }
+    
+    func patchOver18Preference(over_18: Bool) {
+        Alamofire.request(Router.PatchOver18Preferences(over_18: over_18))
+            .validate()
+            .responseJSON{ response in
+
+            switch response.result {
+            case .Success:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Preferences Saved", notificationType: .Error, timer: 2.0)
+                
+            case .Failure:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Preferences Failed to Save", notificationType: .Error, timer: 2.0)
+            }
+        }
+    }
+    
+    func patchLabelNSFWPreference(labelNSFW: Bool) {
+        Alamofire.request(Router.PatchLabelNSFWPreferences(labelNSFW: labelNSFW))
+            .validate()
+            .responseJSON{ response in
+                print(response.response?.allHeaderFields)
+                print(response)
+            switch response.result {
+            case .Success:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Preferences Saved", notificationType: .Error, timer: 2.0)
+                
+            case .Failure:
+                NotificationManager.sharedInstance.showNotificationWithTitle("Preferences Failed to Save", notificationType: .Error, timer: 2.0)
             }
         }
     }
@@ -290,23 +336,21 @@ class NetworkManager {
             .authenticate(user: "\(miteKey)", password: "")
             .validate()
             .response { (request, response, results, error) in
-                if error != nil {
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit, try again.", notificationType: .Error, timer: 3.0)
+            if error != nil {
+                NotificationManager.sharedInstance.showNotificationWithTitle("Failed to Authenticate with Reddit, try again.", notificationType: .Error, timer: 3.0)
+            }
+            print("request: ", request)
+            print("headers: ", response?.allHeaderFields)
+            print("results: ", results)
+            if let JSONData = results {
+                let json = JSON(data: JSONData)
+                print(json)
+                if let accessToken = json["access_token"].string {
+                    print(accessToken, refreshToken)
+                    self.token = accessToken
                 }
-                print("request: ", request)
-                print("headers: ", response?.allHeaderFields)
-                print("results: ", results)
-                if let JSONData = results {
-                    let json = JSON(data: JSONData)
-                    print(json)
-                    if let accessToken = json["access_token"].string {
-                        print(accessToken, refreshToken)
-                        self.token = accessToken
-                    }
-                }
-                
+            }
         }
-        
     }
 }
 

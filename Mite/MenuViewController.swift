@@ -130,11 +130,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     
     @IBAction func settingsButton(sender: UIButton) {
-        settingsButton.enabled = false
-        NetworkManager.sharedInstance.getUserPreferences {
-            self.performSegueWithIdentifier("preferenceSegue", sender: self)
-            self.settingsButton.enabled = true
-        }
+        self.performSegueWithIdentifier("preferenceSegue", sender: self)
     }
     
     @IBAction func picsButtonPressed(sender: UIButton) {
@@ -166,7 +162,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     @IBAction func loginButtonPressed(sender: UIButton) {
         if NetworkManager.sharedInstance.token != nil {
             NotificationManager.sharedInstance.showNotificationWithTitle("Logged out of Reddit", notificationType: NotificationType.Message, timer: 2.0)
-            NetworkManager.sharedInstance.logoutAndDeleteToken()
+            NetworkManager.sharedInstance.logoutAndDeleteToken() 
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
             settingsButton.hidden = true

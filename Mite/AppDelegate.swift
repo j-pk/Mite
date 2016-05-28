@@ -24,7 +24,15 @@
                 }
             }
         }
-        
+        let blockOperation = NSBlockOperation {
+            NetworkManager.sharedInstance.confirmUserLoginStatus {
+                NSOperationQueue.mainQueue().addOperationWithBlock {
+                    NetworkManager.sharedInstance.getUserPreferences()
+                }
+            }
+        }
+        let queue = NSOperationQueue()
+        queue.addOperation(blockOperation)
         return true
     }
     
