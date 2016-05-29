@@ -12,6 +12,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var connectToRedditButton: CustomButton!
     @IBOutlet weak var browseAnonButton: CustomButton!
     
+    private var user: User?
+    
     //MARK: Load
     
     override func viewWillAppear(animated: Bool) {
@@ -74,13 +76,20 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func dismissVC() {
-        delay(0.5) {
-            NetworkManager.sharedInstance.getUser()
-            delay(0.5) {
-                NetworkManager.sharedInstance.getUserPreferences()
-                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "dismissLoginVC") {
+            if let menuVC = segue.destinationViewController as? MenuViewController {
+                menuVC.user = self.user
             }
+        }
+    }
+    
+    func dismissVC() {
+        delay(1.0) {
+            NetworkManager.sharedInstance.getUser({ (user) in
+                self.user = user
+                self.performSegueWithIdentifier("dismissLoginVC", sender: self)
+            })
         }
     }
 }

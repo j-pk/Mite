@@ -18,9 +18,13 @@ class PreferenceViewController: UIViewController {
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var labelNSFW: UILabel!
     @IBOutlet weak var labelNSFWSwitch: UISwitch!
+    
+    var user: User?
+    var preferences: Preferences?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configurePreferences()
         self.cancelButton.tintColor = UIColor.whiteColor()
         self.titleLabel.alpha = 0
         self.userPreferencesTextView.alpha = 0
@@ -29,7 +33,7 @@ class PreferenceViewController: UIViewController {
         self.labelNSFWSwitch.alpha = 0
         self.labelNSFW.alpha = 0
         self.view.alpha = 0
-        self.loadPreferences()
+        self.labelNSFWSwitch.enabled = false 
     }
     
 
@@ -46,12 +50,11 @@ class PreferenceViewController: UIViewController {
             self.labelNSFWSwitch.alpha = 1
             self.labelNSFW.alpha = 1
         })
-        self.configurePreferences()
     }
     
     @IBAction func labelNSFWSwitch(sender: UISwitch) {
-        print(sender.on)
-        if sender.on {
+        print(labelNSFWSwitch.on)
+        if labelNSFWSwitch.on {
             NetworkManager.sharedInstance.patchLabelNSFWPreference(true)
         } else {
             NetworkManager.sharedInstance.patchLabelNSFWPreference(false)
@@ -66,7 +69,6 @@ class PreferenceViewController: UIViewController {
             self.dividerView.alpha = 0
             self.labelNSFWSwitch.alpha = 0
             self.labelNSFW.alpha = 0
-            NetworkManager.sharedInstance.getUserPreferences()
         }) { (finished) -> Void in
             self.dismissViewControllerAnimated(false, completion: nil)
         }
@@ -74,32 +76,30 @@ class PreferenceViewController: UIViewController {
     
     func configurePreferences() {
         self.labelNSFWSwitch.on = false
-        
-        guard let user = NetworkManager.sharedInstance.redditUser else { return }
-        if !user.over_18 {
-            self.labelNSFW.enabled = false
-            self.labelNSFWSwitch.enabled = false
+        if let pref = preferences {
+            if pref.label_nsfw {
+                self.labelNSFWSwitch.on = true
+            }
         }
         
-        guard let pref = NetworkManager.sharedInstance.redditUserPreferences else { return }
-        if pref.label_nsfw {
-            self.labelNSFWSwitch.on = true
+        if let user = user {
+            if !user.over_18 {
+                self.labelNSFW.enabled = false
+                self.labelNSFWSwitch.enabled = false
+            }
+            
+            self.titleLabel.text = user.name + " Preferences"
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = .LongStyle
+            let date = dateFormatter.stringFromDate(user.created)
+            
+            self.userPreferencesTextView.text =
+                "Date Created - \(date)\n" +
+                "Has Verified Email - \(user.hasVerifiedEmail)\n" +
+                "Gold - \(user.isGold)\n" +
+                "Mod - \(user.isMod)\n" +
+                "Over 18 - \(user.over_18)\n" +
+                "Link Karma - \(user.linkKarma)"
         }
-    }
-    
-    func loadPreferences() {
-        guard let user = NetworkManager.sharedInstance.redditUser else { return }
-        self.titleLabel.text = user.name + " Preferences"
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .LongStyle
-        let date = dateFormatter.stringFromDate(user.created)
-        
-        self.userPreferencesTextView.text =
-            "Date Created - \(date)\n" +
-            "Has Verified Email - \(user.hasVerifiedEmail)\n" +
-            "Gold - \(user.isGold)\n" +
-            "Mod - \(user.isMod)\n" +
-            "Over 18 - \(user.over_18)\n" +
-            "Link Karma - \(user.linkKarma)"
     }
 }

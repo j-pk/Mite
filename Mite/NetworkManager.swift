@@ -57,12 +57,12 @@ enum Router: URLRequestConvertible {
             return Alamofire.ParameterEncoding.URL.encode(URLRequest, parameters: parameters).0
         case .PatchLabelNSFWPreferences(let labelNSFW):
             let parameters = [
-                "label_nsfw": labelNSFW
+                "label_nsfw" : labelNSFW
             ]
             return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
         case .PatchOver18Preferences(let over_18):
             let parameters = [
-                "over_18": over_18
+                "over_18" : over_18
             ]
             return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
             
@@ -76,11 +76,7 @@ class NetworkManager {
     
     static let sharedInstance = NetworkManager()
     
-    var pageRedditAfter = ""
     var searchRedditString = ""
-    var loggedIn: Bool = false
-    var redditUser: User?
-    var redditUserPreferences: Preferences?
     
     private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
     private let defaults = NSUserDefaults.standardUserDefaults()
@@ -108,12 +104,9 @@ class NetworkManager {
     
     func logoutAndDeleteToken() {
         defaults.removeObjectForKey("AccessToken")
-        self.redditUser = nil
-        self.redditUserPreferences = nil
-        self.loggedIn = false
     }
     
-    func confirmUserLoginStatus(completion: (()->())) {
+    func confirmUserLoginStatus() {
         if self.token != nil {
             Alamofire.request(Router.GetIdentity)
                 .validate()
@@ -124,26 +117,13 @@ class NetworkManager {
                 case .Failure:
                     NetworkManager.sharedInstance.refreshAccessToken()
                 }
-                
-                if let JSONData = response.result.value {
-                    let json = JSON(JSONData)
-                    print(json)
-                    do {
-                        let parsedData = try UserContract.parseJSON(json)
-                        self.redditUser = parsedData
-                        self.loggedIn = true
-                        completion()
-                    } catch let error {
-                        print(error)
-                    }
-                }
             }
         } else {
             print("empty token")
         }
     }
     
-    func getUser() {
+    func getUser(completion: ((user: User)->())) {
         Alamofire.request(Router.GetIdentity)
             .validate()
             .responseJSON{ response in
@@ -152,15 +132,13 @@ class NetworkManager {
                 break
             case .Failure:
                 NotificationManager.sharedInstance.showNotificationWithTitle("Login to Reddit", notificationType: .Error, timer: 2.0)
-                self.loggedIn = false
             }
             if let JSONData = response.result.value {
                 let json = JSON(JSONData)
                 print(json)
                 do {
                     let parsedData = try UserContract.parseJSON(json)
-                    self.redditUser = parsedData
-                    self.loggedIn = true
+                    completion(user: parsedData)
                 } catch let error {
                     print(error)
                 }
@@ -168,7 +146,7 @@ class NetworkManager {
         }
     }
     
-    func getUserPreferences() {
+    func getUserPreferences(completion: ((pref: Preferences)->())) {
         if self.token != nil {
             Alamofire.request(Router.GetUserPreferences)
             .validate()
@@ -184,8 +162,7 @@ class NetworkManager {
                     print(json)
                     do {
                         let parsedData = try PreferencesContract.parseJSON(json)
-                        self.redditUserPreferences = nil
-                        self.redditUserPreferences = parsedData
+                        completion(pref: parsedData)
                     } catch let error {
                         print(error)
                     }
@@ -210,6 +187,7 @@ class NetworkManager {
     }
     
     func patchLabelNSFWPreference(labelNSFW: Bool) {
+        print("WTF ", labelNSFW)
         Alamofire.request(Router.PatchLabelNSFWPreferences(labelNSFW: labelNSFW))
             .validate()
             .responseJSON{ response in

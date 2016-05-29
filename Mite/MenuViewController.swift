@@ -18,7 +18,8 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var customizeLabel: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
-   
+    @IBOutlet weak var rightSpacing: NSLayoutConstraint!
+
     var firstButton: String!
     var secondButton: String!
     var thirdButton: String!
@@ -28,8 +29,8 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     
     var pressedButton: UIButton?
     var arrayOfButtons = [UIButton]()
-    
-    @IBOutlet weak var rightSpacing: NSLayoutConstraint!
+    var user: User?
+    var preferences: Preferences?
     
     ////////////////////MARK: Load
     
@@ -37,15 +38,6 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         super.viewDidLoad()
         self.configureView()
         self.configureMenu()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.userNameLabel.text = NetworkManager.sharedInstance.redditUser?.name ?? ""
-        self.settingsButton.hidden = true
-        if NetworkManager.sharedInstance.loggedIn {
-            self.settingsButton.hidden = false
-        }
     }
     
     func configureView() {
@@ -77,12 +69,21 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             }
         }
         rightSpacing.constant = view.frame.width / 5
+        
+        self.settingsButton.hidden = true
+        if let user = user {
+            self.userNameLabel.text = user.name
+            self.settingsButton.hidden = false
+        }
+        NetworkManager.sharedInstance.getUserPreferences { (pref) in
+            self.preferences = pref
+        }
     }
     
     func configureMenu() {
-        if (NetworkManager.sharedInstance.token?.isEmpty != nil) {
+        if user != nil {
             loginButton.setTitle("Logout", forState: .Normal)
-        } else {
+        } else  {
             loginButton.setTitle("Login", forState: .Normal)
         }
         
@@ -110,23 +111,6 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             self.fifthButton = menuDefaults.objectForKey("buttonFiveDefault") as? String
             artButton.setTitle(self.fifthButton, forState: .Normal)
         }
-    }
-    
-    ////////////////////MARK: Button Actions
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
-        let improperSearchString = subredditSearch.text
-        let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
-        let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
-        
-        if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
-            NotificationManager.sharedInstance.showNotificationWithTitle("Invalid search parameters", notificationType: NotificationType.Error, timer: 3.0)
-        } else {
-            NetworkManager.sharedInstance.searchRedditString = "r/" + "\(properSearchString)"
-            NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
-            performSegueWithIdentifier("dismissMenu", sender: self)
-        }        
     }
     
     @IBAction func settingsButton(sender: UIButton) {
@@ -162,7 +146,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     @IBAction func loginButtonPressed(sender: UIButton) {
         if NetworkManager.sharedInstance.token != nil {
             NotificationManager.sharedInstance.showNotificationWithTitle("Logged out of Reddit", notificationType: NotificationType.Message, timer: 2.0)
-            NetworkManager.sharedInstance.logoutAndDeleteToken() 
+            NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
             settingsButton.hidden = true
@@ -171,6 +155,33 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
                 self.presentViewController(loginVC, animated: false, completion: nil)
             }
         }
+    }
+    
+    @IBAction func dismissLoginVC(segue:UIStoryboardSegue) {
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "preferenceSegue") {
+            if let prefVC = segue.destinationViewController as? PreferenceViewController {
+                prefVC.user = self.user
+                prefVC.preferences = self.preferences
+            }
+        }
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+        let improperSearchString = subredditSearch.text
+        let properSearchStringParts = improperSearchString?.componentsSeparatedByCharactersInSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+        let properSearchString = NSArray(array: properSearchStringParts!).componentsJoinedByString("")
+        
+        if properSearchString.isEmpty || properSearchString.characters.count <= 1 {
+            NotificationManager.sharedInstance.showNotificationWithTitle("Invalid search parameters", notificationType: NotificationType.Error, timer: 3.0)
+        } else {
+            NetworkManager.sharedInstance.searchRedditString = "r/" + "\(properSearchString)"
+            NSNotificationCenter.defaultCenter().postNotificationName("notifyToReload", object: nil)
+            performSegueWithIdentifier("dismissMenu", sender: self)
+        }        
     }
     
     func newSubredditNameTextField(textField: UITextField!) {

@@ -22,6 +22,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
     weak var delegate: VoteStateForImageDelegate?
     var imageId: String?
     var state: Bool?
+    var user: User?
     
     var pressingUp = false {
         didSet{
@@ -56,13 +57,14 @@ class MiteCollectionViewCell: UICollectionViewCell {
     
     func determineNSFW(data: MiteImage) {
         let over18 = data.over_18
-        if let preferences = NetworkManager.sharedInstance.redditUserPreferences {
-            if preferences.label_nsfw && over18 == true {
+        if let user = user {
+            if !user.over_18 && over18 == true {
                 self.nsfwLabel.hidden = false
                 self.filterView.hidden = false
                 self.filterView.layer.opacity = 1.0
+                self.userInteractionEnabled = false
             }
-            if preferences.over_18 && over18 == true {
+            if user.over_18 && over18 == true {
                 self.userInteractionEnabled = true
             }
         } else {

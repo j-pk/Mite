@@ -925,11 +925,13 @@
                         <outlet property="browseAnonButton" destination="UZF-5p-HLj" id="UgM-27-3dN"/>
                         <outlet property="connectToRedditButton" destination="T1b-cl-gas" id="wcY-3s-uVG"/>
                         <outlet property="returnButton" destination="Ffd-5O-jwY" id="ob4-0X-jZC"/>
+                        <segue destination="LXc-SU-wBl" kind="unwind" identifier="dismissLoginVC" unwindAction="dismissLoginVC:" id="Dq2-Qi-7zL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EB6-WQ-JbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="LXc-SU-wBl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1387" y="1930"/>
+            <point key="canvasLocation" x="1387" y="1918"/>
         </scene>
     </scenes>
     <resources>
