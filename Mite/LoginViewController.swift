@@ -85,11 +85,13 @@ class LoginViewController: UIViewController {
     }
     
     func dismissVC() {
-        delay(1.0) {
+        delay(2.2) {
             NetworkManager.sharedInstance.getUser({ (user) in
                 self.user = user
-                self.performSegueWithIdentifier("dismissLoginVC", sender: self)
             })
+            delay(0.5) {
+                self.performSegueWithIdentifier("dismissLoginVC", sender: self)
+            }
         }
     }
 }

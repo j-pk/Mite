@@ -11,10 +11,15 @@ import Alamofire
 import SwiftyJSON
 
 let redditAPI = "https://www.reddit.com/"
+let defaults = NSUserDefaults.standardUserDefaults()
 
 enum Router: URLRequestConvertible {
     static let baseURLString = "https://oauth.reddit.com"
-    static var OAuthtoken = NetworkManager.sharedInstance.token
+    static var OAuthtoken: String? {
+        get {
+            return defaults.objectForKey("AccessToken") as? String
+        }
+    }
     
     case GetIdentity
     case GetUserPreferences
@@ -79,7 +84,6 @@ class NetworkManager {
     var searchRedditString = ""
     
     private let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
-    private let defaults = NSUserDefaults.standardUserDefaults()
     private let API_URL = "https://oauth.reddit.com"
     
     var token: String? {
@@ -133,6 +137,8 @@ class NetworkManager {
             case .Failure:
                 NotificationManager.sharedInstance.showNotificationWithTitle("Login to Reddit", notificationType: .Error, timer: 2.0)
             }
+            print(response.debugDescription)
+            print(response.response?.allHeaderFields)
             if let JSONData = response.result.value {
                 let json = JSON(JSONData)
                 print(json)

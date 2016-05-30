@@ -37,7 +37,19 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
+        self.loadUser()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.configureMenu()
+        if let user = self.user {
+            self.user = user
+        }
+        if NetworkManager.sharedInstance.token != nil {
+            self.userNameLabel.text = user?.name ?? ""
+            self.settingsButton.hidden = false
+        }
     }
     
     func configureView() {
@@ -60,8 +72,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         for subView in subredditSearch.subviews  {
             for subsubView in subView.subviews  {
                 if let textField = subsubView as? UITextField {
-                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search & Discover", comment:""),
-                                                                          attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search & Discover", comment:""), attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
                     textField.backgroundColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
                     textField.tintColor = UIColor(red:0.3, green:0.29, blue:0.29, alpha:1)
                     textField.textColor = UIColor.whiteColor()
@@ -69,19 +80,25 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             }
         }
         rightSpacing.constant = view.frame.width / 5
-        
         self.settingsButton.hidden = true
-        if let user = user {
-            self.userNameLabel.text = user.name
-            self.settingsButton.hidden = false
-        }
-        NetworkManager.sharedInstance.getUserPreferences { (pref) in
-            self.preferences = pref
+    }
+    
+    func loadUser() {
+        if NetworkManager.sharedInstance.token == nil {
+            return
+        } else {
+            NetworkManager.sharedInstance.getUser { (user) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.user = user
+                    self.userNameLabel.text = user.name
+                    self.settingsButton.hidden = false
+                }
+            }
         }
     }
     
     func configureMenu() {
-        if user != nil {
+        if NetworkManager.sharedInstance.token != nil {
             loginButton.setTitle("Logout", forState: .Normal)
         } else  {
             loginButton.setTitle("Login", forState: .Normal)
@@ -114,7 +131,14 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
     }
     
     @IBAction func settingsButton(sender: UIButton) {
-        self.performSegueWithIdentifier("preferenceSegue", sender: self)
+        self.settingsButton.enabled = false
+        NetworkManager.sharedInstance.getUserPreferences { (pref) in
+            self.preferences = pref
+            self.settingsButton.enabled = true
+            delay(0.2) {
+                self.performSegueWithIdentifier("preferenceSegue", sender: sender)
+            }
+        }
     }
     
     @IBAction func picsButtonPressed(sender: UIButton) {
@@ -149,6 +173,7 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
             NetworkManager.sharedInstance.logoutAndDeleteToken()
             loginButton.setTitle("Login", forState: .Normal)
             userNameLabel.text = ""
+            user = nil
             settingsButton.hidden = true
         } else {
             if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("loginVC") {
@@ -157,14 +182,18 @@ class MenuViewController: UIViewController, UISearchBarDelegate, UIGestureRecogn
         }
     }
     
-    @IBAction func dismissLoginVC(segue:UIStoryboardSegue) {
-    }
+    @IBAction func dismissLoginVC(segue:UIStoryboardSegue) { }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "preferenceSegue") {
             if let prefVC = segue.destinationViewController as? PreferenceViewController {
                 prefVC.user = self.user
                 prefVC.preferences = self.preferences
+            }
+        }
+        if (segue.identifier == "dismissMenu") {
+            if let collectionVC = segue.destinationViewController as? MiteViewController {
+                collectionVC.user = self.user
             }
         }
     }

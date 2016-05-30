@@ -65,6 +65,9 @@ class MiteCollectionViewCell: UICollectionViewCell {
                 self.userInteractionEnabled = false
             }
             if user.over_18 && over18 == true {
+                self.nsfwLabel.hidden = false
+                self.filterView.hidden = false
+                self.filterView.layer.opacity = 1.0
                 self.userInteractionEnabled = true
             }
         } else {

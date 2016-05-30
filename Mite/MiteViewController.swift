@@ -21,7 +21,7 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
     private var initialGestureState: CGPoint?
     private var defaultSubreddit: String?
     private var miteImages = [MiteImage]()
-    private var user: User?
+    var user: User?
     private lazy var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
@@ -77,8 +77,14 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         self.miteCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0)
         self.defaultSubreddit = "r/top"
         self.subredditLabel.text = self.defaultSubreddit
-        NetworkManager.sharedInstance.getUser { (user) in
-            self.user = user
+        if NetworkManager.sharedInstance.token == nil {
+            return
+        } else {
+            delay(2.2) {
+                NetworkManager.sharedInstance.getUser { (user) in
+                    self.user = user
+                }
+            }
         }
     }
     
@@ -207,7 +213,6 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
         if (segue.identifier == "menuVC") {
             if let menuVC = segue.destinationViewController as? MenuViewController {
                 menuVC.transitioningDelegate = transitionManager
-                menuVC.user = self.user
                 self.transitionManager.menuViewController = menuVC
             }
         }
