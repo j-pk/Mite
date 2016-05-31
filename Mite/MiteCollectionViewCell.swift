@@ -126,7 +126,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
                         delegate.voteState(imageId, state: true)
                     }
                 case .Failure(let error):
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Vote", notificationType: NotificationType.Error, timer: 2.0)
                     print(error)
                 }
             }
@@ -145,7 +145,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
                         delegate.voteState(imageId, state: false)
                     }
                 case .Failure(let error):
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Vote", notificationType: NotificationType.Error, timer: 2.0)
                     print(error)
                 }
             }
@@ -156,7 +156,7 @@ class MiteCollectionViewCell: UICollectionViewCell {
         Alamofire.request(Router.UpvoteAndDownvote(linkName: imageId, direction: 0)).responseJSON { response in
             switch response.result {
             case .Success:
-                NotificationManager.sharedInstance.showNotificationWithTitle("Removed vote", notificationType: NotificationType.Message, timer: 1.0)
+                NotificationManager.sharedInstance.showNotificationWithTitle("Removed Vote", notificationType: NotificationType.Message, timer: 1.0)
                 self.pressingUp = false
                 self.pressingDown = false
                 if let delegate = self.delegate {
