@@ -109,7 +109,7 @@ class NotificationView: UIView {
         let titleLabel = UILabel(frame: labelRect)
         titleLabel.text = title
         titleLabel.textAlignment = .Center
-        titleLabel.font = UIFont(name: "HelveticaNeue-SemiBold", size: 17)
+        titleLabel.font = UIFont(name: "HelveticaNeue-SemiBold", size: 8)
         titleLabel.textColor = UIColor.whiteColor()
         
         addSubview(titleLabel)

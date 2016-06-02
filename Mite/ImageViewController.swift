@@ -10,6 +10,7 @@ import Gifu
 
 protocol VoteStateForImageDelegate: class {
     func voteState(id: String, state: Bool?)
+    func markNSFW(id: String)
 }
 
 class ImageViewController: UIViewController {
@@ -23,6 +24,7 @@ class ImageViewController: UIViewController {
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var titleHeight: NSLayoutConstraint!
+    @IBOutlet weak var flagNSFW: UIButton!
     
     var cell: MiteCollectionViewCell!
     var cellYOffset: CGFloat = 0
@@ -74,10 +76,9 @@ class ImageViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         self.detailImageView.center = CGPointMake(self.cell.center.x, self.cell.center.y + self.cellYOffset)
         
-        UIView.transitionWithView(detailImageView, duration:0.4, options: [],
-                                  animations: {
-                                    self.detailImageView.center = self.backgroundImageView.center
-                                    self.detailImageView.transform = CGAffineTransformIdentity
+        UIView.transitionWithView(detailImageView, duration:0.4, options: [], animations: {
+            self.detailImageView.center = self.backgroundImageView.center
+            self.detailImageView.transform = CGAffineTransformIdentity
             }, completion: nil)
         UIView.animateWithDuration(0.6, animations: { () -> Void in
             self.backgroundImageView.alpha = 1
@@ -187,6 +188,25 @@ class ImageViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func flagNSFWButtonPressed(sender: UIButton) {
+        let actionSheetController = UIAlertController(title: "Flag Image as NSFW?", message: "", preferredStyle: .ActionSheet)
+        let flag = UIAlertAction(title: "Flag Image", style: .Default) { action in
+            if let delegate = self.delegate, id = self.imageIDToVote {
+                delegate.markNSFW(id)
+                NetworkManager.sharedInstance.markImageNSFW(id)
+            }
+            delay(0.5) {
+                self.dismissViewControllerAnimated(false, completion: nil)
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        actionSheetController.addAction(flag)
+        actionSheetController.addAction(cancel)
+        
+        presentViewController(actionSheetController, animated: true, completion: nil)
     }
     
     @IBAction func shareButtonPressed(sender: UIButton) {

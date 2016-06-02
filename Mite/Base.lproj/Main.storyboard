@@ -26,9 +26,23 @@
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNd-fq-DRp" customClass="GradientView" customModule="mite" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="479" width="600" height="121"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fPS-2g-ia3">
+                                                <rect key="frame" x="511" y="85" width="23" height="28"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="28" id="QT0-b0-ClL"/>
+                                                    <constraint firstAttribute="width" constant="23" id="QjI-AA-DRE"/>
+                                                </constraints>
+                                                <state key="normal" image="flag"/>
+                                                <connections>
+                                                    <action selector="flagNSFWButtonPressed:" destination="bQc-lb-KOw" eventType="touchUpInside" id="hKG-Zl-RgC"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="121" id="4WS-vs-PAo"/>
+                                            <constraint firstAttribute="bottom" secondItem="fPS-2g-ia3" secondAttribute="bottom" constant="8" id="ed7-pw-1TZ"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
@@ -40,7 +54,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bN-iY-pxV">
-                                        <rect key="frame" x="8" y="555" width="584" height="1"/>
+                                        <rect key="frame" x="8" y="557" width="584" height="1"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="HEV-ln-gCE"/>
@@ -83,7 +97,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U3P-Ok-kJx">
-                                        <rect key="frame" x="20" y="247" width="560" height="300"/>
+                                        <rect key="frame" x="20" y="249" width="560" height="300"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="RrA-5I-SNb"/>
@@ -93,7 +107,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rjw-P4-N8w">
-                                        <rect key="frame" x="554" y="564" width="20" height="22"/>
+                                        <rect key="frame" x="554" y="566" width="20" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="Ru3-e8-0W9"/>
                                             <constraint firstAttribute="height" constant="22" id="lzH-c9-hu7"/>
@@ -108,7 +122,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Rjw-P4-N8w" secondAttribute="bottom" constant="14" id="0ml-LD-eLd"/>
+                                    <constraint firstAttribute="bottom" secondItem="Rjw-P4-N8w" secondAttribute="bottom" constant="12" id="0ml-LD-eLd"/>
                                     <constraint firstItem="Rjw-P4-N8w" firstAttribute="top" secondItem="7bN-iY-pxV" secondAttribute="bottom" constant="8" id="8ZR-tb-PdI"/>
                                     <constraint firstAttribute="centerX" secondItem="ipq-H3-UX4" secondAttribute="centerX" constant="5.5" id="DFx-K3-4dQ"/>
                                     <constraint firstItem="lNd-fq-DRp" firstAttribute="leading" secondItem="rRv-TQ-idK" secondAttribute="leading" id="Fzb-uX-gaZ"/>
@@ -118,6 +132,7 @@
                                     <constraint firstAttribute="trailing" secondItem="U3P-Ok-kJx" secondAttribute="trailing" constant="20" id="L7H-lR-6eV"/>
                                     <constraint firstItem="f8P-df-FOQ" firstAttribute="leading" secondItem="rRv-TQ-idK" secondAttribute="leading" constant="23" id="Lzv-8d-7SC"/>
                                     <constraint firstAttribute="trailing" secondItem="Rjw-P4-N8w" secondAttribute="trailing" constant="26" id="OQc-G0-l8c"/>
+                                    <constraint firstItem="Rjw-P4-N8w" firstAttribute="leading" secondItem="fPS-2g-ia3" secondAttribute="trailing" constant="20" id="VQP-0i-EDw"/>
                                     <constraint firstItem="yyp-ve-Ryi" firstAttribute="leading" secondItem="rRv-TQ-idK" secondAttribute="leading" id="Yz3-An-m4S"/>
                                     <constraint firstItem="7bN-iY-pxV" firstAttribute="leading" secondItem="rRv-TQ-idK" secondAttribute="leading" constant="8" id="ZWe-w4-h2L"/>
                                     <constraint firstAttribute="bottom" secondItem="ipq-H3-UX4" secondAttribute="bottom" constant="14" id="a9l-Bi-HYQ"/>
@@ -144,6 +159,7 @@
                         <outlet property="backgroundImageView" destination="rRv-TQ-idK" id="WJ1-wM-JW7"/>
                         <outlet property="detailImageView" destination="yyp-ve-Ryi" id="HJW-eJ-Kxi"/>
                         <outlet property="downvoteButton" destination="4za-u6-NPa" id="Vub-cG-zNf"/>
+                        <outlet property="flagNSFW" destination="fPS-2g-ia3" id="zVp-NZ-GDZ"/>
                         <outlet property="shareButton" destination="Rjw-P4-N8w" id="DMl-74-fBa"/>
                         <outlet property="titleHeight" destination="RrA-5I-SNb" id="nfy-a2-CRR"/>
                         <outlet property="titleTextView" destination="U3P-Ok-kJx" id="vJs-Li-sbM"/>
@@ -938,6 +954,7 @@
         <image name="cancel" width="16" height="16"/>
         <image name="downvote" width="40" height="40"/>
         <image name="downvoteWhite" width="40" height="40"/>
+        <image name="flag" width="33" height="33"/>
         <image name="logo" width="104" height="54"/>
         <image name="logo_x" width="300" height="156"/>
         <image name="menu" width="39" height="31"/>

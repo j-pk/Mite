@@ -26,12 +26,12 @@ enum Router: URLRequestConvertible {
     case UpvoteAndDownvote(linkName: String, direction: Int)
     case PatchLabelNSFWPreferences(labelNSFW: Bool)
     case PatchOver18Preferences(over_18: Bool)
+    case MarkImageNSFW(id: String)
     
     var method: Alamofire.Method {
         switch self {
-        case .GetIdentity: return .GET
-        case .GetUserPreferences: return .GET
-        case .UpvoteAndDownvote: return .POST
+        case .GetUserPreferences, .GetIdentity: return .GET
+        case .UpvoteAndDownvote, .MarkImageNSFW: return .POST
         case .PatchLabelNSFWPreferences, .PatchOver18Preferences: return .PATCH
         }
     }
@@ -41,6 +41,7 @@ enum Router: URLRequestConvertible {
         case .GetIdentity: return "/api/v1/me"
         case .GetUserPreferences, .PatchLabelNSFWPreferences, .PatchOver18Preferences: return "/api/v1/me/prefs"
         case .UpvoteAndDownvote: return "/api/vote"
+        case .MarkImageNSFW: return "/api/marknsfw"
         }
     }
     
@@ -70,7 +71,11 @@ enum Router: URLRequestConvertible {
                 "over_18" : over_18
             ]
             return Alamofire.ParameterEncoding.JSON.encode(URLRequest, parameters: parameters).0
-            
+        case .MarkImageNSFW(let id):
+            let parameters = [
+                "id" : "t3_\(id)"
+            ]
+            return Alamofire.ParameterEncoding.URL.encode(URLRequest, parameters: parameters).0
         default:
             return URLRequest
         }
@@ -206,6 +211,25 @@ class NetworkManager {
             case .Failure:
                 NotificationManager.sharedInstance.showNotificationWithTitle("Preferences Failed to Save", notificationType: .Error, timer: 2.0)
             }
+        }
+    }
+    
+    func markImageNSFW(id: String) {
+        if token == nil {
+            NotificationManager.sharedInstance.showNotificationWithTitle("Login to flag image as NSFW", notificationType: .Error, timer: 2.0)
+        }
+        Alamofire.request(Router.MarkImageNSFW(id: id))
+            .validate()
+            .responseJSON{ response in
+                print(response.response?.allHeaderFields)
+                print(response)
+                switch response.result {
+                case .Success:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Flagged Image as NSFW", notificationType: .Error, timer: 2.0)
+                    
+                case .Failure:
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Mod status is required to flag content", notificationType: .Error, timer: 3.0)
+                }
         }
     }
     

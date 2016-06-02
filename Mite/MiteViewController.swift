@@ -228,6 +228,13 @@ class MiteViewController: UIViewController, VoteStateForImageDelegate {
             }
         }
     }
+    
+    func markNSFW(id: String) {
+        for (index, data) in self.miteImages.enumerate() where data.id == id {
+            self.miteImages[index].over_18 = true
+            self.miteCollectionView.reloadData()
+        }
+    }
 
 }
 
