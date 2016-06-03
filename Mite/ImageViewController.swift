@@ -128,7 +128,7 @@ class ImageViewController: UIViewController {
                     delegate.voteState(imageId, state: nil)
                 }
             case .Failure(let error):
-                NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                NotificationManager.sharedInstance.showNotificationWithTitle("Login to Vote", notificationType: NotificationType.Error, timer: 2.0)
                 print(error)
             }
         }
@@ -155,7 +155,7 @@ class ImageViewController: UIViewController {
                         delegate.voteState(imageID, state: true)
                     }
                 case .Failure(let error):
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Vote", notificationType: NotificationType.Error, timer: 2.0)
                     print(error)
                 }
             }
@@ -183,7 +183,7 @@ class ImageViewController: UIViewController {
                         delegate.voteState(imageID, state: false)
                     }
                 case .Failure(let error):
-                    NotificationManager.sharedInstance.showNotificationWithTitle("Error: \(error)", notificationType: NotificationType.Message, timer: 2.0)
+                    NotificationManager.sharedInstance.showNotificationWithTitle("Login to Vote", notificationType: NotificationType.Error, timer: 2.0)
                     print(error)
                 }
             }
@@ -197,9 +197,13 @@ class ImageViewController: UIViewController {
                 delegate.markNSFW(id)
                 NetworkManager.sharedInstance.markImageNSFW(id)
             }
-            delay(0.5) {
-                self.dismissViewControllerAnimated(false, completion: nil)
-            }
+            UIView.animateWithDuration(0.6, animations: { () -> Void in
+                self.detailImageView.alpha = 0
+                self.backgroundImageView.alpha = 0
+                
+                }, completion: { (finished) -> Void in
+                    self.dismissViewControllerAnimated(false, completion: nil)
+            })
         }
         let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         

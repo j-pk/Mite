@@ -76,7 +76,9 @@ class MiteCollectionViewCell: UICollectionViewCell {
                 self.filterView.hidden = false
                 self.filterView.layer.opacity = 1.0
                 self.userInteractionEnabled = false
-            } 
+            } else {
+                self.userInteractionEnabled = true
+            }
         }
     }
     

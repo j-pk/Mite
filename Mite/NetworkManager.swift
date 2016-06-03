@@ -217,6 +217,7 @@ class NetworkManager {
     func markImageNSFW(id: String) {
         if token == nil {
             NotificationManager.sharedInstance.showNotificationWithTitle("Login to flag image as NSFW", notificationType: .Error, timer: 2.0)
+            return
         }
         Alamofire.request(Router.MarkImageNSFW(id: id))
             .validate()
